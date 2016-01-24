@@ -1,3 +1,5 @@
+/php_ci/application/config/config.php
+/php_ci/application/config/database.php
 */config/development
 */logs/log-*.php
 !*/logs/index.html
