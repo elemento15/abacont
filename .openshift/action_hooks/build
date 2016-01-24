@@ -1,0 +1,2 @@
+cp app-root/data/config.php app-root/runtime/repo/php_ci/application/config/
+cp app-root/data/database.php app-root/runtime/repo/php_ci/application/config/
