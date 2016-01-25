@@ -1,0 +1,28 @@
+<h3><% if (recId) { %>Editar<% } else { %>Nueva<% } %> Clase</h3>
+<hr/>
+<div class="alert alert-warning div-errors"></div>
+<form role="form">
+  <fieldset>
+    <div class="row">
+      <div class="col-xs-5">
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input type="text" name="nombre" class="form-control" maxlength="50">
+        </div>
+        <div class="form-group">
+          <label for="tipo">Tipo:</label>
+          <select name="tipo" class="form-control">
+            <option value="I">INGRESO</option>
+            <option value="G">GASTO</option>
+          </select>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="activo" checked="checked"> Activo
+          </label>
+        </div>
+      </div>
+    </div>
+    <%= tplBtns({ id: recId }) %>
+  </fieldset>
+</form>

@@ -1,3 +1,108 @@
+body {
+  background-color: #efefef;
+}
+
 #main-container {
 	margin-top: 40px;
+}
+
+hr {
+  border-top: 2px solid #aaa;
+  margin-top: 10px;
+}
+
+.table {
+  margin-bottom: 5px;
+}
+
+.table thead {
+  font-weight: bold;
+  font-size: 13px;
+  color: #fff;
+}
+
+.table thead td {
+  background-color: #001F3F;
+  border-bottom: 1px solid #111;
+  border-right: 1px solid #fff;
+}
+
+.table thead td:first-child {
+  border-top-left-radius: 5px;
+}
+
+.table thead td:last-child {
+  border-top-right-radius: 5px;
+  border-right: none;
+}
+
+.table tbody td {
+  font-size: 13px;
+  border: 1px solid #ddd;
+}
+
+.table .main-data-list .inactive {
+  color: #FF4136;
+}
+
+.row-btn-edit {
+  cursor: pointer;
+}
+
+.order-field {
+  cursor: pointer;
+}
+
+.div-search {
+  padding-right: 55px;
+}
+
+.clear-search {
+  position: absolute;
+  right: 20px;
+  top: 3px;
+  background-color: #efefef;
+  border: 1px solid #ddd;
+  font-size: 11px;
+  color: #666;
+  padding: 2px 3px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.clear-search:hover {
+  background-color: #ddd;
+  border-color: #ccc;
+}
+
+.form-control {
+  height: 28px;
+  line-height: 1.4;
+  font-size: 13px;
+}
+
+.div-errors {
+  display: none;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.div-errors div {
+  font-size: 12px;
+}
+
+.cls-pagination {
+  padding: 0px 10px;
+}
+
+.cls-pagination ul.pager {
+  margin: 5px 0px !important;
+}
+
+.cls-pagination ul a {
+  border-radius: 5px;
+}
+
+.cls-pagination ul a:focus {
+  background-color: #FFFFFF;
 }

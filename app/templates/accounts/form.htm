@@ -1,0 +1,43 @@
+<h3><% if (recId) { %>Editar<% } else { %>Nueva<% } %> Cuenta</h3>
+<hr/>
+<div class="alert alert-warning div-errors"></div>
+<form role="form">
+  <fieldset>
+    <div class="row">
+      <div class="col-xs-5">
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input type="text" name="nombre" class="form-control" maxlength="50">
+        </div>
+        <div class="form-group">
+          <label for="tipo">Tipo:</label>
+          <select name="tipo" class="form-control">
+            <option value="E">EFECTIVO</option>
+            <option value="D">DEBITO</option>
+            <option value="C">CREDITO</option>
+          </select>
+        </div>
+        <div class="form-group cls-hidden" style="display:none;">
+          <label for="num_tarjeta">Num. Tarjeta:</label>
+          <input type="text" name="num_tarjeta" class="form-control" maxlength="20">
+        </div>
+        <div class="form-group cls-hidden" style="display:none;">
+          <label for="num_cuenta">Num. Cuenta:</label>
+          <input type="text" name="num_cuenta" class="form-control" maxlength="30">
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="activo" checked="checked"> Activo
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="form-group">
+          <label for="observaciones">Observaciones:</label>
+          <textarea name="observaciones" class="form-control" rows="12" style="resize:none;"></textarea>
+        </div>
+      </div>
+    </div>
+    <%= tplBtns({ id: recId }) %>
+  </fieldset>
+</form>
