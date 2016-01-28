@@ -8,6 +8,7 @@
     
     <!-- styles -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     
     <!-- main require module -->

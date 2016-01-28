@@ -1,13 +1,17 @@
 body {
-  background-color: #efefef;
+  background-color: #E7E7E7;
 }
 
 #main-container {
 	margin-top: 40px;
 }
 
+h3 {
+  color: #337ab7;
+}
+
 hr {
-  border-top: 2px solid #aaa;
+  border-top: 2px solid #337ab7;
   margin-top: 10px;
 }
 
@@ -22,7 +26,7 @@ hr {
 }
 
 .table thead td {
-  background-color: #001F3F;
+  background-color: #2E6DA4;
   border-bottom: 1px solid #111;
   border-right: 1px solid #fff;
 }
@@ -60,7 +64,7 @@ hr {
 .clear-search {
   position: absolute;
   right: 20px;
-  top: 3px;
+  top: 5px;
   background-color: #efefef;
   border: 1px solid #ddd;
   font-size: 11px;
@@ -76,7 +80,7 @@ hr {
 }
 
 .form-control {
-  height: 28px;
+  height: 30px;
   line-height: 1.4;
   font-size: 13px;
 }

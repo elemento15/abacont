@@ -21,6 +21,14 @@ require.config({
     'bootstrap': {
       deps: ['jquery'],
       exports: 'Bootstrap'
+    },
+    'datepicker': {
+      deps: ['bootstrap'],
+      exports: 'DatePicker'
+    },
+    'datepicker-es': {
+      deps: ['datepicker'],
+      exports: 'DatePickerEs'
     }
   }
 });
@@ -31,10 +39,12 @@ require([
   'underscore',
   'backbone',
   'bootstrap',
+  'datepicker',
+  'datepicker-es',
   'app/functions',
   'app/router'
 ],
-  function ($, BlockUI, _, Backbone, Bootstrap, Functions, Router) {
+  function ($, BlockUI, _, Backbone, Bootstrap, DatePicker, DatePickerEs, Functions, Router) {
     App = {};
 
     // define functions for page blockers

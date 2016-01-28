@@ -1,0 +1,54 @@
+<h3>Ingresos</h3>
+<hr/>
+<div class="row">
+  <div class="col-sm-3 col-md-2">
+    <div class="row">
+      <div class="col-sm-12"><h5>Filtros</h5></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 form-group">
+        <%= tplStatus() %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-9 col-md-10">
+    <div class="row">
+      <div class="col-sm-6">
+        <%= tplNewBtn() %>
+      </div>
+      <div class="col-sm-6">
+        <%= tplSearch() %>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-condensed table-striped">
+          <thead>
+            <tr>
+              <td>
+                <span class="order-field" orderfield="fecha" ordertype="ASC">
+                  Fecha <span class="glyphicon glyphicon-arrow-down"></span>
+                </span>
+              </td>
+              <!--<td>
+                <span class="order-field" orderfield="tipo" ordertype="ASC">
+                  Tipo <span class="glyphicon"></span>
+                </span>
+              </td>-->
+              <!--<td>
+                <span>Num. Tarjeta</span>
+              </td>-->
+            </tr>
+          </thead>
+          <tbody class="main-data-list"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="pull-right">
+        <%= tplPaging() %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -31,6 +31,9 @@ define(function (require) {
       $("#main-container .index-container").hide();
       var view = new this.FormView({ recId: null, listView: this });
       $("#main-container").append(view.render().el);
+      if (view.onRender) {
+        view.onRender();
+      }
     },
     render: function () {
       var template = _.template(this.tpl);

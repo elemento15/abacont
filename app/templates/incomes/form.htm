@@ -1,0 +1,45 @@
+<h3><% if (recId) { %>Ver<% } else { %>Nuevo<% } %> Ingreso</h3>
+<hr/>
+<div class="alert alert-warning div-errors"></div>
+<form role="form">
+  <fieldset>
+    <div class="row">
+      <div class="col-xs-5">
+
+        <div class="form-group">
+          <label for="fecha">Fecha:</label>
+          <div class="input-group date" style="max-width:150px">
+            <input type="text" name="fecha" class="form-control">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="movimiento_cuenta_id">Cuenta:</label>
+          <select name="tipo" class="form-control">
+            <option value="">-- Seleccione --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="categoria_id">Clase:</label>
+          <select name="categoria_id" class="form-control">
+            <option value="">-- Seleccione --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="subcategoria_id">Sub-Clase:</label>
+          <select name="subcategoria_id" class="form-control">
+            <option value="">-- Seleccione --</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="form-group">
+          <label for="observaciones">Observaciones:</label>
+          <textarea name="observaciones" class="form-control" rows="12" style="resize:none;"></textarea>
+        </div>
+      </div>
+    </div>
+    <%= tplBtns({ id: recId }) %>
+  </fieldset>
+</form>
