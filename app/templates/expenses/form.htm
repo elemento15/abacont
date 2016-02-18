@@ -1,4 +1,4 @@
-<h3><% if (recId) { %>Ver<% } else { %>Nuevo<% } %> Ingreso</h3>
+<h3><% if (recId) { %>Ver<% } else { %>Nuevo<% } %> Gasto</h3>
 <hr/>
 <div class="alert alert-warning div-errors"></div>
 <form role="form">
@@ -44,13 +44,13 @@
         </div>
       </div>
     </div>
-
+    
     <hr class="buttons"/>
     <button type="button" class="btn btn-primary btn-sm cmd-save">Guardar</button>
     <button type="button" class="btn btn-default btn-sm cmd-back">Atras</button>
     <% if (recId) { %>
     <button type="button" class="btn btn-warning btn-sm cmd-cancel">Cancelar</button>
     <% } %>
-
+    
   </fieldset>
 </form>

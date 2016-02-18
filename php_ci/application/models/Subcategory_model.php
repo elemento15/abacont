@@ -1,6 +1,6 @@
 <?php
 
-include('BaseModel.php');
+include_once('BaseModel.php');
 
 class Subcategory_model extends BaseModel {
 	

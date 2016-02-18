@@ -4,9 +4,9 @@ define(function (require) {
   "use strict";
 
   var IndexView = require('app/views/_generic/index'),
-    tpl       = require('text!tpl/incomes/index.htm'),
-    FormView  = require('app/views/incomes/form'),
-    RowView   = require('app/views/incomes/row'),
+    tpl       = require('text!tpl/expenses/index.htm'),
+    FormView  = require('app/views/expenses/form'),
+    RowView   = require('app/views/expenses/row'),
     ListCollection = require('app/collections/movements');
 
   return IndexView.extend({
@@ -16,7 +16,7 @@ define(function (require) {
     listCollection: new ListCollection(),
     paging: 10,
     orderTable: { field: 'fecha', type: 'ASC' },
-    filterTable: [{ field: 'tipo', value: 'I' }]
+    filterTable: [{ field: 'tipo', value: 'G' }]
   });
 
 });

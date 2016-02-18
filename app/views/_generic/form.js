@@ -16,6 +16,7 @@ define(function (require) {
       'click button.cmd-save'   : 'saveModel',
       'click button.cmd-back'   : 'closeForm',
       'click button.cmd-remove' : 'deleteModel',
+      'click button.cmd-cancel' : 'cancelModel',
       'click .div-errors' : 'closeErrorsPanel'
     },
     initialize: function () {
@@ -38,11 +39,11 @@ define(function (require) {
           success: function (model, response, options) {
             that.setForm();
 
+            App.unblock();
+            
             if (that.onLoad) {
               that.onLoad();
             }
-
-            App.unblock();
           },
           error: function (model, response, options) {
             App.unblock();
@@ -61,6 +62,7 @@ define(function (require) {
       if (that.model.isValid()) {
         that.disableForm();
         that.model.save(null, {
+          url: that.model.urlSave || that.model.url,
           success: function (model, response, jqXHR) {
             that.enableForm();
             if (response.success) {
@@ -97,6 +99,22 @@ define(function (require) {
           success: function () {
             App.unblock();
             alert('Record deleted');
+            that.closeForm(true);
+          }
+        });
+      }
+    },
+    cancelModel: function () {
+      var that = this;
+
+      if (confirm('Do you want to cancel the current record?')) {
+        $.ajax({
+          url: Defaults.ROUTE + that.moduleName + '/cancel',
+          type: 'POST',
+          data: { id: that.model.id },
+          success: function () {
+            App.unblock();
+            alert('Record canceled');
             that.closeForm(true);
           }
         });

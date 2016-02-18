@@ -9,7 +9,8 @@ define(function (require) {
     AccountsView = require('app/views/accounts/index'),
     CategoriesView = require('app/views/categories/index'),
     SubCategoriesView = require('app/views/subcategories/index'),
-    IncomesView = require('app/views/incomes/index');
+    IncomesView = require('app/views/incomes/index'),
+    ExpensesView = require('app/views/expenses/index');
 
   return Backbone.Router.extend({
     routes: {
@@ -17,6 +18,7 @@ define(function (require) {
       'clases'    : 'categories',
       'subclases' : 'subcategories',
       'ingresos'  : 'incomes',
+      'gastos'    : 'expenses',
       '*default'  : 'home'
     },
 
@@ -34,6 +36,9 @@ define(function (require) {
     },
     incomes: function () {
       this.showView(new IncomesView([]), 'ingresos');
+    },
+    expenses: function () {
+      this.showView(new ExpensesView([]), 'gastos');
     },
     showView: function (view, opt) {
       $("body").html(new HeaderView([]).render().el);

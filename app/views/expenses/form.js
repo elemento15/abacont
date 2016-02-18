@@ -3,7 +3,7 @@ define(function (require) {
   "use strict";
 
   var FormView = require('app/views/_generic/form'),
-    tpl   = require('text!tpl/incomes/form.htm'),
+    tpl   = require('text!tpl/expenses/form.htm'),
     Model = require('app/models/movement'),
     Defaults = require('app/defaults');
 
@@ -22,7 +22,7 @@ define(function (require) {
     getForm: function () {
       this.$("input[name=fecha]").datepicker('setDate');
 
-      this.model.set('tipo', 'I');
+      this.model.set('tipo', 'G');
       this.model.set('fecha', this.$("input[name=fecha]").datepicker('getFormattedDate','yyyy-mm-dd'));
       this.model.set('importe', this.$("input[name=importe]").val());
       this.model.set('cuenta_id', this.$("select[name=cuenta_id]").val());
@@ -92,7 +92,7 @@ define(function (require) {
           url: Defaults.ROUTE + 'categories/actives',
           type: 'POST',
           dataType: 'json',
-          data: { type: 'I' }
+          data: { type: 'G' }
         })
       ).then(function (data, textStatus, jqXHR) {
         var nombre;

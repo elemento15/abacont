@@ -8,12 +8,17 @@ class Categories extends BaseController {
 	protected $modelName = 'Category_model';
 
 	public function actives() {
+		$filter = array(array('field' => 'activo', 'value' => true));
+		if (isset($_POST['type'])) {
+			$filter[] = array('field' => 'tipo', 'value' => $_POST['type']);
+		}
+
 		$params = array(
 	      'order'  => array('field' => 'nombre', 'type' => 'ASC'),
 	      'start'  => 0,
 	      'length' => 0,
 	      'search' => null,
-	      'filter' => array(array('field' => 'activo', 'value' => true))
+	      'filter' => $filter
 	    );
 	    $recs = $this->model->findAll($params);
 	    

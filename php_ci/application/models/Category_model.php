@@ -1,6 +1,6 @@
 <?php
 
-include('BaseModel.php');
+include_once('BaseModel.php');
 
 class Category_model extends BaseModel {
 	

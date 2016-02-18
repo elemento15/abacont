@@ -49,6 +49,11 @@ hr {
   color: #FF4136;
 }
 
+.table .main-data-list .cls-sub-text {
+  font-size: 11px;
+  color: #777777;
+}
+
 .row-btn-edit {
   cursor: pointer;
 }

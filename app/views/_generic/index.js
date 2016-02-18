@@ -7,6 +7,7 @@ define(function (require) {
     tplNewBtn = require('text!tpl/_partials/new_button.htm'),
     tplSearch = require('text!tpl/_partials/search_field.htm'),
     tplStatus = require('text!tpl/_partials/filter_active.htm'),
+    tplCancel = require('text!tpl/_partials/filter_cancel.htm'),
     tplPaging = require('text!tpl/_partials/pagination.htm');
 
   return Backbone.View.extend({
@@ -24,7 +25,6 @@ define(function (require) {
     },
     initialize: function () {
       this.collection = this.listCollection;
-      this.filterTable = [];
       this.pagingOffset = 0;
     },
     add_record: function () {
@@ -41,6 +41,7 @@ define(function (require) {
         tplNewBtn: _.template(tplNewBtn),
         tplSearch: _.template(tplSearch),
         tplStatus: _.template(tplStatus),
+        tplCancel: _.template(tplCancel),
         tplPaging: _.template(tplPaging)
       }));
       this.loadCollection(true);
@@ -57,7 +58,7 @@ define(function (require) {
         data: { 
           order: that.orderTable || { field: 'nombre', type: 'ASC' }, 
           search: that.searchTable || '', 
-          filter: that.filterTable,
+          filter: that.filterTable || [],
           start: (that.pagingOffset || 0) * (that.paging || 0),
           length: that.paging || 0
         },

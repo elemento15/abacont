@@ -1,6 +1,6 @@
 <?php
 
-include('BaseModel.php');
+include_once('BaseModel.php');
 
 class Account_model extends BaseModel {
 	
@@ -11,6 +11,19 @@ class Account_model extends BaseModel {
 	// protected $edit_fields   = array();
 	protected $avoid_delete  = false;
 
+
+	public function getBalance($id) {
+		$row = $this->find($id);
+		return $row->saldo;
+	}
+
+	public function updateBalance($id, $type, $amount) {
+		$balance = $this->getBalance($id);
+		$balance += ($type == 'A') ? $amount : -$amount;
+
+		$data = array('id' => $id, 'saldo' => $balance);
+		return $this->save($data, true);
+	}
 }
 
 ?>

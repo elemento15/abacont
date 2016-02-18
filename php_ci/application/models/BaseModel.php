@@ -174,9 +174,14 @@ class BaseModel extends CI_Model {
         $table1 = $this->table_name;
         $table2 = $join['table'];
         $type   = ( isset($join['type']) ) ? $join['type'] : 'left';
-        $fk     = $join['fk'];
+        $fk     = isset($join['fk']) ? $join['fk'] : false;
+        $condition = isset($join['condition']) ? $join['condition'] : false;
 
-        $this->db->join($table2, "$table2.id = $table1.$fk", $type);
+        if ($fk) {
+          $this->db->join($table2, "$table2.id = $table1.$fk", $type);
+        } else {
+          $this->db->join($table2, $condition, $type);
+        }
       }
     }
   }
