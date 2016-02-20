@@ -17,9 +17,9 @@ class Account_model extends BaseModel {
 		return $row->saldo;
 	}
 
-	public function updateBalance($id, $type, $amount) {
+	public function updateBalance($id, $amount, $add) {
 		$balance = $this->getBalance($id);
-		$balance += ($type == 'A') ? $amount : -$amount;
+		$balance += ($add) ? $amount : -$amount;
 
 		$data = array('id' => $id, 'saldo' => $balance);
 		return $this->save($data, true);
