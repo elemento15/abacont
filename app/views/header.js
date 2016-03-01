@@ -8,30 +8,30 @@ define(function (require) {
 
   return Backbone.View.extend({
     events: {
-      // 'click a[href="#sign-out"]' : 'signOut'
+      'click a[href="#log-out"]' : 'logout'
     },
 
     render: function () {
       this.$el.html(template());
       return this;
-    } //,
+    },
 
-    // signOut: function () {
-    //   if (confirm('Close session?')) {
-    //     $.ajax({
-    //       url: 'users/logout',
-    //       type: 'POST',
-    //       dataType: 'json',
-    //       success: function (response) {
-    //         if (response.success) {
-    //           location.href = './';
-    //         } else {
-    //           alert(response.msg);
-    //         }
-    //       }
-    //     });
-    //   }
-    // }
+    logout: function () {
+      if (confirm('Close session?')) {
+        $.ajax({
+          url: 'main/logout',
+          type: 'POST',
+          dataType: 'json',
+          success: function (response) {
+            if (response.success) {
+              location.href = './';
+            } else {
+              alert(response.msg);
+            }
+          }
+        });
+      }
+    }
   });
 
 });

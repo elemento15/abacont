@@ -7,6 +7,12 @@ class BaseController extends CI_Controller {
 
   public function __construct() {
     parent::__construct();
+    
+    $session = $this->session->userdata;
+    if (!(isset($session['user']) && $session['user'])) {
+      throw new Exception("Session inactive");
+    }
+    
     $this->load->model($this->modelName,'model',true);
   }
 
