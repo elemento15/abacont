@@ -1,0 +1,73 @@
+<h3>Movimientos de Cuentas</h3>
+<hr/>
+<div class="row">
+  <div class="col-sm-3 col-md-2">
+    <div class="row">
+      <div class="col-sm-12"><h5>Filtros</h5></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 form-group">
+        <%= tplCancel() %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 form-group">
+        <label>Tipo:</label>
+        <select class="form-control list-filter" name="tipo" style="max-width:120px;">
+          <option value="">Todos</option>
+          <option value="A">Abonos</option>
+          <option value="C">Cargos</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-9 col-md-10">
+    <div class="row">
+      <div class="col-sm-6">
+        <%= tplNewBtn() %>
+      </div>
+      <div class="col-sm-6">
+        <%= tplSearch() %>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-condensed table-striped">
+          <thead>
+            <tr>
+              <td>
+                <span class="order-field" orderfield="fecha" ordertype="ASC">
+                  Fecha <span class="glyphicon glyphicon-arrow-down"></span>
+                </span>
+              </td>
+              <td>
+                <span>Tipo</span>
+              </td>
+              <td>
+                <span>Concepto</span>
+              </td>
+              <td align="right">
+                <span>Importe</span>
+              </td>
+            </tr>
+          </thead>
+          <tbody class="main-data-list"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="pull-right">
+        <%= tplPaging() %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7">
+        <select class="form-control list-filter" name="cuenta_id" style="max-width:300px; margin-top:10px;">
+          <option value="0">-- Seleccione una cuenta --</option>
+        </select>
+      </div>
+    </div>
+    <br>
+  </div>
+</div>

@@ -10,29 +10,31 @@ define(function (require) {
     CategoriesView = require('app/views/categories/index'),
     SubCategoriesView = require('app/views/subcategories/index'),
     IncomesView = require('app/views/incomes/index'),
-    ExpensesView = require('app/views/expenses/index');
+    ExpensesView = require('app/views/expenses/index'),
+    MovAccountsView = require('app/views/movs_accounts/index');
 
   return Backbone.Router.extend({
     routes: {
-      'cuentas'   : 'accounts',
-      'clases'    : 'categories',
-      'subclases' : 'subcategories',
-      'ingresos'  : 'incomes',
-      'gastos'    : 'expenses',
-      '*default'  : 'home'
+      'cuentas'     : 'accounts',
+      'clases'      : 'categories',
+      'subclases'   : 'subcategories',
+      'ingresos'    : 'incomes',
+      'gastos'      : 'expenses',
+      'mov_cuentas' : 'mov_accounts',
+      '*default'    : 'home'
     },
 
     home: function () {
       this.showView(new HomeView([]));
     },
     accounts: function () {
-      this.showView(new AccountsView([]), 'cuentas');
+      this.showView(new AccountsView([]), 'menu1', 'cuentas');
     },
     categories: function () {
-      this.showView(new CategoriesView([]), 'clases');
+      this.showView(new CategoriesView([]), 'menu1', 'clases');
     },
     subcategories: function () {
-      this.showView(new SubCategoriesView([]), 'subclases');
+      this.showView(new SubCategoriesView([]), 'menu1','subclases');
     },
     incomes: function () {
       this.showView(new IncomesView([]), 'ingresos');
@@ -40,15 +42,21 @@ define(function (require) {
     expenses: function () {
       this.showView(new ExpensesView([]), 'gastos');
     },
-    showView: function (view, opt) {
+    mov_accounts: function () {
+      this.showView(new MovAccountsView([]), 'mov_cuentas');
+    },
+    showView: function (view, opt, opt2) {
       $("body").html(new HeaderView([]).render().el);
       $("#main-container").html(view.render().el);
-      this.setActiveOption(opt);
+      this.setActiveOption(opt, opt2);
     },
-    setActiveOption: function (opt) {
+    setActiveOption: function (opt, opt2) {
       // set the active menu-option
       if (opt) {
         $('#navbar li a[href="#'+ opt +'"]').parent().addClass('active');
+        if (opt) {
+          $('#navbar li a[href="#'+ opt2 +'"]').parent().addClass('active');
+        }
       } else {
         $('#navbar li a[href="#home"]').parent().addClass('active');
       }

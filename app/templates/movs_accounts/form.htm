@@ -1,0 +1,60 @@
+<h3><% if (recId) { %>Ver<% } else { %>Nuevo<% } %> Movimiento de Cuenta</h3>
+<hr/>
+<div class="alert alert-warning div-errors"></div>
+<form role="form">
+  <fieldset>
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="form-group date">
+          <label for="fecha">Fecha:</label>
+          <div class="input-group date" style="max-width:150px">
+            <input type="text" name="fecha" class="form-control">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tipo" style="width:50px;">Tipo:</label>
+          <label class="radio-inline">
+            <input type="radio" name="tipo" value="A">Abono
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="tipo" value="C">Cargo
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="cuenta_id">Cuenta:</label>
+          <select name="cuenta_id" class="form-control">
+            <option value="">-- Seleccione --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="importe">Importe:</label>
+          <input type="number" name="importe" class="form-control">
+        </div>
+      </div>
+
+      <div class="col-xs-6">
+        <div class="form-group">
+          <label for="concepto">Concepto:</label>
+          <input type="text" name="concepto" class="form-control" maxlength="80">
+        </div>
+
+        <div class="form-group">
+          <label for="observaciones">Observaciones:</label>
+          <textarea name="observaciones" class="form-control" rows="7"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <hr class="buttons"/>
+    <button type="button" class="btn btn-primary btn-sm cmd-save">Guardar</button>
+    <button type="button" class="btn btn-default btn-sm cmd-back">Atras</button>
+    <% if (recId) { %>
+    <button type="button" class="btn btn-warning btn-sm cmd-cancel">Cancelar</button>
+    <% } %>
+
+  </fieldset>
+</form>

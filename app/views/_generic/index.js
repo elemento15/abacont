@@ -23,9 +23,14 @@ define(function (require) {
       'click .cls-first'     : 'firstPage',
       'click .cls-last'      : 'lastPage'
     },
-    initialize: function () {
+    initialize: function (params) {
       this.collection = this.listCollection;
       this.pagingOffset = 0;
+      this.filterTable = this.filterTable || [];
+
+      if (this.onInit) {
+        this.onInit();
+      }
     },
     add_record: function () {
       $("#main-container .index-container").hide();

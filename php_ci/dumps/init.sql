@@ -45,6 +45,7 @@ CREATE TABLE `movimientos_cuentas` (
   `importe` DECIMAL(12,2) NOT NULL DEFAULT 0,
   `cancelado` TINYINT NOT NULL DEFAULT 0,
   `concepto` VARCHAR(80) NOT NULL,
+  `automatico` TINYINT NOT NULL DEFAULT 0,
   `observaciones` TEXT NULL,
   PRIMARY KEY (`id`),
   INDEX `idx_fecha_cuenta_mov_cta` (`fecha` ASC, `cuenta_id` ASC),

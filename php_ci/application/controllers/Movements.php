@@ -11,7 +11,7 @@ class Movements extends BaseController {
 	    parent::__construct();
 	    $this->load->model('MovAccount_model','modelMovAcc',true);
 	    $this->load->model('Account_model','modelAccount',true);
-	  }
+	}
 
 	public function save_movement () {
 		$data = json_decode($_POST['model'], true);
@@ -20,12 +20,13 @@ class Movements extends BaseController {
 		if ($is_new) {
 			// generate movement_account
 			$params = array(
-				'id'        => 0,
-				'fecha'     => $data['fecha'],
-				'cuenta_id' => $data['cuenta_id'],
-				'tipo'      => ($data['tipo'] == 'I') ? 'A' : 'C',
-				'importe'   => $data['importe'],
-				'concepto'  => 'Movimiento generado por Ingreso/Egreso'
+				'id'         => 0,
+				'fecha'      => $data['fecha'],
+				'cuenta_id'  => $data['cuenta_id'],
+				'tipo'       => ($data['tipo'] == 'I') ? 'A' : 'C',
+				'importe'    => $data['importe'],
+				'concepto'   => 'Movimiento generado por '.(($data['tipo'] == 'I') ? 'Ingreso' : 'Gasto' ),
+				'automatico' => 1
 			);
 			$id_mov_acc = $this->modelMovAcc->save($params);
 
@@ -75,7 +76,7 @@ class Movements extends BaseController {
 			$this->modelMovAcc->save($params, true);
 			
 			// update account's balance
-			$this->modelAccount->updateBalance($mov_acc->cuenta_id, $mov_acc->importe, $row->tipo == 'G');
+			$this->modelAccount->updateBalance($mov_acc->cuenta_id, $mov_acc->importe, $mov_acc->tipo == 'C');
 		}
 	}
 }
