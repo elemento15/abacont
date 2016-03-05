@@ -54,7 +54,7 @@
       <form class="form-signin" id="formSignIn">
         <h2 class="form-signin-heading">Welcome</h2>
         <label for="inputUser" class="sr-only">Usuario</label>
-        <input type="text" id="inputUser" class="form-control" placeholder="User Name" required autofocus>
+        <input type="text" id="inputUser" class="form-control" placeholder="User Name" required autofocus autocomplete="off">
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
