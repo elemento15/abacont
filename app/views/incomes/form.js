@@ -55,6 +55,29 @@ define(function (require) {
       });
     },
 
+    searchAccountData: function (account_id) {
+      var that = this;
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'accounts/model?id='+ account_id,
+          type: 'GET',
+          dataType: 'json'
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        that.$('#div-account-balance').text(data.saldo.formatMoney());
+        
+        // var nombre;
+        // that.$("select[name=subcategoria_id]").html('<option value="">-- Seleccione --</option>');
+        // data.forEach(function (item) {
+        //   that.$("select[name=subcategoria_id]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
+        // });
+
+        // if (callback) { callback(); }
+        // App.unblock();
+      });
+    },
+
     onRender: function () {
       var that = this;
 
@@ -68,6 +91,11 @@ define(function (require) {
 
       $("select[name=categoria_id]").change(function (e) {
         that.searchSubCategories( parseInt(e.target.value || 0) );
+      });
+
+      this.$('[name="cuenta_id"]').change( function (e) {
+        var account = $(this).val();
+        that.searchAccountData(account);
       });
     },
 

@@ -5,4 +5,4 @@
 <td><%= (tipo == 'C') ? 'CREDITO' : ( (tipo == 'D') ? 'DEBITO' : 'EFECTIVO') %></td>
 <td><%= num_tarjeta %></td>
 <td><%= num_cuenta %></td>
-<td align="right">$<%= saldo.formatMoney() %></td>
+<td align="right" class="<%= (saldo < 0) ? 'cls-negative' : '' %>">$<%= saldo.formatMoney() %></td>
