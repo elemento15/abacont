@@ -65,13 +65,13 @@ define(function (require) {
           dataType: 'json'
         })
       ).then(function (data, textStatus, jqXHR) {
-        that.$('#div-account-balance').text('$0.00');
-        that.$('#div-account-balance').removeClass('cls-negative');
+        that.$('#div-account-balance-form').text('$0.00');
+        that.$('#div-account-balance-form').removeClass('cls-negative');
 
         if (data.saldo) {
-          that.$('#div-account-balance').text('$'+ data.saldo.formatMoney());
+          that.$('#div-account-balance-form').text('$'+ data.saldo.formatMoney());
           if (parseFloat(data.saldo) < 0) {
-            that.$('#div-account-balance').addClass('cls-negative');
+            that.$('#div-account-balance-form').addClass('cls-negative');
           }
         }
       });

@@ -78,6 +78,10 @@ define(function (require) {
             that.$el.find("tbody.main-data-list").append(view.render().el);
           });
           App.unblock();
+
+          if (that.onLoadCollection) {
+            that.onLoadCollection();
+          }
         },
         error: function (collection, response) {
           App.unblock();
@@ -98,19 +102,19 @@ define(function (require) {
       if (order_type === '') {
         $(".order-field").attr('ordertype', '');
         el.attr('ordertype', 'ASC');
-        tdElement.addClass('glyphicon-arrow-down');
+        tdElement.addClass('glyphicon-arrow-up');
         this.orderTable = { field: order_field, type: 'ASC' };
       }
 
       if (order_type === 'ASC') {
         el.attr('ordertype', 'DESC');
-        tdElement.addClass('glyphicon-arrow-up');
+        tdElement.addClass('glyphicon-arrow-down');
         this.orderTable = { field: order_field, type: 'DESC' };
       }
 
       if (order_type === 'DESC') {
         el.attr('ordertype', 'ASC');
-        tdElement.addClass('glyphicon-arrow-down');
+        tdElement.addClass('glyphicon-arrow-up');
         this.orderTable = { field: order_field, type: 'ASC' };
       }
 

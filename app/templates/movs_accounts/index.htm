@@ -37,7 +37,7 @@
           <thead>
             <tr>
               <td>
-                <span class="order-field" orderfield="fecha" ordertype="ASC">
+                <span class="order-field" orderfield="fecha" ordertype="DESC">
                   Fecha <span class="glyphicon glyphicon-arrow-down"></span>
                 </span>
               </td>
@@ -61,11 +61,18 @@
         <%= tplPaging() %>
       </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top:5px">
       <div class="col-sm-7">
-        <select class="form-control list-filter" name="cuenta_id" style="max-width:300px; margin-top:10px;">
-          <option value="0">-- Seleccione una cuenta --</option>
-        </select>
+        <div class="form-inline">
+          <label>Cuenta: </label>
+          <select class="form-control list-filter" name="cuenta_id" style="max-width:300px;">
+            <option value="0">-- Seleccione una cuenta --</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <span>Saldo: </span>
+        <div id="div-account-balance-grid" style="margin-top:5px;">$0.00</div>
       </div>
     </div>
     <br>

@@ -49,6 +49,9 @@ define(function (require) {
       $("body").html(new HeaderView([]).render().el);
       $("#main-container").html(view.render().el);
       this.setActiveOption(opt, opt2);
+      if (view.onRender) {
+        view.onRender();
+      }
     },
     setActiveOption: function (opt, opt2) {
       // set the active menu-option

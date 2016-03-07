@@ -15,7 +15,7 @@ define(function (require) {
     RowView: RowView,
     listCollection: new ListCollection(),
     paging: 10,
-    orderTable: { field: 'fecha', type: 'ASC' },
+    orderTable: { field: 'fecha', type: 'DESC' },
     filterTable: [{ field: 'tipo', value: 'G' }]
   });
 

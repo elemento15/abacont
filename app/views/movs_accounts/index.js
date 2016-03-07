@@ -37,6 +37,33 @@ define(function (require) {
         that.filterTable = [{ field: 'cuenta_id', value: '0' }];
         that.loadCollection(true);
       });
+    },
+
+    onLoadCollection: function () {
+      var account = this.$('[name="cuenta_id"]').val();
+      this.searchAccountData(account);
+    },
+
+    searchAccountData: function (account_id) {
+      var that = this;
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'accounts/model?id='+ account_id,
+          type: 'GET',
+          dataType: 'json'
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        that.$('#div-account-balance-grid').text('$0.00');
+        that.$('#div-account-balance-grid').removeClass('cls-negative');
+
+        if (data.saldo) {
+          that.$('#div-account-balance-grid').text('$'+ data.saldo.formatMoney());
+          if (parseFloat(data.saldo) < 0) {
+            that.$('#div-account-balance-grid').addClass('cls-negative');
+          }
+        }
+      });
     }
   });
 
