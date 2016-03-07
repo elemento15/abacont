@@ -65,16 +65,15 @@ define(function (require) {
           dataType: 'json'
         })
       ).then(function (data, textStatus, jqXHR) {
-        that.$('#div-account-balance').text(data.saldo.formatMoney());
-        
-        // var nombre;
-        // that.$("select[name=subcategoria_id]").html('<option value="">-- Seleccione --</option>');
-        // data.forEach(function (item) {
-        //   that.$("select[name=subcategoria_id]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
-        // });
+        that.$('#div-account-balance').text('$0.00');
+        that.$('#div-account-balance').removeClass('cls-negative');
 
-        // if (callback) { callback(); }
-        // App.unblock();
+        if (data.saldo) {
+          that.$('#div-account-balance').text('$'+ data.saldo.formatMoney());
+          if (parseFloat(data.saldo) < 0) {
+            that.$('#div-account-balance').addClass('cls-negative');
+          }
+        }
       });
     },
 
