@@ -1,6 +1,6 @@
 require.config({
   baseUrl: 'libs',
-  // urlArgs: "bust=" + (new Date()).getTime(),
+  urlArgs: "bust=" + (new Date()).getTime(),
 
   paths: {
     app:  '../app',
