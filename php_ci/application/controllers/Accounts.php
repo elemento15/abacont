@@ -19,4 +19,8 @@ class Accounts extends BaseController {
 	    
 	    echo json_encode($recs['data']);
 	}
+
+	public function print_list() {
+		echo 'HELLO WORLD';
+	}
 }

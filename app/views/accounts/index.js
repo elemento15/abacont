@@ -14,7 +14,8 @@ define(function (require) {
     FormView: FormView,
     RowView: RowView,
     listCollection: new ListCollection(),
-    paging: 10
+    paging: 10,
+    printing_url: 'accounts/print_list'
   });
 
 });

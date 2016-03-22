@@ -3,26 +3,36 @@
 define(function (require) {
   "use strict";
 
-  var Backbone = require('backbone'),
-    tplNewBtn = require('text!tpl/_partials/new_button.htm'),
-    tplSearch = require('text!tpl/_partials/search_field.htm'),
-    tplStatus = require('text!tpl/_partials/filter_active.htm'),
-    tplCancel = require('text!tpl/_partials/filter_cancel.htm'),
-    tplPaging = require('text!tpl/_partials/pagination.htm');
+  var Backbone  = require('backbone'),
+    tplNewBtn   = require('text!tpl/_partials/new_button.htm'),
+    tplPrintBtn = require('text!tpl/_partials/print_button.htm'),
+    tplSearch   = require('text!tpl/_partials/search_field.htm'),
+    tplStatus   = require('text!tpl/_partials/filter_active.htm'),
+    tplCancel   = require('text!tpl/_partials/filter_cancel.htm'),
+    tplPaging   = require('text!tpl/_partials/pagination.htm');
 
   return Backbone.View.extend({
     className: 'index-container',
     events: {
-      'click button.cmd-add' : 'add_record',
-      'click .order-field'   : 'orderData',
-      'keyup .div-search'    : 'search',
-      'click .clear-search'  : 'clearSearch',
-      'change .list-filter'  : 'changeFilter',
-      'click .cls-prev'      : 'prevPage',
-      'click .cls-next'      : 'nextPage',
-      'click .cls-first'     : 'firstPage',
-      'click .cls-last'      : 'lastPage'
+      'click button.cmd-add'   : 'add_record',
+      'click button.cmd-print' : 'print_list',
+      'click .order-field'     : 'orderData',
+      'keyup .div-search'      : 'search',
+      'click .clear-search'    : 'clearSearch',
+      'change .list-filter'    : 'changeFilter',
+      'click .cls-prev'        : 'prevPage',
+      'click .cls-next'        : 'nextPage',
+      'click .cls-first'       : 'firstPage',
+      'click .cls-last'        : 'lastPage'
     },
+
+    // ---- Example for adding events to child index views ----
+    // events: function(){
+    //   return _.extend({},IndexView.prototype.events,{
+    //       'click element' : 'action'
+    //   });
+    // },
+
     initialize: function (params) {
       this.collection = this.listCollection;
       this.pagingOffset = 0;
@@ -43,11 +53,12 @@ define(function (require) {
     render: function () {
       var template = _.template(this.tpl);
       this.$el.html(template({
-        tplNewBtn: _.template(tplNewBtn),
-        tplSearch: _.template(tplSearch),
-        tplStatus: _.template(tplStatus),
-        tplCancel: _.template(tplCancel),
-        tplPaging: _.template(tplPaging)
+        tplNewBtn:   _.template(tplNewBtn),
+        tplPrintBtn: _.template(tplPrintBtn),
+        tplSearch:   _.template(tplSearch),
+        tplStatus:   _.template(tplStatus),
+        tplCancel:   _.template(tplCancel),
+        tplPaging:   _.template(tplPaging)
       }));
       this.loadCollection(true);
       return this;
@@ -217,6 +228,9 @@ define(function (require) {
       var last = Math.ceil(count / this.paging);
 
       this.$el.find(".cls-pagination .cls-current-page a").text(page + ' / ' + last);
+    },
+    print_list: function () {
+      window.open(this.printing_url);
     }
   });
 
