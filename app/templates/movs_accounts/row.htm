@@ -5,3 +5,10 @@
 <td><%= tipo_nombre() %></td>
 <td><%= concepto %></td>
 <td style="text-align:right">$<%= importe.formatMoney() %></td>
+<td style="text-align:center">
+	<% if (parseInt(automatico)) { %>
+		<span class="label label-info">Automático</span>
+	<% } else { %>
+		<span class="label label-primary">Manual</span>
+	<% } %>
+</td>

@@ -32,12 +32,21 @@ class Movs_Accounts extends BaseController {
 
 			// update account's balance
 			$this->modelAccount->updateBalance($data['cuenta_id'], $data['importe'], $data['tipo'] == 'A');
+		
 		} else {
+			$mov = $this->model->find( $data['id'] );
+
 			$params = array(
-				'id'            => 0,
+				'id'            => $data['id'],
 				'observaciones' => $data['observaciones']
 			);
-			$id = $this->model->save($params);
+
+			// allows to edit "concepto" if the record is automatic
+			if (! $mov->automatico) {
+				$params['concepto'] = $data['concepto'];
+			}
+
+			$id = $this->model->save($params, true);
 		}
 
 		if ($id) {
