@@ -21,6 +21,7 @@ class Accounts extends BaseController {
 	}
 
 	public function print_list() {
-		echo 'HELLO WORLD';
+		$this->load->library('AccountPdf', array(), 'pdf');
+		$this->pdf->printing();
 	}
 }

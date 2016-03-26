@@ -11,13 +11,10 @@ define(function (require) {
     moduleName: 'accounts',
     Model: Model,
 
-    events: {
-      'click button.cmd-save'   : 'saveModel',
-      'click button.cmd-back'   : 'closeForm',
-      'click button.cmd-remove' : 'deleteModel',
-      'click .div-errors' : 'closeErrorsPanel',
-
-      'change select[name="tipo"]' : 'toggleFields'
+    events: function(){
+      return _.extend({},FormView.prototype.events,{
+        'change select[name="tipo"]' : 'toggleFields'
+      });
     },
     
     setForm: function () {
