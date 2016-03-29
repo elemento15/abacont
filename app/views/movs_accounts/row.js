@@ -42,13 +42,6 @@ define(function (require) {
 
           $('#dialog-movement').modal();
         }
-
-
-        // var nombre;
-        // data.forEach(function (item) {
-        //     nombre = item.nombre + ' (' + ((item.tipo == 'C') ? 'Crédito' : ( (item.tipo == 'D') ? 'Débito' : 'Efectivo')) + ')';
-        //     that.$("select[name=cuenta_id]").append('<option value="'+ item.id +'">'+ nombre +'</option>')
-        // });
       });
     }
   });
