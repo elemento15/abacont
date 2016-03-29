@@ -20,9 +20,13 @@ class Movement_model extends BaseModel {
 
 	public function find($id) {
 		$this->db->select('mov.id, mov.fecha, mov.tipo, mov.importe, movimiento_cuenta_id, subcategoria_id, 
-			               subcategorias.categoria_id, mov.observaciones, movimientos_cuentas.cuenta_id, movimientos_cuentas.cancelado');
+			               subcategorias.categoria_id, mov.observaciones, movimientos_cuentas.cuenta_id, 
+			               movimientos_cuentas.cancelado, 
+			               subcategorias.nombre AS nombre_subcategoria,
+			               categorias.nombre AS nombre_categoria');
 		$this->db->join('movimientos_cuentas', 'movimientos_cuentas.id = movimiento_cuenta_id', 'left');
 		$this->db->join('subcategorias', 'subcategorias.id = subcategoria_id', 'left');
+		$this->db->join('categorias', 'categorias.id = categoria_id', 'left');
 		$query = $this->db->get_where('movimientos AS mov', array('mov.id' => $id));
 
 	    $row = $query->row();
@@ -31,6 +35,18 @@ class Movement_model extends BaseModel {
 	      return false;
 	    }
 	    return $row;
+	}
+
+	public function find_by_mov_acc ($id_mov_acc) {
+		$query = $this->db->get_where('movimientos AS mov', array('mov.movimiento_cuenta_id' => $id_mov_acc));
+		$row = $query->row();
+	    
+	    if (!$row) {
+	      $this->setError('Record not found: '.$id);
+	      return false;
+	    }
+
+	    return $this->find($row->id);
 	}
 
 }

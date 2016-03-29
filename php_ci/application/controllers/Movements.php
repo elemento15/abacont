@@ -79,4 +79,16 @@ class Movements extends BaseController {
 			$this->modelAccount->updateBalance($mov_acc->cuenta_id, $mov_acc->importe, $mov_acc->tipo == 'C');
 		}
 	}
+
+	public function find_by_mov_account() {
+		$id_mov_acc = intval($_POST['id']);
+
+		if ($mov = $this->model->find_by_mov_acc($id_mov_acc) ) {
+			$response = array('success' => true, 'data' => $mov);
+		} else {
+			$response = array('success' => false, 'msg' => $this->model->getError());
+		}
+
+		echo json_encode($response);
+	}
 }

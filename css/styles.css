@@ -128,3 +128,15 @@ hr {
 .cls-negative {
   color: #FF4136;
 }
+
+
+span.cls-mov-auto {
+  cursor: pointer;
+}
+
+#dialog-movement td[attr="type"],
+#dialog-movement td[attr="date"],
+#dialog-movement td[attr="total"],
+#dialog-movement td[attr="status"] {
+  font-weight: bold;
+}

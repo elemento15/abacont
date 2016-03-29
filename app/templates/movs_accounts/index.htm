@@ -90,4 +90,50 @@
     </div>
     <br>
   </div>
+
+  <div class="modal fade" id="dialog-movement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Información del Ingreso/Gasto</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table table-condensed">
+            <tbody>
+              <tr>
+                <td>Tipo: </td>
+                <td attr="type"></td>
+                <td>Fecha: </td>
+                <td attr="date"></td>
+              </tr>
+              <tr>
+                <td>Importe:</td>
+                <td attr="total"></td>
+                <td>Estado: </td>
+                <td attr="status"></td>
+              </tr>
+              <tr>
+                <td>Categoría: </td>
+                <td colspan="3" attr="category"></td>
+              </tr>
+              <tr>
+                <td>Subcategoría: </td>
+                <td colspan="3" attr="subcategory"></td>
+              </tr>
+              <tr>
+                <td>Observaciones: </td>
+                <td colspan="3" attr="comments"></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
