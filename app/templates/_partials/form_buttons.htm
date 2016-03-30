@@ -5,8 +5,13 @@
 <button type="button" class="btn btn-default btn-sm cmd-back">
 	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Atras 
 </button>
-<% if (id) { %>
+<% if (id && btn_delete) { %>
 <button type="button" class="btn btn-warning btn-sm cmd-remove">
 	<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Borrar 
+</button>
+<% } %>
+<% if (id && btn_cancel) { %>
+<button type="button" class="btn btn-warning btn-sm cmd-cancel">
+	<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancelar 
 </button>
 <% } %>
