@@ -65,6 +65,10 @@ class Movs_Accounts extends BaseController {
 				throw new Exception("Record already canceled");
 			}
 
+			if ($mov->automatico) {
+				throw new Exception("Record generated automatically");
+			}
+
 			// cancel movement
 			$params = array('id' => $id, 'cancelado' => 1);
 			$this->model->save($params, true);
