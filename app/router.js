@@ -11,17 +11,19 @@ define(function (require) {
     SubCategoriesView = require('app/views/subcategories/index'),
     IncomesView = require('app/views/incomes/index'),
     ExpensesView = require('app/views/expenses/index'),
-    MovAccountsView = require('app/views/movs_accounts/index');
+    MovAccountsView = require('app/views/movs_accounts/index'),
+    RptMovementsView = require('app/views/rpt_movements/index');
 
   return Backbone.Router.extend({
     routes: {
-      'cuentas'     : 'accounts',
-      'clases'      : 'categories',
-      'subclases'   : 'subcategories',
-      'ingresos'    : 'incomes',
-      'gastos'      : 'expenses',
-      'mov_cuentas' : 'mov_accounts',
-      '*default'    : 'home'
+      'cuentas'       : 'accounts',
+      'clases'        : 'categories',
+      'subclases'     : 'subcategories',
+      'ingresos'      : 'incomes',
+      'gastos'        : 'expenses',
+      'mov_cuentas'   : 'mov_accounts',
+      'rpt-movs'      : 'rpt_movements',
+      '*default'      : 'home'
     },
 
     home: function () {
@@ -53,6 +55,11 @@ define(function (require) {
         view.onRender();
       }
     },
+
+    rpt_movements: function () {
+      this.showView(new RptMovementsView([]), 'menu2','rpt-movs');
+    },
+
     setActiveOption: function (opt, opt2) {
       // set the active menu-option
       if (opt) {
