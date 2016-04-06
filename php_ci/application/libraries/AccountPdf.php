@@ -58,8 +58,6 @@ class AccountPdf extends BasePdf {
         $this->setColorNegative($total);
         $this->Cell(30, 7, $this->formatCurrency($total), false, 0, 'R', false);
         $this->Cell(0,  7, '', false, 1, '', false);
-    
-
     }
 
     private function getData() {

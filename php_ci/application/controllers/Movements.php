@@ -91,4 +91,18 @@ class Movements extends BaseController {
 
 		echo json_encode($response);
 	}
+
+	public function rpt_movements() {
+		$this->load->library('MovementsPdf', array(), 'pdf');
+		$params = array(
+			'rpt' => $_REQUEST['rpt'],
+			'type' => $_REQUEST['type'],
+			'account' => $_REQUEST['account'],
+			'date_ini' => $_REQUEST['date_ini'],
+			'date_end' => $_REQUEST['date_end']
+		);
+
+		$this->pdf->setParams($params);
+		$this->pdf->printing();
+	}
 }

@@ -46,6 +46,14 @@ class BasePdf extends TCPDF {
     protected function setColorDefault() {
         $this->SetTextColor(0, 0, 0);
     }
+
+    protected function validDate($date) {
+        if ( !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $date )) { 
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
 /* End of file BasePdf.php */
