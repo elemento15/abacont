@@ -3,6 +3,8 @@
   <%= nombre %>
 </td>
 <td><%= (tipo == 'C') ? 'CREDITO' : ( (tipo == 'D') ? 'DEBITO' : 'EFECTIVO') %></td>
-<td><%= num_tarjeta %></td>
-<td><%= num_cuenta %></td>
+<td>
+	<div><%= num_tarjeta %></div>
+	<div><%= num_cuenta %></div>
+</td>
 <td align="right" class="<%= (saldo < 0) ? 'cls-negative' : '' %>">$<%= saldo.formatMoney() %></td>

@@ -54,6 +54,11 @@ hr {
   color: #777777;
 }
 
+.table .main-data-list tr:hover {
+  background-color: #FFFAC1;
+  font-size: 18px;
+}
+
 .row-btn-edit {
   cursor: pointer;
 }

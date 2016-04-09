@@ -6,8 +6,9 @@ class Movement_model extends BaseModel {
 	
 	protected $table_name    = 'movimientos';
 	protected $list_fields   = array('id','fecha','tipo','importe','cancelado','movimiento_cuenta_id','subcategoria_id',
-		                             'subcategorias.nombre AS subcategoria_nombre', 'categorias.nombre AS categoria_nombre');
-	protected $search_fields = array('fecha');
+		                             'subcategorias.nombre AS subcategoria_nombre', 'categorias.nombre AS categoria_nombre',
+		                             'cuentas.nombre AS cuenta_nombre');
+	protected $search_fields = array('fecha','subcategorias.nombre','categorias.nombre','cuentas.nombre');
 	protected $save_fields   = array('fecha','tipo','importe','movimiento_cuenta_id','subcategoria_id','observaciones');
 	protected $edit_fields   = array('observaciones');
 	protected $avoid_delete  = true;
@@ -15,7 +16,8 @@ class Movement_model extends BaseModel {
 	protected $join_tables = array(
   	          array('table' => 'movimientos_cuentas', 'type' => 'left', 'fk' => 'movimiento_cuenta_id'),
   	          array('table' => 'subcategorias', 'type' => 'left', 'fk' => 'subcategoria_id'),
-  	          array('table' => 'categorias', 'type' => 'left', 'fk' => false, 'condition' => 'categorias.id = subcategorias.categoria_id')
+  	          array('table' => 'categorias', 'type' => 'left', 'fk' => false, 'condition' => 'categorias.id = subcategorias.categoria_id'),
+  	          array('table' => 'cuentas', 'type' => 'left', 'fk' => false, 'condition' => 'cuentas.id = movimientos_cuentas.cuenta_id')
             );
 
 	public function find($id) {
