@@ -20,7 +20,7 @@ class Main extends CI_Controller {
 		$user = $_POST['user'];
 		$pass = $_POST['pass'];
 
-		if ($user == 'element0' && $pass == 'lmnt1509') {
+		if ($user == 'elemento' && md5($pass) == '1cd3882394520876dc88d1472aa2a93f') {
 			// session_start();
 			$_SESSION['user'] = $user;
 
