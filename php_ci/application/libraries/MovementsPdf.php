@@ -4,7 +4,7 @@ require_once 'BasePdf.php';
 
 class MovementsPdf extends BasePdf {
 
-    private $rpt, $type, $account, $date_ini, $date_end;
+    private $rpt, $type, $account, $date_ini, $date_end, $comments;
 
     public function __construct() {
     	parent::__construct();
@@ -18,6 +18,7 @@ class MovementsPdf extends BasePdf {
         $this->account = intval($params['account']);
         $this->date_ini = $params['date_ini'];
         $this->date_end = $params['date_end'];
+        $this->comments = intval($params['comments']);
 
         if ($this->rpt != 'D' && $this->rpt != 'C') {
             echo "Report Unknown"; exit;
@@ -57,15 +58,23 @@ class MovementsPdf extends BasePdf {
         $data = $this->getDataDetailed();
         $total = 0;
 
-    	$this->SetFont('Helvetica', '', 9);
 
         foreach ($data as $key => $item) {
+            $this->SetFont('Helvetica', '', 9);
+
             $this->Cell(22, 5, $item['fecha'], $border, 0, 'C', $fill);
             $this->Cell(45, 5, $item['nombre_subcategoria'], $border, 0, 'L', $fill, '', 1);
             $this->Cell(45, 5, $item['nombre_categoria'], $border, 0, 'L', $fill, '', 1);
             $this->Cell(40, 5, $item['nombre_cuenta'], $border, 0, 'L', $fill, '', 1);
             $this->Cell(20, 5, $this->formatCurrency($item['importe']), $border, 0, 'R', $fill);
             $this->Cell(0,  5, '', $border, 1, '', $fill);
+
+            if ($this->comments && trim($item['observaciones'])) {
+                $this->SetFont('Helvetica', '', 8);
+
+                $this->Cell(22, 3, '', $border, 0, '', $fill);
+                $this->Cell(0,  3, 'Observaciones: '.$item['observaciones'], $border, 1, '', $fill);
+            }
 
             $total += $item['importe'];
             $fill = !$fill;

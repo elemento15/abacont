@@ -11,7 +11,8 @@ define(function (require) {
     tpl: tpl,
     className: 'index-container',
     events: {
-      'click .btn-generate' : 'generateRpt'
+      'click .btn-generate' : 'generateRpt',
+      'change [name="rpt"]' : 'changeRpt'
     },
 
     initialize: function (params) {
@@ -58,9 +59,21 @@ define(function (require) {
       var account = this.$el.find('[name="cuenta_id"]').val();
       var date_ini = this.$el.find('[name="fecha_ini"]').datepicker('getFormattedDate','yyyy-mm-dd');
       var date_end = this.$el.find('[name="fecha_fin"]').datepicker('getFormattedDate','yyyy-mm-dd');
+      var comments = this.$el.find('[name="ver_comentarios"]:checked').val() || 0;
 
-      var params = '?rpt='+ rpt +'&type='+ type +'&account='+ account +'&date_ini='+ date_ini +'&date_end='+ date_end;
+      var params = '?rpt='+ rpt +'&type='+ type +'&account='+ account +'&comments='+ comments;
+      params += '&date_ini='+ date_ini +'&date_end='+ date_end;
       window.open('movements/rpt_movements'+ params);
+    },
+
+    changeRpt: function (evt) {
+      var rpt = evt.target.value;
+
+      if (rpt == 'C') {
+        this.$el.find('.cls-ver-comentarios').hide();
+      } else {
+        this.$el.find('.cls-ver-comentarios').show();
+      }
     }
 
   });
