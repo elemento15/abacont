@@ -145,3 +145,7 @@ span.cls-mov-auto {
 #dialog-movement td[attr="status"] {
   font-weight: bold;
 }
+
+.cls-total-accounts {
+  font-weight: bold;
+}

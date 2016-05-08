@@ -29,6 +29,26 @@ class Account_model extends BaseModel {
 		$data = array('id' => $id, 'saldo' => $balance);
 		return $this->save($data, true);
 	}
+
+	public function getAllBalances() {
+		$total = 0;
+		
+		$params = array(
+			'order'    => null,
+			'order_id' => false,
+			'start'    => 0,
+			'length'   => 0,
+			'search'   => null,
+			'filter'   => array()
+		);
+
+		$recs = $this->model->findAll($params);
+		foreach ($recs['data'] as $key => $item) {
+			$total += $item->saldo;
+		}
+
+		return $total;
+	}
 }
 
 ?>
