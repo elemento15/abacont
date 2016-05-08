@@ -28,6 +28,8 @@ CREATE TABLE `cuentas` (
   `nombre` VARCHAR(50) NOT NULL,
   `tipo` ENUM('C','D','E') NOT NULL DEFAULT 'E',
   `activo` TINYINT NOT NULL DEFAULT 1,
+  `usa_gastos` TINYINT NOT NULL DEFAULT 0,
+  `usa_ingresos` TINYINT NOT NULL DEFAULT 0,
   `num_tarjeta` VARCHAR(20) NULL,
   `num_cuenta` VARCHAR(30) NULL,
   `saldo` DECIMAL(12,2) NOT NULL DEFAULT 0,
