@@ -3,8 +3,18 @@
   <%= nombre %>
 </td>
 <td><%= (tipo == 'C') ? 'CREDITO' : ( (tipo == 'D') ? 'DEBITO' : 'EFECTIVO') %></td>
-<td>
-	<div><%= num_tarjeta %></div>
-	<div><%= num_cuenta %></div>
-</td>
 <td align="right" class="<%= (saldo < 0) ? 'cls-negative' : '' %>">$<%= saldo.formatMoney() %></td>
+<td align="center">
+	<% if (parseInt(usa_ingresos)) { %>
+	<span class="label label-success">SI</span>
+	<% } else { %>
+	&nbsp;
+	<% } %>
+</td>
+<td align="center">
+	<% if (parseInt(usa_gastos)) { %>
+	<span class="label label-success">SI</span>
+	<% } else { %>
+	&nbsp;
+	<% } %>
+</td>

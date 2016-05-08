@@ -11,6 +11,8 @@ define(function (require) {
       nombre: '',
       tipo: '',
       activo: true,
+      usa_gastos: false,
+      usa_ingresos: false,
       num_tarjeta: '',
       num_cuenta: '',
       saldo: 0,
@@ -19,6 +21,18 @@ define(function (require) {
     url: Defaults.ROUTE + 'accounts/model',
     isActive: function () {
       if (parseInt(this.get('activo'), 10) === 1) {
+        return true;
+      }
+      return false;
+    },
+    forExpenses: function () {
+      if (parseInt(this.get('usa_gastos'), 10) === 1) {
+        return true;
+      }
+      return false;
+    },
+    forIncomes: function () {
+      if (parseInt(this.get('usa_ingresos'), 10) === 1) {
         return true;
       }
       return false;
