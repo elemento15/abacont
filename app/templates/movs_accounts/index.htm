@@ -34,7 +34,18 @@
   <div class="col-sm-9 col-md-10">
     <div class="row">
       <div class="col-sm-6">
-        <%= tplNewBtn() %>
+
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Nuevo
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="cmd-add" style="cursor:pointer;"><a>Movimiento</a></li>
+            <li class="cmd-add-transfer" style="cursor:pointer;"><a>Traspaso</a></li>
+          </ul>
+        </div>
+
       </div>
       <div class="col-sm-6">
         <%= tplSearch() %>
@@ -79,7 +90,7 @@
         <div class="form-inline">
           <label>Cuenta: </label>
           <select class="form-control list-filter" name="cuenta_id" style="max-width:300px;">
-            <option value="0">-- Seleccione una cuenta --</option>
+            <option value="">-- TODAS --</option>
           </select>
         </div>
       </div>

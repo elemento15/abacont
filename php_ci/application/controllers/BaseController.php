@@ -18,11 +18,12 @@ class BaseController extends CI_Controller {
 
   public function read() {
     $params = array(
-      'order'  => isset($_POST['order'])  ? $_POST['order'] : null,
-      'start'  => isset($_POST['start'])  ? $_POST['start']  : 0,
-      'length' => isset($_POST['length']) ? $_POST['length'] : 0,
-      'search' => isset($_POST['search']) ? $_POST['search'] : null,
-      'filter' => isset($_POST['filter']) ? $_POST['filter'] : array()
+      'order'    => isset($_POST['order'])  ? $_POST['order'] : null,
+      'order_id' => (isset($_POST['order_by_id']) && $_POST['order_by_id']) ? true : false,
+      'start'    => isset($_POST['start'])  ? $_POST['start']  : 0,
+      'length'   => isset($_POST['length']) ? $_POST['length'] : 0,
+      'search'   => isset($_POST['search']) ? $_POST['search'] : null,
+      'filter'   => isset($_POST['filter']) ? $_POST['filter'] : array()
     );
 
     $recs = $this->model->findAll($params);

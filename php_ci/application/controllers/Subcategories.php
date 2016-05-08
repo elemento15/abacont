@@ -14,11 +14,12 @@ class Subcategories extends BaseController {
 		}
 
 		$params = array(
-	      'order'  => array('field' => 'nombre', 'type' => 'ASC'),
-	      'start'  => 0,
-	      'length' => 0,
-	      'search' => null,
-	      'filter' => $filter
+	      'order'    => array('field' => 'nombre', 'type' => 'ASC'),
+	      'order_id' => false,
+	      'start'    => 0,
+	      'length'   => 0,
+	      'search'   => null,
+	      'filter'   => $filter
 	    );
 	    $recs = $this->model->findAll($params);
 	    

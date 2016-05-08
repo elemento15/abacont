@@ -6,6 +6,7 @@ define(function (require) {
   var IndexView = require('app/views/_generic/index'),
     tpl       = require('text!tpl/movs_accounts/index.htm'),
     FormView  = require('app/views/movs_accounts/form'),
+    FormTransferView = require('app/views/movs_accounts/form_transfer'),
     RowView   = require('app/views/movs_accounts/row'),
     ListCollection = require('app/collections/movs_accounts'),
     Defaults  = require('app/defaults');
@@ -13,11 +14,19 @@ define(function (require) {
   return IndexView.extend({
     tpl: tpl,
     FormView: FormView,
+    FormTransferView: FormTransferView,
     RowView: RowView,
     listCollection: new ListCollection(),
     paging: 10,
     orderTable: { field: 'fecha', type: 'DESC' },
-    filterTable: [{ field: 'cuenta_id', value: '0' }],
+    orderById: true,
+
+    events: function(){
+      return _.extend({},IndexView.prototype.events, {
+        'click li.cmd-add'          : 'add_record',
+        'click li.cmd-add-transfer' : 'add_transfer'
+      });
+    },
 
     onInit: function () {
       var that = this;
@@ -34,7 +43,7 @@ define(function (require) {
           that.$("select[name=cuenta_id]").append('<option value="'+ item.id +'">'+ nombre +'</option>')
         });
 
-        that.filterTable = [{ field: 'cuenta_id', value: '0' }];
+        that.filterTable = [];
         that.loadCollection(true);
       });
     },
@@ -64,6 +73,15 @@ define(function (require) {
           }
         }
       });
+    },
+
+    add_transfer: function () {
+      $("#main-container .index-container").hide();
+      var view = new this.FormTransferView({ recId: null, listView: this });
+      $("#main-container").append(view.render().el);
+      if (view.onRender) {
+        view.onRender();
+      }
     }
   });
 

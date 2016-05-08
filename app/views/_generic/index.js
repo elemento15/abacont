@@ -73,6 +73,7 @@ define(function (require) {
         type: 'POST',
         data: { 
           order: that.orderTable || { field: 'nombre', type: 'ASC' }, 
+          order_by_id: that.orderById || 0,
           search: that.searchTable || '', 
           filter: that.filterTable || [],
           start: (that.pagingOffset || 0) * (that.paging || 0),

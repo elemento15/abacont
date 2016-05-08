@@ -16,6 +16,7 @@ define(function (require) {
     listCollection: new ListCollection(),
     paging: 10,
     orderTable: { field: 'fecha', type: 'DESC' },
+    orderById: true,
     filterTable: [{ field: 'tipo', value: 'G' }]
   });
 

@@ -15,6 +15,7 @@ class Movs_Accounts extends BaseController {
 	public function save_mov_account () {
 		$data = json_decode($_POST['model'], true);
 		$is_new = !$data['id'];
+		$this->model->beginTransaction();
 		
 		if ($is_new) {
 			// generate movement_account
@@ -28,10 +29,16 @@ class Movs_Accounts extends BaseController {
 				'observaciones' => $data['observaciones'],
 				'automatico'    => 0
 			);
-			$id = $this->model->save($params);
+			if (!$id = $this->model->save($params)) {
+				echo json_encode(array('success' => false, 'msg' => $this->model->getError()));
+				exit;
+			}
 
 			// update account's balance
-			$this->modelAccount->updateBalance($data['cuenta_id'], $data['importe'], $data['tipo'] == 'A');
+			if (!$rec = $this->modelAccount->updateBalance($data['cuenta_id'], $data['importe'], $data['tipo'] == 'A')) {
+				echo json_encode(array('success' => false, 'msg' => $this->modelAccount->getError()));
+				exit;
+			}
 		
 		} else {
 			$mov = $this->model->find( $data['id'] );
@@ -55,7 +62,69 @@ class Movs_Accounts extends BaseController {
 	      $response = array('success' => false, 'msg' => $this->model->getError());
 	    }
     	
+    	$this->model->commitTransaction();
     	echo json_encode($response);
+	}
+
+	public function save_transfer () {
+		$data = json_decode($_POST['model'], true);
+		$is_new = !$data['id'];
+		$this->model->beginTransaction();
+		
+		if ($is_new) {
+			
+			// generate movement_account
+			$params = array(
+				'id'            => 0,
+				'fecha'         => $data['fecha'],
+				'cuenta_id'     => $data['cuenta_id'],
+				'tipo'          => 'C',
+				'importe'       => $data['importe'],
+				'concepto'      => $data['concepto'],
+				'observaciones' => 'Cargo por Transferencia. '.$data['observaciones'],
+				'automatico'    => 0
+			);
+			if (!$id = $this->model->save($params)) {
+				echo json_encode(array('success' => false, 'msg' => $this->model->getError()));
+				exit;
+			}
+
+			// update account's balance
+			if (!$rec = $this->modelAccount->updateBalance($data['cuenta_id'], $data['importe'], false)) {
+				echo json_encode(array('success' => false, 'msg' => $this->modelAccount->getError()));
+				exit;
+			}
+
+
+			// generate movement_account
+			$params = array(
+				'id'            => 0,
+				'fecha'         => $data['fecha'],
+				'cuenta_id'     => $data['cuenta_id_destino'],
+				'tipo'          => 'A',
+				'importe'       => $data['importe'],
+				'concepto'      => $data['concepto'],
+				'observaciones' => 'Abono por Transferencia. '.$data['observaciones'],
+				'automatico'    => 0
+			);
+			if (!$id = $this->model->save($params)) {
+				echo json_encode(array('success' => false, 'msg' => $this->model->getError()));
+				exit;
+			}
+
+			// update account's balance
+			if (!$rec = $this->modelAccount->updateBalance($data['cuenta_id_destino'], $data['importe'], true)) {
+				echo json_encode(array('success' => false, 'msg' => $this->modelAccount->getError()));
+				exit;
+			}
+		
+		} else {
+			echo json_encode(array('success' => false, 'msg' => 'No se puede editar una transferencia'));
+			exit;
+		}
+
+		$this->model->commitTransaction();
+		echo json_encode(array('success' => true));
 	}
 
 	public function cancel () {

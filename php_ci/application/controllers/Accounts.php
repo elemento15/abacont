@@ -9,11 +9,12 @@ class Accounts extends BaseController {
 
 	public function actives() {
 		$params = array(
-	      'order'  => array('field' => 'nombre', 'type' => 'ASC'),
-	      'start'  => 0,
-	      'length' => 0,
-	      'search' => null,
-	      'filter' => array(array('field' => 'activo', 'value' => true))
+	      'order'    => array('field' => 'nombre', 'type' => 'ASC'),
+	      'order_id' => false,
+	      'start'    => 0,
+	      'length'   => 0,
+	      'search'   => null,
+	      'filter'   => array(array('field' => 'activo', 'value' => true))
 	    );
 	    $recs = $this->model->findAll($params);
 	    

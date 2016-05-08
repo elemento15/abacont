@@ -18,6 +18,11 @@ class Account_model extends BaseModel {
 	}
 
 	public function updateBalance($id, $amount, $add) {
+		if (! $this->find($id)) {
+			$this->setError("Account does not exist");
+			return false;
+		}
+
 		$balance = $this->getBalance($id);
 		$balance += ($add) ? $amount : -$amount;
 

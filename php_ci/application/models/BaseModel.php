@@ -2,22 +2,30 @@
 
 class BaseModel extends CI_Model {
 
-  private $error;
+  private $error =  false;
 
   public function __construct() {
     parent::__construct();
   }
 
+  public function beginTransaction() {
+    $this->db->trans_start();
+  }
+
+  public function commitTransaction() {
+    $this->db->trans_complete();
+  }
+
   public function findAll($params) {
     $this->setQuery();
-    $this->setOrder($params['order']);
+    $this->setOrder($params['order'], $params['order_id']);
     $this->setFilter($params['filter']);
     $this->setSearch($params['search']);
 
     $count = $this->db->get()->num_rows();
 
     $this->setQuery();
-    $this->setOrder($params['order']);
+    $this->setOrder($params['order'], $params['order_id']);
     $this->setFilter($params['filter']);
     $this->setSearch($params['search']);
     $this->setLimit($params['length'], $params['start']);
@@ -98,10 +106,15 @@ class BaseModel extends CI_Model {
     $this->setJoiningTables();
   }
 
-  public function setOrder($order) {
+  public function setOrder($order, $order_id = false) {
     if ( isset($order) && $order['field'] ) {
       $order_field = (strpos($order['field'], '.')) ? $order['field'] : $this->table_name.'.'.$order['field'];
       $this->db->order_by($order_field, $order['type']);
+    }
+
+    if ($order_id) {
+      $type = (isset($order) && $order['type']) ? $order['type'] : 'ASC';
+      $this->db->order_by('id', $type);
     }
   }
 

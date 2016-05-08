@@ -2,8 +2,17 @@
   <span class="glyphicon glyphicon-edit row-btn-edit" style="visibility:hidden;"></span>
   <%= fecha %>
 </td>
-<td><%= tipo_nombre() %></td>
-<td><%= concepto %></td>
+<td style="text-align:center">
+	<% if (tipo == 'A') { %>
+		<span class="label label-success"><%= tipo_nombre() %></span>
+	<% } else { %>
+	<span class="label label-warning"><%= tipo_nombre() %></span>
+	<% } %>
+</td>
+<td>
+	<div><%= concepto %></div>
+	<div class="cls-sub-text"><%= cuenta_nombre %></div>
+</td>
 <td style="text-align:right">$<%= importe.formatMoney() %></td>
 <td style="text-align:center">
 	<% if (parseInt(automatico)) { %>
