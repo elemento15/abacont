@@ -104,7 +104,9 @@ define(function (require) {
       $.when(
         $.ajax({
           url: Defaults.ROUTE + 'accounts/actives',
-          dataType: 'json'
+          type: 'POST',
+          dataType: 'json',
+          data: { incomes: 1 }
         })
       ).then(function (data, textStatus, jqXHR) {
         var nombre;

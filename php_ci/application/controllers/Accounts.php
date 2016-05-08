@@ -8,6 +8,9 @@ class Accounts extends BaseController {
 	protected $modelName = 'Account_model';
 
 	public function actives() {
+		$incomes = (isset($_POST['incomes']) && $_POST['incomes']) ? true : false;
+		$expenses = (isset($_POST['expenses']) && $_POST['expenses']) ? true : false;
+
 		$params = array(
 	      'order'    => array('field' => 'nombre', 'type' => 'ASC'),
 	      'order_id' => false,
@@ -16,8 +19,16 @@ class Accounts extends BaseController {
 	      'search'   => null,
 	      'filter'   => array(array('field' => 'activo', 'value' => true))
 	    );
+
+		if ($incomes) {
+			$params['filter'][] = array('field' => 'usa_ingresos', 'value' => true);
+		}
+
+		if ($expenses) {
+			$params['filter'][] = array('field' => 'usa_gastos', 'value' => true);
+		}
+
 	    $recs = $this->model->findAll($params);
-	    
 	    echo json_encode($recs['data']);
 	}
 
