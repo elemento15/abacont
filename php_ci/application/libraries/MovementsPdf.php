@@ -92,6 +92,7 @@ class MovementsPdf extends BasePdf {
 
     private function printConcentrated() {
         $data = $this->getDataConcentrated();
+
         $total = 0;
         $category = 0;
 
@@ -101,7 +102,11 @@ class MovementsPdf extends BasePdf {
 
                 $border = 'B';
                 $this->SetFont('Helvetica', 'B', 10);
-                $this->Cell(100, 5, $item['nombre_categoria'], $border, 1, 'L', false);
+                $this->Cell(75, 5, $item['nombre_categoria'], $border, 0, 'L', false);
+
+                $subtotal = $this->getSubTotalCategory($item['id_categoria'], $data);
+                $this->Cell(25, 5, $subtotal, $border, 1, 'R', false);
+
 
                 $category = $item['id_categoria'];
                 $fill = false;
@@ -182,6 +187,18 @@ class MovementsPdf extends BasePdf {
 
         $data = $CI->db->get();
         return $data->result_array();
+    }
+
+    private function getSubTotalCategory($category, $array) {
+        $total = 0;
+
+        foreach ($array as $key => $item) {
+            if ($item['id_categoria'] == $category) {
+                $total += $item['importe'];
+            }
+        }
+
+        return $this->formatCurrency($total);
     }
 }
 
