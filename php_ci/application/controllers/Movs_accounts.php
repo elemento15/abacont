@@ -146,4 +146,15 @@ class Movs_Accounts extends BaseController {
 			$this->modelAccount->updateBalance($mov->cuenta_id, $mov->importe, $mov->tipo == 'C');
 		}
 	}
+
+	public function rpt_movs_accounts() {
+		$this->load->library('MovsAccountsPdf', array(), 'pdf');
+		$params = array(
+			'account' => $_REQUEST['account'],
+			'date_ini' => $_REQUEST['date_ini']
+		);
+
+		$this->pdf->setParams($params);
+		$this->pdf->printing();
+	}
 }

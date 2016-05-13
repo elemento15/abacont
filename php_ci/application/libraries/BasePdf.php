@@ -10,9 +10,13 @@ class BasePdf extends TCPDF {
     public function __construct() {
     	parent::__construct();
 
+        // define as protected this attributes
+        $margin_header = (isset($this->margin_header)) ? $this->margin_header : 8;
+        $margin_footer = (isset($this->margin_footer)) ? $this->margin_footer : 8;
+
     	$this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-    	$this->SetHeaderMargin(PDF_MARGIN_HEADER + 8);
-		$this->SetFooterMargin(PDF_MARGIN_FOOTER + 8);
+    	$this->SetHeaderMargin(PDF_MARGIN_HEADER + $margin_header);
+		$this->SetFooterMargin(PDF_MARGIN_FOOTER + $margin_footer);
 
 		$this->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
@@ -28,11 +32,20 @@ class BasePdf extends TCPDF {
     	$this->SetFont('Helvetica', 'B', 12);
     	$this->Cell(0, 0, $this->subtitle, $border, 1, 'C', false);
     	$this->Ln(1);
+
+        if (method_exists($this, 'subHeader')) {
+            $this->subHeader(); // define as protected
+        }
+
     	$this->Line($this->GetX(), $this->GetY(), 195, $this->GetY());
     }
 
-    protected function formatCurrency($number) {
-        return '$'.number_format($number, 2);
+    protected function formatCurrency($number, $show_zero = true) {
+        if (! $show_zero && $number == 0) {
+            return '-';
+        } else {
+            return '$'.number_format($number, 2);
+        }
     }
 
     protected function setColorNegative($number) {
