@@ -13,7 +13,8 @@ define(function (require) {
     ExpensesView = require('app/views/expenses/index'),
     MovAccountsView = require('app/views/movs_accounts/index'),
     RptMovementsView = require('app/views/rpt_movements/index'),
-    RptMovsAccountsView = require('app/views/rpt_movs_accounts/index');
+    RptMovsAccountsView = require('app/views/rpt_movs_accounts/index'),
+    ChartsView = require('app/views/charts/index');
 
   return Backbone.Router.extend({
     routes: {
@@ -25,6 +26,7 @@ define(function (require) {
       'mov_cuentas'       : 'mov_accounts',
       'rpt-movs'          : 'rpt_movements',
       'rpt-movs-accounts' : 'rpt_movs_account',
+      'graficas'          : 'charts',
       '*default'          : 'home'
     },
 
@@ -64,6 +66,10 @@ define(function (require) {
 
     rpt_movs_account: function () {
       this.showView(new RptMovsAccountsView([]), 'menu2','rpt-movs-accounts');
+    },
+
+    charts: function () {
+      this.showView(new ChartsView([]), 'graficas');
     },
 
     setActiveOption: function (opt, opt2) {

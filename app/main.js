@@ -29,6 +29,9 @@ require.config({
     'datepicker-es': {
       deps: ['datepicker'],
       exports: 'DatePickerEs'
+    },
+    'canvasjs': {
+      exports: 'CanvasJS'
     }
   }
 });
