@@ -149,3 +149,7 @@ span.cls-mov-auto {
 .cls-total-accounts {
   font-weight: bold;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}

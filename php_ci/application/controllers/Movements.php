@@ -107,4 +107,17 @@ class Movements extends BaseController {
 		$this->pdf->setParams($params);
 		$this->pdf->printing();
 	}
+
+	public function change_extraordinary() {
+		$id = intval($_POST['id']);
+
+		if ($mov = $this->model->find($id)) {
+			$data = array(
+				'id' => $id,
+				'extraordinario' => (! $mov->extraordinario)
+			);
+			$response = $this->model->save($data, true);
+			echo json_encode($response);
+		}
+	}
 }
