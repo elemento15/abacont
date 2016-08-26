@@ -53,8 +53,9 @@ define(function (require) {
       
       var account = this.$el.find('[name="cuenta_id"]').val();
       var date_ini = this.$el.find('[name="fecha_ini"]').datepicker('getFormattedDate','yyyy-mm-dd');
+      var download = this.$el.find('[name="download_pdf"]:checked').val() || 0;
 
-      var params = '?account='+ account + '&date_ini='+ date_ini;
+      var params = '?account='+ account + '&date_ini='+ date_ini +'&download='+ download;
       window.open('movs_accounts/rpt_movs_accounts'+ params);
     }
 

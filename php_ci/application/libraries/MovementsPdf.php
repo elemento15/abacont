@@ -4,7 +4,7 @@ require_once 'BasePdf.php';
 
 class MovementsPdf extends BasePdf {
 
-    private $rpt, $type, $account, $date_ini, $date_end, $comments;
+    private $rpt, $type, $account, $date_ini, $date_end, $comments, $download;
 
     public function __construct() {
     	parent::__construct();
@@ -19,6 +19,7 @@ class MovementsPdf extends BasePdf {
         $this->date_ini = $params['date_ini'];
         $this->date_end = $params['date_end'];
         $this->comments = intval($params['comments']);
+        $this->download = intval($params['download']);
 
         if ($this->rpt != 'D' && $this->rpt != 'C') {
             echo "Report Unknown"; exit;
@@ -49,7 +50,8 @@ class MovementsPdf extends BasePdf {
             $this->printConcentrated();
         }
 
-    	$this->Output();
+        $destination = ($this->download) ? 'D' : 'I';
+    	$this->Output('rpt.pdf', $destination);
     }
 
     private function printDetailed() {

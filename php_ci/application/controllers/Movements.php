@@ -100,7 +100,8 @@ class Movements extends BaseController {
 			'account' => $_REQUEST['account'],
 			'date_ini' => $_REQUEST['date_ini'],
 			'date_end' => $_REQUEST['date_end'],
-			'comments' => $_REQUEST['comments']
+			'comments' => $_REQUEST['comments'],
+			'download' => $_REQUEST['download']
 		);
 
 		$this->pdf->setParams($params);

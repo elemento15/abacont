@@ -151,7 +151,8 @@ class Movs_Accounts extends BaseController {
 		$this->load->library('MovsAccountsPdf', array(), 'pdf');
 		$params = array(
 			'account' => $_REQUEST['account'],
-			'date_ini' => $_REQUEST['date_ini']
+			'date_ini' => $_REQUEST['date_ini'],
+			'download' => $_REQUEST['download']
 		);
 
 		$this->pdf->setParams($params);
