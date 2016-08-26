@@ -13,7 +13,8 @@ define(function (require) {
     className: 'index-container',
     events: {
       'click .updateChart'  : 'updateChart',
-      'change .configChart' : 'updateChart'
+      'change .configChart' : 'updateChart',
+      'click ul.nav a'      : 'selectChart'
     },
 
     initialize: function (params) {
@@ -52,6 +53,19 @@ define(function (require) {
         }]
       });
 
+      this.chart_03 = new CanvasJS.Chart("canvas-chart03", {
+        title: { text: "Gastos Mensuales" },
+        axisX: { title: 'Meses' },
+        axisY: { title: 'Total' },
+        data: [{
+          type: 'column',
+          // color: "gray",
+          dataPoints: [],
+          indexLabel: "{y}",
+          indexLabelPlacement: "outside",
+        }]
+      });
+
       // $.fn.datepicker.defaults.format = 'dd/mm/yyyy';
 
       // $('.input-group.date').datepicker({
@@ -61,6 +75,16 @@ define(function (require) {
       // });
 
       this.updateChart01();
+    },
+
+    selectChart: function (evt) {
+      var opt = $(evt.target).attr('opt');
+
+      switch (opt) {
+        case '01' : this.updateChart01(); break;
+        case '02' : this.updateChart02(); break;
+        case '03' : this.updateChart03(); break;
+      }
     },
 
     updateChart: function (evt) {
@@ -73,7 +97,6 @@ define(function (require) {
         case '03' : this.updateChart03(); break;
       }
     },
-
     updateChart01: function () {
       var me = this;
       var dps = [];
@@ -97,7 +120,6 @@ define(function (require) {
         me.chart_01.render();
       });
     },
-
     updateChart02: function () {
       var me = this;
       var dps = [];
@@ -123,6 +145,29 @@ define(function (require) {
 
         me.chart_02.options.data[0].dataPoints = dps;
         me.chart_02.render();
+      });
+    },
+    updateChart03: function () {
+      var me = this;
+      var dps = [];
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'charts/expenses_months',
+          dataType: 'json',
+          type: 'POST'
+        })
+      ).then(function (data, textStatus, jqXHR) {
+
+        data.forEach(function (item, index) {
+          dps.push({
+            label: item.fecha,
+            y: parseFloat(item.total)
+          });
+        });
+
+        me.chart_03.options.data[0].dataPoints = dps;
+        me.chart_03.render();
       });
     }
 

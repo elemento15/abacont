@@ -21,4 +21,17 @@ class Charts extends CI_Controller {
 		$data = $this->modelMov->movs_grouped('D', 'G', $month, $year);
 		echo json_encode($data);
 	}
+
+	public function expenses_months() {
+		$query = $this->db->query("
+			select DATE_FORMAT(fecha, '%Y-%m') AS fecha, SUM(importe) AS total 
+			FROM movimientos 
+			WHERE tipo = 'G' AND NOT cancelado 
+			GROUP BY DATE_FORMAT(fecha, '%Y-%m') 
+			ORDER BY fecha DESC 
+			LIMIT 12;");
+
+		$data = $query->result_array();
+		echo json_encode($data);
+	}
 }
