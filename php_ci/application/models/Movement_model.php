@@ -63,6 +63,8 @@ class Movement_model extends BaseModel {
 			if ($month) {
 				$this->db->where(array('MONTH(mov.fecha)' => $month));
 			}
+
+			$this->db->where(array('mov.extraordinario' => 0));
 		}
 
 		$this->db->where(array('mov.tipo' => $type, 'mov.cancelado' => 0));

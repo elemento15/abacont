@@ -26,7 +26,7 @@ class Charts extends CI_Controller {
 		$query = $this->db->query("
 			select DATE_FORMAT(fecha, '%Y-%m') AS fecha, SUM(importe) AS total 
 			FROM movimientos 
-			WHERE tipo = 'G' AND NOT cancelado 
+			WHERE tipo = 'G' AND NOT cancelado AND NOT extraordinario 
 			GROUP BY DATE_FORMAT(fecha, '%Y-%m') 
 			ORDER BY fecha DESC 
 			LIMIT 12;");
