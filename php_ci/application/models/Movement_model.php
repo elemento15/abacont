@@ -51,20 +51,28 @@ class Movement_model extends BaseModel {
 	    return $this->find($row->id);
 	}
 
-	public function movs_grouped ($grouping = 'D', $type = 'G', $month, $year) {
+	public function movs_grouped ($grouping = 'D', $type = 'G', $month, $year, $extraordinary, $category, $subcategory) {
 		$this->db->select('mov.fecha, SUM(mov.importe) AS total');
 		$this->db->from('movimientos AS mov');
+		$this->db->join('subcategorias AS sub', 'sub.id = mov.subcategoria_id', 'left');
+		$this->db->join('categorias AS cat', 'cat.id = sub.categoria_id', 'left');
 		$this->db->group_by('mov.fecha');
 		$this->db->order_by('mov.fecha');
 
 		if ($year) {
 			$this->db->where(array('YEAR(mov.fecha)' => $year));
-			
 			if ($month) {
 				$this->db->where(array('MONTH(mov.fecha)' => $month));
 			}
-
-			$this->db->where(array('mov.extraordinario' => 0));
+			if (! $extraordinary) {
+				$this->db->where(array('mov.extraordinario' => 0));
+			}
+			if ($category) {
+				$this->db->where(array('cat.id' => $category));
+			}
+			if ($subcategory) {
+				$this->db->where(array('sub.id' => $subcategory));
+			}
 		}
 
 		$this->db->where(array('mov.tipo' => $type, 'mov.cancelado' => 0));
