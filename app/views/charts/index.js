@@ -69,6 +69,19 @@ define(function (require) {
         }]
       });
 
+      this.chart_04 = new CanvasJS.Chart("canvas-chart04", {
+        title: { text: "Promedios Mensuales" },
+        axisX: { title: 'Meses' },
+        axisY: { title: 'Total' },
+        data: [{
+          type: 'column',
+          // color: "gray",
+          dataPoints: [],
+          indexLabel: "{y}",
+          indexLabelPlacement: "outside",
+        }]
+      });
+
       // $.fn.datepicker.defaults.format = 'dd/mm/yyyy';
 
       // $('.input-group.date').datepicker({
@@ -106,6 +119,7 @@ define(function (require) {
         case '01' : this.updateChart01(); break;
         case '02' : this.updateChart02(); break;
         case '03' : this.updateChart03(); break;
+        case '04' : this.updateChart04(); break;
       }
     },
     changeCategory: function (evt) {
@@ -130,6 +144,7 @@ define(function (require) {
         case '01' : this.updateChart01(); break;
         case '02' : this.updateChart02(); break;
         case '03' : this.updateChart03(); break;
+        case '04' : this.updateChart04(); break;
       }
     },
     updateChart01: function () {
@@ -211,6 +226,34 @@ define(function (require) {
 
         me.chart_03.options.data[0].dataPoints = dps;
         me.chart_03.render();
+      });
+    },
+    updateChart04: function () {
+      var me = this;
+      var dps = [];
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'charts/average_months',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            category: me.getCategory(),
+            subcategory: me.getSubCategory(),
+            extraordinary: me.checkedExtraordinary()
+          }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+
+        data.forEach(function (item, index) {
+          dps.push({
+            label: item.fecha,
+            y: parseFloat(item.total)
+          });
+        });
+
+        me.chart_04.options.data[0].dataPoints = dps;
+        me.chart_04.render();
       });
     },
 
