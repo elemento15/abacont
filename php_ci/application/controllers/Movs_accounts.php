@@ -148,14 +148,25 @@ class Movs_Accounts extends BaseController {
 	}
 
 	public function rpt_movs_accounts() {
-		$this->load->library('MovsAccountsPdf', array(), 'pdf');
-		$params = array(
-			'account' => $_REQUEST['account'],
-			'date_ini' => $_REQUEST['date_ini'],
-			'download' => $_REQUEST['download']
-		);
+		if ($_REQUEST['option'] == 'CSV') {
+			$this->load->library('MovsAccountsCsv', array(), 'csv');
+			$params = array(
+				'account' => $_REQUEST['account'],
+				'date_ini' => $_REQUEST['date_ini']
+			);
+			$this->csv->setParams($params);
+			$this->csv->printing();
 
-		$this->pdf->setParams($params);
-		$this->pdf->printing();
+		} else {
+			$this->load->library('MovsAccountsPdf', array(), 'pdf');
+			$params = array(
+				'account' => $_REQUEST['account'],
+				'date_ini' => $_REQUEST['date_ini'],
+				'option' => $_REQUEST['option']
+			);
+
+			$this->pdf->setParams($params);
+			$this->pdf->printing();
+		}
 	}
 }
