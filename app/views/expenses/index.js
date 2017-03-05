@@ -17,7 +17,7 @@ define(function (require) {
     paging: 10,
     orderTable: { field: 'fecha', type: 'DESC' },
     orderById: true,
-    filterTable: [{ field: 'tipo', value: 'G' }]
+    filterTable: [{ field: 'tipo', value: 'G' }, { field: 'cancelado', value: 0 }]
   });
 
 });

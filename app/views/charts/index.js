@@ -162,7 +162,7 @@ define(function (require) {
           dps.push({
             label: item.nombre,
             y: parseFloat(item.saldo),
-            color: (parseFloat(item.saldo) < 0) ? 'red' : 'blue' 
+            color: (parseFloat(item.saldo) < 0) ? '#e45d5d' : '#6694bb' 
           });
         });
 
@@ -173,6 +173,14 @@ define(function (require) {
     updateChart02: function () {
       var me = this;
       var dps = [];
+      var year = $('[name="year_02"]').val();
+
+      // if year not setted, set with current year
+      if (! year) {
+        year = new Date();
+        year = year.getFullYear();
+        $('[name="year_02"]').val(year);
+      }
 
       $.when(
         $.ajax({

@@ -13,6 +13,7 @@ define(function (require) {
     tpl: tpl,
     FormView: FormView,
     RowView: RowView,
+    filterTable: [{ field: 'activo', value: 1 }],
     listCollection: new ListCollection(),
     paging: 10,
     printing_url: 'accounts/print_list',

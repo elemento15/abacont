@@ -16,6 +16,7 @@ define(function (require) {
     FormView: FormView,
     FormTransferView: FormTransferView,
     RowView: RowView,
+    filterTable: [{ field: 'cancelado', value: 0 }],
     listCollection: new ListCollection(),
     paging: 10,
     orderTable: { field: 'fecha', type: 'DESC' },

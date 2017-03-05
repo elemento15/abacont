@@ -8,7 +8,7 @@ define(function (require) {
 
   return Backbone.View.extend({
     events: {
-      'click a[href="#log-out"]' : 'logout'
+      'click #optLogOut' : 'logout'
     },
 
     render: function () {
