@@ -13,10 +13,13 @@ define(function (require) {
     tpl: tpl,
     FormView: FormView,
     RowView: RowView,
-    filterTable: [{ field: 'activo', value: 1 }],
     listCollection: new ListCollection(),
     paging: 10,
     printing_url: 'accounts/print_list',
+
+    onInit: function () {
+      this.filterTable = [{ field: 'activo', value: 1 }];
+    },
 
     onLoadCollection: function () {
       var total = parseFloat(this.collection.response.total_balance);

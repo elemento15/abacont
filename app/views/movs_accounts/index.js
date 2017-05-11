@@ -16,7 +16,6 @@ define(function (require) {
     FormView: FormView,
     FormTransferView: FormTransferView,
     RowView: RowView,
-    filterTable: [{ field: 'cancelado', value: 0 }],
     listCollection: new ListCollection(),
     paging: 10,
     orderTable: { field: 'fecha', type: 'DESC' },
@@ -31,6 +30,8 @@ define(function (require) {
 
     onInit: function () {
       var that = this;
+
+      this.filterTable = [{ field: 'cancelado', value: 0 }];
       
       $.when(
         $.ajax({

@@ -13,9 +13,12 @@ define(function (require) {
     tpl: tpl,
     FormView: FormView,
     RowView: RowView,
-    filterTable: [{ field: 'activo', value: 1 }],
     listCollection: new ListCollection(),
-    paging: 10
+    paging: 10,
+
+    onInit: function () {
+      this.filterTable = [{ field: 'activo', value: 1 }];
+    }
   });
 
 });
