@@ -129,10 +129,11 @@ class BaseModel extends CI_Model {
     $text = '';
     if ($search && isset($this->search_fields)) {
       foreach ($this->search_fields as $item) {
-        $text.= ($text) ? ' OR ' : '';
+        $text.= ($text) ? ' OR ' : '(';
         $text.= (strpos($item, '.')) ? $item : $this->table_name.'.'.$item;
         $text.= " LIKE '%$search%'";
       }
+      $text.= ')';
       $this->db->where($text);
     }
   }
