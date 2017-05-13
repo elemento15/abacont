@@ -43,7 +43,7 @@ class Charts extends CI_Controller {
 			WHERE mov.tipo = 'G' AND NOT mov.cancelado $filters 
 			GROUP BY DATE_FORMAT(mov.fecha, '%Y-%m') 
 			ORDER BY mov.fecha DESC 
-			LIMIT 12;");
+			LIMIT 24;");
 
 		$data = $query->result_array();
 		echo json_encode($data);
@@ -68,7 +68,7 @@ class Charts extends CI_Controller {
 			WHERE mov.tipo = 'G' AND NOT mov.cancelado $filters 
 			GROUP BY DATE_FORMAT(mov.fecha, '%Y-%m') 
 			ORDER BY mov.fecha DESC 
-			LIMIT 12;");
+			LIMIT 24;");
 
 		$data = $query->result_array();
 

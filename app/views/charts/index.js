@@ -62,7 +62,6 @@ define(function (require) {
         axisY: { title: 'Total' },
         data: [{
           type: 'column',
-          // color: "gray",
           dataPoints: [],
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
@@ -75,7 +74,6 @@ define(function (require) {
         axisY: { title: 'Total' },
         data: [{
           type: 'column',
-          // color: "gray",
           dataPoints: [],
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
