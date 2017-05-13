@@ -34,15 +34,20 @@ define(function (require) {
       var that = this;
 
       this.chart_01 = new CanvasJS.Chart("canvas-chart01", {
+        theme: "theme3",
         title: { text: "Saldos de Cuentas" },
         axisX: { title: 'Cuentas' },
-        axisY: { title: 'Saldo' },
+        axisY: { title: 'Saldo', gridColor: "#CCCCCC" },
         data: [{
           type: 'column',
           color: "gray",
           dataPoints: [],
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
+          indexLabelFontSize: 16,
+          indexLabelFontColor: "#333333",
+          fillOpacity: .7,
+          bevelEnabled: false
         }]
       });
 
@@ -50,6 +55,7 @@ define(function (require) {
         title: { text: "Gastos por Día" },
         axisX: { title: 'Dias' },
         axisY: { title: 'Importes' },
+        zoomEnabled: true,
         data: [{
           type: 'spline',
           dataPoints: []
@@ -57,26 +63,35 @@ define(function (require) {
       });
 
       this.chart_03 = new CanvasJS.Chart("canvas-chart03", {
+        theme: "theme3",
         title: { text: "Gastos Mensuales" },
         axisX: { title: 'Meses' },
-        axisY: { title: 'Total' },
+        axisY: { title: 'Total', gridColor: "#CCCCCC" },
         data: [{
           type: 'column',
           dataPoints: [],
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
+          indexLabelFontSize: 14,
+          indexLabelFontColor: "#333333",
+          fillOpacity: .7,
+          bevelEnabled: false
         }]
       });
 
       this.chart_04 = new CanvasJS.Chart("canvas-chart04", {
-        title: { text: "Promedios Mensuales" },
+        theme: "theme3",
+        title: { text: "Promedios Diario por Mes" },
         axisX: { title: 'Meses' },
-        axisY: { title: 'Total' },
+        axisY: { title: 'Total', gridColor: "#CCCCCC" },
         data: [{
           type: 'column',
           dataPoints: [],
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
+          indexLabelFontSize: 14,
+          fillOpacity: .7,
+          bevelEnabled: false
         }]
       });
 
