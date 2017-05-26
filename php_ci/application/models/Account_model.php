@@ -30,7 +30,7 @@ class Account_model extends BaseModel {
 		return $this->save($data, true);
 	}
 
-	public function getAllBalances() {
+	public function getAllBalances($search = null, $filter = array()) {
 		$total = 0;
 		
 		$params = array(
@@ -38,8 +38,8 @@ class Account_model extends BaseModel {
 			'order_id' => false,
 			'start'    => 0,
 			'length'   => 0,
-			'search'   => null,
-			'filter'   => array()
+			'search'   => $search,
+			'filter'   => $filter
 		);
 
 		$recs = $this->model->findAll($params);

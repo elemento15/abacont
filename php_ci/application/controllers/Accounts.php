@@ -48,7 +48,7 @@ class Accounts extends BaseController {
 	    );
 
 	    $recs = $this->model->findAll($params);
-	    $recs['total_balance'] = $this->model->getAllBalances();
+	    $recs['total_balance'] = $this->model->getAllBalances($params['search'], $params['filter']);
 	    
 	    echo json_encode($recs);
 	  }
