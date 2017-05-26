@@ -18,7 +18,7 @@ class MovsAccountsPdf extends BasePdf {
 
         $this->SetFont('Helvetica', 'B', 8);
         $this->Cell(20, 5, 'FECHA', $border, 0, 'C', false);
-        $this->Cell(45, 5, 'CONCEPTO', $border, 0, 'C', false, '', 1);
+        $this->Cell(65, 5, 'CONCEPTO', $border, 0, 'C', false, '', 1);
         $this->Cell(20, 5, 'ABONO', $border, 0, 'C', false, '', 1);
         $this->Cell(20, 5, 'CARGO', $border, 0, 'C', false, '', 1);
         $this->Cell(20, 5, 'SALDO', $border, 0, 'C', false, '', 1);
@@ -50,7 +50,7 @@ class MovsAccountsPdf extends BasePdf {
 
         // previous balance
         $this->Cell(20, 5, '', $border, 0, 'C', $fill);
-        $this->Cell(45, 5, 'SALDO ANTERIOR', $border, 0, 'L', $fill, '', 1);
+        $this->Cell(65, 5, 'SALDO ANTERIOR', $border, 0, 'L', $fill, '', 1);
         $this->Cell(20, 5, '-', $border, 0, 'R', $fill, '', 1);
         $this->Cell(20, 5, '-', $border, 0, 'R', $fill, '', 1);
         $this->Cell(20, 5, $this->formatCurrency($balance), $border, 0, 'R', $fill, '', 1);
@@ -65,7 +65,18 @@ class MovsAccountsPdf extends BasePdf {
             $balance = $balance + $payment - $charge; 
 
             $this->Cell(20, 5, $item['fecha'], $border, 0, 'C', $fill);
-            $this->Cell(45, 5, $item['concepto'], $border, 0, 'L', $fill, '', 1);
+
+            if ($item['automatico']) {
+                $concept = ($item['tipo'] == 'A') ? 'Ingreso: ' : 'Gasto: ';
+                $concept.= ucfirst(strtolower($item['nombre_categoria']));
+                $concept.= ' - ';
+                $concept.= ucfirst(strtolower($item['nombre_subcategoria']));
+
+                $this->Cell(65, 5, $concept, $border, 0, 'L', $fill, '', 1);
+            } else {
+                $this->Cell(65, 5, $item['concepto'], $border, 0, 'L', $fill, '', 1);
+            }
+            
             $this->Cell(20, 5, $this->formatCurrency($payment, false), $border, 0, 'R', $fill, '', 1);
             $this->Cell(20, 5, $this->formatCurrency($charge, false), $border, 0, 'R', $fill, '', 1);
             $this->Cell(20, 5, $this->formatCurrency($balance), $border, 0, 'R', $fill, '', 1);
@@ -95,8 +106,13 @@ class MovsAccountsPdf extends BasePdf {
     private function getData() {
         $CI =& get_instance();
 
-        $CI->db->select('mva.fecha, mva.tipo, mva.importe, mva.concepto, mva.automatico');
+        $CI->db->select('mva.fecha, mva.tipo, mva.importe, mva.concepto, mva.automatico, 
+                         sub.nombre AS nombre_subcategoria, cat.nombre AS nombre_categoria');
         $CI->db->from('movimientos_cuentas AS mva');
+        $CI->db->join('movimientos AS mov', 'mov.movimiento_cuenta_id = mva.id', 'left');
+        $CI->db->join('subcategorias AS sub', 'sub.id = mov.subcategoria_id', 'left');
+        $CI->db->join('categorias AS cat', 'cat.id = sub.categoria_id', 'left');
+
         
         $CI->db->where('mva.fecha >= "'.$this->date_ini.'"');
         $CI->db->where('mva.cuenta_id', $this->account);

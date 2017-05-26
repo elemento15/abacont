@@ -39,9 +39,18 @@ class MovsAccountsCsv  {
         foreach ($data as $key => $item) {
             $payment = ($item['tipo'] == 'A') ? $item['importe'] : 0;
             $charge = ($item['tipo'] == 'C') ? $item['importe'] : 0;
-            $balance = $balance + $payment - $charge; 
+            $balance = $balance + $payment - $charge;
 
-            $text = array($item['fecha'], $item['concepto'], $payment, $charge, $balance);
+            if ($item['automatico']) {
+                $concept = ($item['tipo'] == 'A') ? 'Ingreso: ' : 'Gasto: ';
+                $concept.= ucfirst(strtolower($item['nombre_categoria']));
+                $concept.= ' - ';
+                $concept.= ucfirst(strtolower($item['nombre_subcategoria']));
+            } else {
+                $concept = $item['concepto'];
+            }
+
+            $text = array($item['fecha'], $concept, $payment, $charge, $balance);
             fputcsv($output, $text);
         }
     }
@@ -71,8 +80,13 @@ class MovsAccountsCsv  {
     private function getData() {
         $CI =& get_instance();
 
-        $CI->db->select('mva.fecha, mva.tipo, mva.importe, mva.concepto, mva.automatico');
+        $CI->db->select('mva.fecha, mva.tipo, mva.importe, mva.concepto, mva.automatico, 
+                         sub.nombre AS nombre_subcategoria, cat.nombre AS nombre_categoria');
         $CI->db->from('movimientos_cuentas AS mva');
+        $CI->db->join('movimientos AS mov', 'mov.movimiento_cuenta_id = mva.id', 'left');
+        $CI->db->join('subcategorias AS sub', 'sub.id = mov.subcategoria_id', 'left');
+        $CI->db->join('categorias AS cat', 'cat.id = sub.categoria_id', 'left');
+
         
         $CI->db->where('mva.fecha >= "'.$this->date_ini.'"');
         $CI->db->where('mva.cuenta_id', $this->account);
