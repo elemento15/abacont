@@ -6,6 +6,8 @@ class Charts extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 
+		ini_set('date.timezone', 'America/Mazatlan');
+
 	    $session = $this->session->userdata;
 	    if (!(isset($session['user']) && $session['user'])) {
 	      throw new Exception("Session inactive");
