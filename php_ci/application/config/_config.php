@@ -511,3 +511,13 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+
+/*
+ | Custom configuration
+ | Here we define the user and password to login
+ | login_user = the user name
+ | login_pass = the password (md5)
+ */
+$config['login_user'] = 'elemento';
+$config['login_pass'] = 'eb2627a2efa096c9fe70e6c61c20142b';
