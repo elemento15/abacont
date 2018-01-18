@@ -519,5 +519,5 @@ $config['proxy_ips'] = '';
  | login_user = the user name
  | login_pass = the password (md5)
  */
-$config['login_user'] = 'elemento';
-$config['login_pass'] = 'eb2627a2efa096c9fe70e6c61c20142b';
+// $config['login_user'] = 'elemento';
+// $config['login_pass'] = 'eb2627a2efa096c9fe70e6c61c20142b';

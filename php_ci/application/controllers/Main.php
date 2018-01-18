@@ -5,6 +5,7 @@ class Main extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct();
+		$this->load->model('User_model','user',true);
 	}
 
 	public function index() {
@@ -19,16 +20,22 @@ class Main extends CI_Controller {
 	public function login() {
 		$user = $_POST['user'];
 		$pass = $_POST['pass'];
+		$success = false;
 
-		if ($user == $this->config->item('login_user') && md5($pass) == $this->config->item('login_pass')) {
-			// session_start();
-			$_SESSION['user'] = $user;
-
-			$response = array('success' => true);
-		} else {
-			$response = array('success' => false, 'msg' => 'User or password incorrect');
+		if ($user = $this->user->findUser($user)) {
+			if ($user->pass == md5($pass) && $user->activo) {
+				// session_start();
+				$_SESSION['user'] = $user;
+				$success = true;
+			}
 		}
 
+		if ($success) {
+			$response = array('success' => true);
+		} else {
+			$response = array('success' => false, 'msg' => 'Usuario incorrecto');
+		}
+		
 		echo json_encode($response);
 	}
 
