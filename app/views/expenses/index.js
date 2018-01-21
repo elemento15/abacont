@@ -19,6 +19,38 @@ define(function (require) {
     orderTable: { field: 'fecha', type: 'DESC' },
     orderById: true,
 
+    events: function(){
+      return _.extend({},IndexView.prototype.events, {
+        'change [name="subcategorias.categoria_id"]' : 'changeCategory'
+      });
+    },
+
+    changeCategory: function (evt) {
+      var category = evt.currentTarget.value;
+      this.fillSubcategories(category);
+      $('[name="subcategorias.id"]').val('').trigger('change');
+
+    },
+
+    fillSubcategories: function (category) {
+      var that = this;
+      
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'subcategories/actives',
+          type: 'POST',
+          dataType: 'json',
+          data: { category_id: category }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        that.$("select[name='subcategorias.id']").html('<option value="">Todos</option>');
+        
+        data.forEach(function (item) {
+          that.$("select[name='subcategorias.id']").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
+        });
+      });
+    },
+
     onInit: function () {
       var that = this;
 
