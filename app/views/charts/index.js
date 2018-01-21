@@ -22,6 +22,7 @@ define(function (require) {
 
     initialize: function (params) {
       // TODO
+      this.showedChart02 = false;
     },
     
     render: function () {
@@ -187,12 +188,21 @@ define(function (require) {
       var me = this;
       var dps = [];
       var year = $('[name="year_02"]').val();
+      var month = $('[name="month_02"]').val();
+
+      var today = new Date;
 
       // if year not setted, set with current year
       if (! year) {
-        year = new Date();
-        year = year.getFullYear();
+        year = today.getFullYear();
         $('[name="year_02"]').val(year);
+      }
+
+      // if month not setted, set with current month
+      if (! month && ! this.showedChart02) {
+        month = today.getMonth() + 1;
+        month = (month < 10) ? '0'+ month : month;
+        $('[name="month_02"]').val(month);
       }
 
       $.when(
@@ -201,7 +211,7 @@ define(function (require) {
           dataType: 'json',
           type: 'POST',
           data: {
-            month: $('[name="month_02"]').val(),
+            month: parseInt($('[name="month_02"]').val()) || '',
             year: $('[name="year_02"]').val(),
             category: me.getCategory(),
             subcategory: me.getSubCategory(),
@@ -220,6 +230,8 @@ define(function (require) {
         me.chart_02.options.data[0].dataPoints = dps;
         me.chart_02.render();
       });
+
+      this.showedChart02 = true;
     },
     updateChart03: function () {
       var me = this;
