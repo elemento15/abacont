@@ -11,8 +11,10 @@ define(function (require) {
     tpl: tpl,
     className: 'index-container',
     events: {
-      'click .btn-generate' : 'generateRpt',
-      'change [name="rpt"]' : 'changeRpt'
+      'click .btn-generate'  : 'generateRpt',
+      'change [name="rpt"]'  : 'changeRpt',
+      'change [name="tipo"]' : 'changeCategory',
+      'change [name="categoria_id"]' : 'fillSubcategoriesList'
     },
 
     initialize: function (params) {
@@ -36,6 +38,7 @@ define(function (require) {
         todayHighlight: true
       });
 
+      // accounts
       $.when(
         $.ajax({
           url: Defaults.ROUTE + 'accounts/actives',
@@ -48,6 +51,8 @@ define(function (require) {
           that.$("select[name=cuenta_id]").append('<option value="'+ item.id +'">'+ nombre +'</option>')
         });
       });
+
+      this.fillCategoriesList();
     },
 
     generateRpt: function () {
@@ -57,6 +62,8 @@ define(function (require) {
       var rpt = this.$el.find('[name="rpt"]').val();
       var type = this.$el.find('[name="tipo"]').val();
       var account = this.$el.find('[name="cuenta_id"]').val();
+      var category = this.$el.find('[name="categoria_id"]').val() || 0;
+      var subcategory = this.$el.find('[name="subcategoria_id"]').val() || 0;
       var date_ini = this.$el.find('[name="fecha_ini"]').datepicker('getFormattedDate','yyyy-mm-dd');
       var date_end = this.$el.find('[name="fecha_fin"]').datepicker('getFormattedDate','yyyy-mm-dd');
       var comments = this.$el.find('[name="ver_comentarios"]:checked').val() || 0;
@@ -64,6 +71,7 @@ define(function (require) {
 
       var params = '?rpt='+ rpt +'&type='+ type +'&account='+ account +'&comments='+ comments;
       params += '&date_ini='+ date_ini +'&date_end='+ date_end +'&download='+ download;
+      params += '&category='+ category + '&subcategory='+ subcategory;
       window.open('movements/rpt_movements'+ params);
     },
 
@@ -75,6 +83,51 @@ define(function (require) {
       } else {
         this.$el.find('.cls-ver-comentarios').show();
       }
+    },
+
+    changeCategory: function () {
+      this.fillCategoriesList();
+      this.fillSubcategoriesList();
+    },
+
+    fillCategoriesList: function () {
+      var type = this.$el.find('[name="tipo"]').val();
+      var that = this;
+
+      that.$("select[name=categoria_id]").html('<option value="">--Todas--</option>');
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'categories/actives',
+          type: 'POST',
+          dataType: 'json',
+          data: { type: type }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        data.forEach(function (item) {
+          that.$("select[name=categoria_id]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
+        });
+      });
+    },
+
+    fillSubcategoriesList: function () {
+      var category = this.$el.find('[name="categoria_id"]').val();
+      var that = this;
+
+      that.$("select[name=subcategoria_id]").html('<option value="">--Todas--</option>');
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'subcategories/actives',
+          type: 'POST',
+          dataType: 'json',
+          data: { category_id: category }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        data.forEach(function (item) {
+          that.$("select[name=subcategoria_id]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
+        });
+      });
     }
 
   });

@@ -98,6 +98,8 @@ class Movements extends BaseController {
 			'rpt' => $_REQUEST['rpt'],
 			'type' => $_REQUEST['type'],
 			'account' => $_REQUEST['account'],
+			'category' => $_REQUEST['category'],
+			'subcategory' => $_REQUEST['subcategory'],
 			'date_ini' => $_REQUEST['date_ini'],
 			'date_end' => $_REQUEST['date_end'],
 			'comments' => $_REQUEST['comments'],

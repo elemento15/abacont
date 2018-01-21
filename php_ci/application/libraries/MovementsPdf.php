@@ -16,6 +16,8 @@ class MovementsPdf extends BasePdf {
         $this->rpt = $params['rpt'];
         $this->type = $params['type'];
         $this->account = intval($params['account']);
+        $this->category = intval($params['category']);
+        $this->subcategory = intval($params['subcategory']);
         $this->date_ini = $params['date_ini'];
         $this->date_end = $params['date_end'];
         $this->comments = intval($params['comments']);
@@ -156,6 +158,14 @@ class MovementsPdf extends BasePdf {
             $CI->db->where('mov_cue.cuenta_id', $this->account);
         }
 
+        if ($this->category) {
+            $CI->db->where('cat.id', $this->category);
+        }
+
+        if ($this->subcategory) {
+            $CI->db->where('sub.id', $this->subcategory);
+        }
+
         $CI->db->order_by('mov.fecha', 'ASC');
         $CI->db->order_by('mov.id', 'ASC');
 
@@ -182,6 +192,14 @@ class MovementsPdf extends BasePdf {
 
         if ($this->account) {
             $CI->db->where('mov_cue.cuenta_id', $this->account);
+        }
+
+        if ($this->category) {
+            $CI->db->where('cat.id', $this->category);
+        }
+
+        if ($this->subcategory) {
+            $CI->db->where('sub.id', $this->subcategory);
         }
 
         $CI->db->group_by("sub.id"); 
