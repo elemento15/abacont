@@ -110,7 +110,7 @@ class Movements extends BaseController {
 		$this->pdf->printing();
 	}
 
-	public function change_extraordinary() {
+	/*public function change_extraordinary() {
 		$id = intval($_POST['id']);
 
 		if ($mov = $this->model->find($id)) {
@@ -121,5 +121,5 @@ class Movements extends BaseController {
 			$response = $this->model->save($data, true);
 			echo json_encode($response);
 		}
-	}
+	}*/
 }

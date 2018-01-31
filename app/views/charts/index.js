@@ -16,8 +16,7 @@ define(function (require) {
       'change .configChart'           : 'updateChart',
       'click ul.nav a'                : 'selectChart',
       'change [name="categorias"]'    : 'changeCategory',
-      'change [name="subcategorias"]' : 'changeSubCategory',
-      'change [name="extraordinary"]' : 'changeExtraordinary'
+      'change [name="subcategorias"]' : 'changeSubCategory'
     },
 
     initialize: function (params) {
@@ -96,14 +95,6 @@ define(function (require) {
         }]
       });
 
-      // $.fn.datepicker.defaults.format = 'dd/mm/yyyy';
-
-      // $('.input-group.date').datepicker({
-      //   language: "es",
-      //   autoclose: true,
-      //   todayHighlight: true
-      // });
-
       // fill the categories select, with all the categorias for expenses
       $.when(
         $.ajax({
@@ -144,9 +135,6 @@ define(function (require) {
       });
     },
     changeSubCategory: function (evt) {
-      this.updateChart(false);
-    },
-    changeExtraordinary: function (evt) {
       this.updateChart(false);
     },
 
@@ -214,8 +202,7 @@ define(function (require) {
             month: parseInt($('[name="month_02"]').val()) || '',
             year: $('[name="year_02"]').val(),
             category: me.getCategory(),
-            subcategory: me.getSubCategory(),
-            extraordinary: me.checkedExtraordinary()
+            subcategory: me.getSubCategory()
           }
         })
       ).then(function (data, textStatus, jqXHR) {
@@ -244,15 +231,14 @@ define(function (require) {
           type: 'POST',
           data: {
             category: me.getCategory(),
-            subcategory: me.getSubCategory(),
-            extraordinary: me.checkedExtraordinary()
+            subcategory: me.getSubCategory()
           }
         })
       ).then(function (data, textStatus, jqXHR) {
 
         data.forEach(function (item, index) {
           dps.push({
-            label: item.fecha,
+            label: item.mov_fecha,
             y: parseFloat(item.total)
           });
         });
@@ -273,14 +259,13 @@ define(function (require) {
           data: {
             category: me.getCategory(),
             subcategory: me.getSubCategory(),
-            extraordinary: me.checkedExtraordinary()
           }
         })
       ).then(function (data, textStatus, jqXHR) {
 
         data.forEach(function (item, index) {
           dps.push({
-            label: item.fecha,
+            label: item.mov_fecha,
             y: parseFloat(item.total)
           });
         });
@@ -313,10 +298,6 @@ define(function (require) {
       });
     },
 
-    checkedExtraordinary: function () {
-      var value = $('[name="extraordinary"]:checked').val() || 0;
-      return value;
-    },
     getCategory: function () {
       var value = $('select[name="categorias"]').val() || 0;
       return value;

@@ -13,7 +13,6 @@ define(function (require) {
       movimiento_cuenta_id: 0,
       subcategoria_id: 0,
       importe: 0,
-      // cuenta_id: 0,
       cancelado: 0,
       observaciones: ''
     },

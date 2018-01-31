@@ -10,15 +10,15 @@ define(function (require) {
   return RowView.extend({
     tpl: tpl,
     FormView: FormView,
-    hasActiveAttr: true,
+    hasActiveAttr: true
 
-    events: function(){
+    /*events: function(){
       return _.extend({},RowView.prototype.events, {
         'click .btn-mark' : 'changeExtra'
       });
-    },
+    },*/
 
-    changeExtra: function (evt) {
+    /*changeExtra: function (evt) {
       var me = this;
       var id = this.model.get('id');
 
@@ -32,7 +32,7 @@ define(function (require) {
       ).then(function (data, textStatus, jqXHR) {
       	me.options.listView.loadCollection(true);
       });
-    }
+    }*/
   });
 
 });

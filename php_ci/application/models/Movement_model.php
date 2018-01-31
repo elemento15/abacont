@@ -7,7 +7,7 @@ class Movement_model extends BaseModel {
 	protected $table_name    = 'movimientos';
 	protected $list_fields   = array('id','fecha','tipo','importe','cancelado','movimiento_cuenta_id','subcategoria_id',
 		                             'subcategorias.nombre AS subcategoria_nombre', 'categorias.nombre AS categoria_nombre',
-		                             'cuentas.nombre AS cuenta_nombre','extraordinario');
+		                             'cuentas.nombre AS cuenta_nombre');
 	protected $search_fields = array('fecha','subcategorias.nombre','categorias.nombre','cuentas.nombre');
 	protected $save_fields   = array('fecha','tipo','importe','movimiento_cuenta_id','subcategoria_id','observaciones');
 	protected $edit_fields   = array('observaciones');
@@ -23,7 +23,7 @@ class Movement_model extends BaseModel {
 	public function find($id) {
 		$this->db->select('mov.id, mov.fecha, mov.tipo, mov.importe, movimiento_cuenta_id, subcategoria_id, 
 			               subcategorias.categoria_id, mov.observaciones, movimientos_cuentas.cuenta_id, 
-			               movimientos_cuentas.cancelado, mov.extraordinario, 
+			               movimientos_cuentas.cancelado, 
 			               subcategorias.nombre AS nombre_subcategoria,
 			               categorias.nombre AS nombre_categoria');
 		$this->db->join('movimientos_cuentas', 'movimientos_cuentas.id = movimiento_cuenta_id', 'left');
@@ -51,7 +51,7 @@ class Movement_model extends BaseModel {
 	    return $this->find($row->id);
 	}
 
-	public function movs_grouped ($grouping = 'D', $type = 'G', $month, $year, $extraordinary, $category, $subcategory) {
+	public function movs_grouped ($grouping = 'D', $type = 'G', $month, $year, $category, $subcategory) {
 		$this->db->select('mov.fecha, SUM(mov.importe) AS total');
 		$this->db->from('movimientos AS mov');
 		$this->db->join('subcategorias AS sub', 'sub.id = mov.subcategoria_id', 'left');
@@ -64,9 +64,7 @@ class Movement_model extends BaseModel {
 			if ($month) {
 				$this->db->where(array('MONTH(mov.fecha)' => $month));
 			}
-			if (! $extraordinary) {
-				$this->db->where(array('mov.extraordinario' => 0));
-			}
+			
 			if ($category) {
 				$this->db->where(array('cat.id' => $category));
 			}

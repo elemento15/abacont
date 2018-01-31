@@ -152,7 +152,6 @@ class MovementsPdf extends BasePdf {
         $CI->db->where('mov.fecha BETWEEN "'.$this->date_ini.'" AND "'.$this->date_end.'"');
         $CI->db->where('mov.tipo', $this->type);
         $CI->db->where('mov.cancelado', 0);
-        $CI->db->where('mov.extraordinario', 0);
 
         if ($this->account) {
             $CI->db->where('mov_cue.cuenta_id', $this->account);
@@ -188,7 +187,6 @@ class MovementsPdf extends BasePdf {
         $CI->db->where('mov.fecha BETWEEN "'.$this->date_ini.'" AND "'.$this->date_end.'"');
         $CI->db->where('mov.tipo', $this->type);
         $CI->db->where('mov.cancelado', 0);
-        $CI->db->where('mov.extraordinario', 0);
 
         if ($this->account) {
             $CI->db->where('mov_cue.cuenta_id', $this->account);
