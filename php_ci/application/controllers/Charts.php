@@ -53,12 +53,12 @@ class Charts extends CI_Controller {
 		$subcategory   = intval($_POST['subcategory']);
 
 		$filters = '';
-		$filters.= ($category)        ? " AND cat.id = $category " : "";
-		$filters.= ($subcategory)     ? " AND subcat.id = $subcategory " : "";
+		$filters.= ($category)    ? " AND cat.id = $category " : "";
+		$filters.= ($subcategory) ? " AND subcat.id = $subcategory " : "";
 
 		$query = $this->db->query("
 			select DATE_FORMAT(mov.fecha, '%Y-%m') AS mov_fecha, 
-			       SUM(mov.importe) AS total
+			       SUM(mov.importe) AS sum_importe 
 			FROM movimientos AS mov 
 			LEFT JOIN subcategorias AS subcat ON subcat.id = mov.subcategoria_id 
 			LEFT JOIN categorias AS cat ON cat.id = subcat.categoria_id 
@@ -74,12 +74,12 @@ class Charts extends CI_Controller {
 
 			// on current month, set current days
 			if (date('Y') == $date[0] && date('m') == $date[1]) {
-				$days = cal_days_in_month(CAL_GREGORIAN, $date[1], $date[0]);
-			} else {
 				$days = date('d');
+			} else {
+				$days = cal_days_in_month(CAL_GREGORIAN, $date[1], $date[0]);
 			}
 
-			$data[$key]['total'] = round($item['total'] / $days, 2);
+			$data[$key]['total'] = round($item['sum_importe'] / $days, 2);
 		}
 
 		echo json_encode($data);
