@@ -12,7 +12,6 @@ define(function (require) {
     tpl: tpl,
     className: 'index-container',
     events: {
-      'click .updateChart'            : 'updateChart',
       'change .configChart'           : 'updateChart',
       'click ul.nav a'                : 'selectChart',
       'change [name="categorias"]'    : 'changeCategory',
@@ -35,16 +34,30 @@ define(function (require) {
 
       this.chart_01 = new CanvasJS.Chart("canvas-chart01", {
         theme: "theme3",
-        title: { text: "Saldos de Cuentas" },
-        axisX: { title: 'Cuentas' },
-        axisY: { title: 'Saldo', gridColor: "#CCCCCC" },
+        title: { 
+          text: "Saldos de Cuentas",
+          fontSize: 18
+        },
+        axisX: {
+          title: 'Cuentas', 
+          titleFontSize: 16,
+          labelFontSize: 12,
+          labelAutoFit: true
+        },
+        axisY: {
+          title: 'Saldo',
+          titleFontSize: 16,
+          labelFontSize: 12,
+          gridColor: "#CCCCCC"
+        },
         data: [{
           type: 'column',
           color: "gray",
           dataPoints: [],
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
-          indexLabelFontSize: 16,
+          indexLabelBackgroundColor: "#fff",
+          indexLabelFontSize: 12,
           indexLabelFontColor: "#333333",
           fillOpacity: .7,
           bevelEnabled: false
@@ -52,9 +65,19 @@ define(function (require) {
       });
 
       this.chart_02 = new CanvasJS.Chart("canvas-chart02", {
-        title: { text: "Gastos por Día" },
-        axisX: { title: 'Dias' },
-        axisY: { title: 'Importes' },
+        title: { text: "Gastos por Día", fontSize: 18 },
+        axisX: {
+          title: 'Dias',
+          titleFontSize: 16,
+          labelFontSize: 12,
+          labelAutoFit: true
+        },
+        axisY: {
+          title: 'Importes',
+          titleFontSize: 16,
+          labelFontSize: 12,
+          gridColor: "#CCCCCC"
+        },
         zoomEnabled: true,
         data: [{
           type: 'spline',
@@ -64,15 +87,25 @@ define(function (require) {
 
       this.chart_03 = new CanvasJS.Chart("canvas-chart03", {
         theme: "theme3",
-        title: { text: "Gastos Mensuales" },
-        axisX: { title: 'Meses' },
-        axisY: { title: 'Total', gridColor: "#CCCCCC" },
+        title: { text: "Gastos Mensuales", fontSize: 18 },
+        axisX: {
+          title: 'Meses',
+          titleFontSize: 16,
+          labelFontSize: 12,
+          labelAutoFit: true
+        },
+        axisY: {
+          title: 'Total',
+          titleFontSize: 16,
+          labelFontSize: 12,
+          gridColor: "#CCCCCC"
+        },
         data: [{
           type: 'column',
           dataPoints: [],
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
-          indexLabelFontSize: 14,
+          indexLabelFontSize: 12,
           indexLabelFontColor: "#333333",
           fillOpacity: .7,
           bevelEnabled: false
@@ -81,15 +114,25 @@ define(function (require) {
 
       this.chart_04 = new CanvasJS.Chart("canvas-chart04", {
         theme: "theme3",
-        title: { text: "Promedios Diario por Mes" },
-        axisX: { title: 'Meses' },
-        axisY: { title: 'Total', gridColor: "#CCCCCC" },
+        title: { text: "Promedios Diario por Mes", fontSize: 18 },
+        axisX: {
+          title: 'Meses',
+          titleFontSize: 16,
+          labelFontSize: 12,
+          labelAutoFit: true
+        },
+        axisY: {
+          title: 'Total',
+          titleFontSize: 16,
+          labelFontSize: 12,
+          gridColor: "#CCCCCC"
+        },
         data: [{
           type: 'column',
           dataPoints: [],
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
-          indexLabelFontSize: 14,
+          indexLabelFontSize: 12,
           fillOpacity: .7,
           bevelEnabled: false
         }]
@@ -119,6 +162,7 @@ define(function (require) {
 
     selectChart: function (evt) {
       var opt = $(evt.target).attr('opt');
+      $('#divFormOpt02').hide();
 
       switch (opt) {
         case '01' : this.updateChart01(); break;
@@ -206,7 +250,6 @@ define(function (require) {
           }
         })
       ).then(function (data, textStatus, jqXHR) {
-
         data.forEach(function (item, index) {
           dps.push({
             label: item.fecha,
@@ -219,6 +262,7 @@ define(function (require) {
       });
 
       this.showedChart02 = true;
+      $('#divFormOpt02').show();
     },
     updateChart03: function () {
       var me = this;

@@ -1,6 +1,6 @@
 require.config({
   baseUrl: 'libs',
-  urlArgs: "v=1.5",
+  urlArgs: "v=1.6",
   
   // uncomment in development mode, avoid cached JS
   // urlArgs: "v=" + (new Date()).getTime(),

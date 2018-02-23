@@ -1,29 +1,67 @@
 <h3>Gráficas</h3>
 <hr>
 
-<div class="row">
-	<div class="col-sm-2">
-		<ul class="nav nav-pills nav-stacked">
+<div class="row" style="margin-bottom: 10px;">
+	<div class="col-sm-12">
+		<ul class="nav nav-pills">
 			<li class="active"><a href="#chart1" aria-controls="chart1" data-toggle="tab" opt="01">Saldos de Cuentas</a></li>
 			<li><a href="#chart2" aria-controls="chart2" data-toggle="tab" opt="02">Gastos por Día</a></li>
 			<li><a href="#chart3" aria-controls="chart3" data-toggle="tab" opt="03">Gastos Mensuales</a></li>
 			<li><a href="#chart4" aria-controls="chart4" data-toggle="tab" opt="04">Prom. Diario/Mes</a></li>
 		</ul>
+	</div>
+</div>
 
-		<div style="margin-top: 20px;">
-			<select name="categorias" class="form-control" style="margin-top:5px;">
-				<option value="">-- Todos --</option>
-			</select>
-			<select name="subcategorias" class="form-control" style="margin-top:5px;">
-				<option value="">-- Todos --</option>
-			</select>
+<div class="row">
+	<div class="col-sm-2">
+		<div style="margin-bottom: 20px;">
+			<div class="form-group">
+				<label>Clase:</label>
+				<select name="categorias" class="form-control">
+					<option value="">-- Todos --</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label>Subclase:</label>
+				<select name="subcategorias" class="form-control">
+					<option value="">-- Todos --</option>
+				</select>
+			</div>
+
+			<div id="divFormOpt02" style="display: none;">
+				<div class="form-group">
+					<label>Año: </label>
+					<input type="number" name="year_02" class="form-control configChart" opt="02" value="">
+				</div>
+				
+				<div class="form-group">
+					<label>Mes:</label>
+					<select name="month_02" class="form-control configChart" opt="02">
+						<option value="">-- Todos --</option>
+						<option value="01">Enero</option>
+						<option value="02">Febrero</option>
+						<option value="03">Marzo</option>
+						<option value="04">Abril</option>
+						<option value="05">Mayo</option>
+						<option value="06">Junio</option>
+						<option value="07">Julio</option>
+						<option value="08">Agosto</option>
+						<option value="09">Septiembre</option>
+						<option value="10">Octubre</option>
+						<option value="11">Noviembre</option>
+						<option value="12">Diciembre</option>
+					</select>
+				</div>
+			</div>
 		</div>
 	</div>
+
 	<div class="col-sm-10">
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="chart1">
 				<div class="row">
-					<div class="col-xm-12">
+					<div class="col-sm-12">
 						<div id="canvas-chart01"></div>
 					</div>
 				</div>
@@ -31,39 +69,15 @@
 
 			<div role="tabpanel" class="tab-pane" id="chart2">
 				<div class="row">
-					<div class="col-sm-9">
+					<div class="col-sm-12">
 						<div id="canvas-chart02"></div>
-					</div>
-					<div class="col-sm-3">
-						<label>Año: </label>
-						<input type="number" name="year_02" class="form-control configChart" opt="02" value="">
-						
-						<label>Mes:</label>
-						<select name="month_02" class="form-control configChart" opt="02">
-							<option value="">-- Todos --</option>
-							<option value="01">Enero</option>
-							<option value="02">Febrero</option>
-							<option value="03">Marzo</option>
-							<option value="04">Abril</option>
-							<option value="05">Mayo</option>
-							<option value="06">Junio</option>
-							<option value="07">Julio</option>
-							<option value="08">Agosto</option>
-							<option value="09">Septiembre</option>
-							<option value="10">Octubre</option>
-							<option value="11">Noviembre</option>
-							<option value="12">Diciembre</option>
-						</select>
-						
-						<br>
-						<button type="button" class="btn btn-info updateChart" opt="02">Update</button>
 					</div>
 				</div>
 			</div>
 
 			<div role="tabpanel" class="tab-pane" id="chart3">
 				<div class="row">
-					<div class="col-xm-12">
+					<div class="col-sm-12">
 						<div id="canvas-chart03"></div>
 					</div>
 				</div>
@@ -71,7 +85,7 @@
 
 			<div role="tabpanel" class="tab-pane" id="chart4">
 				<div class="row">
-					<div class="col-xm-12">
+					<div class="col-sm-12">
 						<div id="canvas-chart04"></div>
 					</div>
 				</div>
