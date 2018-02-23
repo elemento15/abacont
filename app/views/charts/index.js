@@ -65,6 +65,7 @@ define(function (require) {
       });
 
       this.chart_02 = new CanvasJS.Chart("canvas-chart02", {
+        theme: "theme3",
         title: { text: "Gastos por Día", fontSize: 18 },
         axisX: {
           title: 'Dias',
@@ -73,7 +74,7 @@ define(function (require) {
           labelAutoFit: true
         },
         axisY: {
-          title: 'Importes',
+          title: '$',
           titleFontSize: 16,
           labelFontSize: 12,
           gridColor: "#CCCCCC"
@@ -95,7 +96,7 @@ define(function (require) {
           labelAutoFit: true
         },
         axisY: {
-          title: 'Total',
+          title: '$',
           titleFontSize: 16,
           labelFontSize: 12,
           gridColor: "#CCCCCC"
@@ -122,7 +123,7 @@ define(function (require) {
           labelAutoFit: true
         },
         axisY: {
-          title: 'Total',
+          title: '$',
           titleFontSize: 16,
           labelFontSize: 12,
           gridColor: "#CCCCCC"
@@ -162,7 +163,9 @@ define(function (require) {
 
     selectChart: function (evt) {
       var opt = $(evt.target).attr('opt');
+      
       $('#divFormOpt02').hide();
+      $('#divFormOpt03').hide();
 
       switch (opt) {
         case '01' : this.updateChart01(); break;
@@ -184,7 +187,7 @@ define(function (require) {
 
     updateChart: function (evt) {
       var that = this;
-      var opt = (evt) ? $(evt.target).attr('opt') : this.getActivePanel();
+      var opt = (evt && $(evt.target).attr('opt')) ? $(evt.target).attr('opt') : this.getActivePanel();
 
       switch (opt) {
         case '01' : this.updateChart01(); break;
@@ -275,7 +278,8 @@ define(function (require) {
           type: 'POST',
           data: {
             category: me.getCategory(),
-            subcategory: me.getSubCategory()
+            subcategory: me.getSubCategory(),
+            months: me.getLastMonths()
           }
         })
       ).then(function (data, textStatus, jqXHR) {
@@ -286,6 +290,8 @@ define(function (require) {
             y: parseFloat(item.total)
           });
         });
+
+        $('#divFormOpt03').show();
 
         me.chart_03.options.data[0].dataPoints = dps;
         me.chart_03.render();
@@ -303,6 +309,7 @@ define(function (require) {
           data: {
             category: me.getCategory(),
             subcategory: me.getSubCategory(),
+            months: me.getLastMonths()
           }
         })
       ).then(function (data, textStatus, jqXHR) {
@@ -313,6 +320,8 @@ define(function (require) {
             y: parseFloat(item.total)
           });
         });
+
+        $('#divFormOpt03').show();
 
         me.chart_04.options.data[0].dataPoints = dps;
         me.chart_04.render();
@@ -348,6 +357,10 @@ define(function (require) {
     },
     getSubCategory: function () {
       var value = $('select[name="subcategorias"]').val() || 0;
+      return value;
+    },
+    getLastMonths: function () {
+      var value = $('select[name="last_months"]').val() || 0;
       return value;
     }
 

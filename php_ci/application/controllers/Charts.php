@@ -43,11 +43,11 @@ class Charts extends CI_Controller {
 	}
 
 	public function expenses_months() {
-		$months = 24;
 		$data = [];
 
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
+		$months        = intval($_POST['months']);
 
 		$filters = '';
 		$filters.= ($category)        ? " AND cat.id = $category " : "";
@@ -82,11 +82,11 @@ class Charts extends CI_Controller {
 	}
 
 	public function average_months() {
-		$months = 24;
 		$data = [];
 
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
+		$months        = intval($_POST['months']);
 
 		$filters = '';
 		$filters.= ($category)    ? " AND cat.id = $category " : "";
