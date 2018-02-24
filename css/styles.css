@@ -153,3 +153,32 @@ span.cls-mov-auto {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.cls-kpi {
+  text-align: center;
+  display: inline-block;
+  background: #fff;
+  padding: 3px 5px;
+  margin: 0px 3px 6px 0px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.cls-kpi-md { width: 150px; }
+
+.cls-kpi-title {
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 2px;
+}
+
+.cls-kpi-body > div:first-child {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.cls-kpi-small {
+  font-size: 11px;
+  color: #666;
+}
