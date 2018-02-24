@@ -98,19 +98,42 @@ define(function (require) {
         axisY: {
           title: '$',
           titleFontSize: 16,
-          labelFontSize: 12,
+          labelFontSize: 13,
           gridColor: "#CCCCCC"
         },
-        data: [{
-          type: 'column',
-          dataPoints: [],
-          indexLabel: "{y}",
-          indexLabelPlacement: "outside",
-          indexLabelFontSize: 12,
-          indexLabelFontColor: "#333333",
-          fillOpacity: .7,
-          bevelEnabled: false
-        }]
+        legend: {
+          fontFamily: 'Verdana',
+          fontSize: 12,
+          cursor: 'pointer',
+          itemclick: function (e) {
+            e.dataSeries.visible = !e.dataSeries.visible;
+            e.chart.render();
+          }
+        },
+        data: [
+          {
+            type: 'column',
+            color: '#D38483',
+            visible: true,
+            dataPoints: [],
+            showInLegend: true,
+            legendText: "Expenses",
+            indexLabel: "{y}",
+            indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
+            indexLabelFontColor: "#333333",
+            fillOpacity: .6,
+            bevelEnabled: false
+          },{
+            type: 'line',
+            color: '#4F81BC',
+            visible: true,
+            dataPoints: [],
+            showInLegend: true,
+            legendText: "Incomes",
+            markerSize: 5
+          }
+        ]
       });
 
       this.chart_04 = new CanvasJS.Chart("canvas-chart04", {
@@ -125,18 +148,42 @@ define(function (require) {
         axisY: {
           title: '$',
           titleFontSize: 16,
-          labelFontSize: 12,
+          labelFontSize: 13,
           gridColor: "#CCCCCC"
         },
-        data: [{
-          type: 'column',
-          dataPoints: [],
-          indexLabel: "{y}",
-          indexLabelPlacement: "outside",
-          indexLabelFontSize: 12,
-          fillOpacity: .7,
-          bevelEnabled: false
-        }]
+        legend: {
+          fontFamily: 'Verdana',
+          fontSize: 12,
+          cursor: 'pointer',
+          itemclick: function (e) {
+            e.dataSeries.visible = !e.dataSeries.visible;
+            e.chart.render();
+          }
+        },
+        data: [
+          {
+            type: 'column',
+            color: '#D38483',
+            visible: true,
+            dataPoints: [],
+            showInLegend: true,
+            legendText: "Expenses",
+            indexLabel: "{y}",
+            indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
+            indexLabelFontColor: "#333333",
+            fillOpacity: .6,
+            bevelEnabled: false
+          },{
+            type: 'line',
+            color: '#4F81BC',
+            visible: true,
+            dataPoints: [],
+            showInLegend: true,
+            legendText: "Incomes",
+            markerSize: 5
+          }
+        ]
       });
 
       // fill the categories select, with all the categorias for expenses
@@ -269,8 +316,12 @@ define(function (require) {
     },
     updateChart03: function () {
       var me = this;
-      var dps = [];
+      var dp_exp = [];
+      var dp_inc = [];
 
+      $('#divFormOpt03').show();
+
+      // expenses
       $.when(
         $.ajax({
           url: Defaults.ROUTE + 'charts/expenses_months',
@@ -283,27 +334,52 @@ define(function (require) {
           }
         })
       ).then(function (data, textStatus, jqXHR) {
-
         data.forEach(function (item, index) {
-          dps.push({
+          dp_exp.push({
             label: item.mov_fecha,
             y: parseFloat(item.total)
           });
         });
 
-        $('#divFormOpt03').show();
+        me.chart_03.options.data[0].dataPoints = dp_exp;
+        me.chart_03.render();
+      });
 
-        me.chart_03.options.data[0].dataPoints = dps;
+      // incomes
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'charts/incomes_months',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            category: '',
+            subcategory: '',
+            months: me.getLastMonths()
+          }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        data.forEach(function (item, index) {
+          dp_inc.push({
+            label: item.mov_fecha,
+            y: parseFloat(item.total)
+          });
+        });
+
+        me.chart_03.options.data[1].dataPoints = dp_inc;
         me.chart_03.render();
       });
     },
     updateChart04: function () {
       var me = this;
-      var dps = [];
+      var dp_exp = [];
+      var dp_inc = [];
 
+      $('#divFormOpt03').show();
+
+      // expenses
       $.when(
         $.ajax({
-          url: Defaults.ROUTE + 'charts/average_months',
+          url: Defaults.ROUTE + 'charts/expenses_months_avg',
           dataType: 'json',
           type: 'POST',
           data: {
@@ -313,17 +389,38 @@ define(function (require) {
           }
         })
       ).then(function (data, textStatus, jqXHR) {
-
         data.forEach(function (item, index) {
-          dps.push({
+          dp_exp.push({
             label: item.mov_fecha,
             y: parseFloat(item.total)
           });
         });
 
-        $('#divFormOpt03').show();
+        me.chart_04.options.data[0].dataPoints = dp_exp;
+        me.chart_04.render();
+      });
 
-        me.chart_04.options.data[0].dataPoints = dps;
+      // incomes
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'charts/incomes_months_avg',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            category: '',
+            subcategory: '',
+            months: me.getLastMonths()
+          }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        data.forEach(function (item, index) {
+          dp_inc.push({
+            label: item.mov_fecha,
+            y: parseFloat(item.total)
+          });
+        });
+
+        me.chart_04.options.data[1].dataPoints = dp_inc;
         me.chart_04.render();
       });
     },

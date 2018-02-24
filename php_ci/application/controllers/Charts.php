@@ -81,7 +81,46 @@ class Charts extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	public function average_months() {
+	public function incomes_months() {
+		$data = [];
+
+		$category      = intval($_POST['category']);
+		$subcategory   = intval($_POST['subcategory']);
+		$months        = intval($_POST['months']);
+
+		$filters = '';
+		$filters.= ($category)        ? " AND cat.id = $category " : "";
+		$filters.= ($subcategory)     ? " AND subcat.id = $subcategory " : "";
+
+		$query = $this->db->query("
+			select DATE_FORMAT(mov.fecha, '%Y-%m') AS mov_fecha, SUM(mov.importe) AS total 
+			FROM movimientos AS mov 
+			LEFT JOIN subcategorias AS subcat ON subcat.id = mov.subcategoria_id 
+			LEFT JOIN categorias AS cat ON cat.id = subcat.categoria_id 
+			WHERE mov.tipo = 'I' AND NOT mov.cancelado $filters 
+			GROUP BY mov_fecha 
+			ORDER BY mov_fecha DESC 
+			LIMIT $months ;");
+
+		$records = $query->result_array();
+
+		// create list of months in the period
+		$data = $this->getListPastMonths($months);
+
+		foreach ($data as $index => $item) {
+			$data[$index]['total'] = 0;
+
+			foreach ($records as $rec) {
+				if ($rec['mov_fecha'] == $item['mov_fecha']) {
+					$data[$index]['total'] = $rec['total'];
+				}
+			}
+		}
+
+		echo json_encode($data);
+	}
+
+	public function expenses_months_avg() {
 		$data = [];
 
 		$category      = intval($_POST['category']);
@@ -99,6 +138,57 @@ class Charts extends CI_Controller {
 			LEFT JOIN subcategorias AS subcat ON subcat.id = mov.subcategoria_id 
 			LEFT JOIN categorias AS cat ON cat.id = subcat.categoria_id 
 			WHERE mov.tipo = 'G' AND NOT mov.cancelado $filters 
+			GROUP BY mov_fecha 
+			ORDER BY mov_fecha DESC 
+			LIMIT $months ;");
+
+		$records = $query->result_array();
+
+
+		// create list of months in the period
+		$data = $this->getListPastMonths($months);
+
+		foreach ($data as $index => $item) {
+			$data[$index]['total'] = 0;
+
+			foreach ($records as $rec) {
+				if ($rec['mov_fecha'] == $item['mov_fecha']) {
+					
+					$date = explode('-', $rec['mov_fecha']);
+
+					// on current month, set current days
+					if (date('Y') == $date[0] && date('m') == $date[1]) {
+						$days = date('d');
+					} else {
+						$days = cal_days_in_month(CAL_GREGORIAN, $date[1], $date[0]);
+					}
+
+					$data[$index]['total'] = round($rec['sum_importe'] / $days, 2);
+				}
+			}
+		}
+
+		echo json_encode($data);
+	}
+
+	public function incomes_months_avg() {
+		$data = [];
+
+		$category      = intval($_POST['category']);
+		$subcategory   = intval($_POST['subcategory']);
+		$months        = intval($_POST['months']);
+
+		$filters = '';
+		$filters.= ($category)    ? " AND cat.id = $category " : "";
+		$filters.= ($subcategory) ? " AND subcat.id = $subcategory " : "";
+
+		$query = $this->db->query("
+			select DATE_FORMAT(mov.fecha, '%Y-%m') AS mov_fecha, 
+			       SUM(mov.importe) AS sum_importe 
+			FROM movimientos AS mov 
+			LEFT JOIN subcategorias AS subcat ON subcat.id = mov.subcategoria_id 
+			LEFT JOIN categorias AS cat ON cat.id = subcat.categoria_id 
+			WHERE mov.tipo = 'I' AND NOT mov.cancelado $filters 
 			GROUP BY mov_fecha 
 			ORDER BY mov_fecha DESC 
 			LIMIT $months ;");
