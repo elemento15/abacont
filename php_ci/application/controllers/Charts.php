@@ -225,6 +225,8 @@ class Charts extends CI_Controller {
 
 	protected function getListPastMonths($months) {
 		$date = new DateTime();
+		$date->setDate($date->format('Y'), $date->format('m'), 1); // set to first day of current month
+
 		$list = array( array('mov_fecha' => $date->format('Y-m')) );
 
 		for ($i=0; $i < $months - 1; $i++) { 
