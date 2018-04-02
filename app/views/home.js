@@ -29,6 +29,11 @@ define(function (require) {
         $('#kpiExp30d').html('$'+(data.exp30d || 0).formatMoney());
         $('#kpiIng6m').html('$'+(data.ing6m || 0).formatMoney());
         $('#kpiExp6m').html('$'+(data.exp6m || 0).formatMoney());
+
+        $('#kpiIngTot30d').html('$'+(data.ingtot30d || 0).formatMoney());
+        $('#kpiExpTot30d').html('$'+(data.exptot30d || 0).formatMoney());
+        $('#kpiIngTot6m').html('$'+(data.ingtot6m || 0).formatMoney());
+        $('#kpiExpTot6m').html('$'+(data.exptot6m || 0).formatMoney());
       });
     }
 

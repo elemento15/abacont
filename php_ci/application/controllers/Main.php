@@ -72,7 +72,23 @@ class Main extends CI_Controller {
 			       (SELECT SUM(importe) 
 			        FROM movimientos 
 			        WHERE fecha BETWEEN '".$dates['date6m']."' AND NOW() AND 
-			              tipo = 'G' AND NOT cancelado) / ".$dates['days6m']." AS exp6m;");
+			              tipo = 'G' AND NOT cancelado) / ".$dates['days6m']." AS exp6m,
+			       (SELECT SUM(importe) 
+			        FROM movimientos 
+			        WHERE fecha BETWEEN '".$dates['date30d']."' AND NOW() AND 
+			              tipo = 'I' AND NOT cancelado) AS ingtot30d, 
+			       (SELECT SUM(importe) 
+			        FROM movimientos 
+			        WHERE fecha BETWEEN '".$dates['date30d']."' AND NOW() AND 
+			              tipo = 'G' AND NOT cancelado) AS exptot30d, 
+			       (SELECT SUM(importe) 
+			        FROM movimientos 
+			        WHERE fecha BETWEEN '".$dates['date6m']."' AND NOW() AND 
+			              tipo = 'I' AND NOT cancelado) AS ingtot6m, 
+			       (SELECT SUM(importe) 
+			        FROM movimientos 
+			        WHERE fecha BETWEEN '".$dates['date6m']."' AND NOW() AND 
+			              tipo = 'G' AND NOT cancelado) AS exptot6m");
 
 		$data = $query->result_array();
 		echo json_encode($data[0]);

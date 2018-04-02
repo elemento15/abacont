@@ -1,3 +1,7 @@
+/** {
+  outline: 1px solid red;
+}*/
+
 body {
   background-color: #E7E7E7;
 }
@@ -156,15 +160,13 @@ span.cls-mov-auto {
 
 .cls-kpi {
   text-align: center;
-  display: inline-block;
+  /*display: inline-block;*/
   background: #fff;
   padding: 3px 5px;
-  margin: 0px 3px 6px 0px;
+  margin: 0px 0px 6px 0px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
-
-.cls-kpi-md { width: 150px; }
 
 .cls-kpi-title {
   font-size: 12px;
@@ -174,7 +176,7 @@ span.cls-mov-auto {
 }
 
 .cls-kpi-body > div:first-child {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
 }
 
