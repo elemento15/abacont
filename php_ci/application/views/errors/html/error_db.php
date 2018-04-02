@@ -62,3 +62,11 @@ p {
 	</div>
 </body>
 </html>
+<?php 
+
+// if no database, destroy session
+if (strpos($message, '[1049]')) {
+	session_destroy();
+}
+
+?>

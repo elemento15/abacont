@@ -72,13 +72,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = TRUE;
+$dbase  = '';
 
+// get database name from session
+if (isset($_SESSION) && isset($_SESSION['user'])) {
+	$dbase = $_SESSION['user']->dbase;
+}
+
+// connection for a member session
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mysql:host=localhost;dbname=dbname',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'hostname' => 'mysql:host=localhost;dbname='.$dbase,
+	'username' => '_USER_',
+	'password' => '_PASS_',
+	'database' => $dbase, // DO NOT change this
+	'dbdriver' => 'pdo',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+// master connection (users)
+$db['master'] = array(
+	'dsn'	=> '',
+	'hostname' => 'mysql:host=localhost;dbname=_DB_MASTER_',
+	'username' => '_USER_',
+	'password' => '_PASS_',
+	'database' => '_DB_MASTER_',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
