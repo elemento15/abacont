@@ -117,7 +117,7 @@ define(function (require) {
             visible: true,
             dataPoints: [],
             showInLegend: true,
-            legendText: "Expenses",
+            legendText: "Gastos",
             indexLabel: "{y}",
             indexLabelPlacement: "outside",
             indexLabelFontSize: 12,
@@ -130,7 +130,7 @@ define(function (require) {
             visible: true,
             dataPoints: [],
             showInLegend: true,
-            legendText: "Incomes",
+            legendText: "Ingresos",
             markerSize: 5
           }
         ]
@@ -167,7 +167,7 @@ define(function (require) {
             visible: true,
             dataPoints: [],
             showInLegend: true,
-            legendText: "Expenses",
+            legendText: "Gastos",
             indexLabel: "{y}",
             indexLabelPlacement: "outside",
             indexLabelFontSize: 12,
@@ -180,7 +180,7 @@ define(function (require) {
             visible: true,
             dataPoints: [],
             showInLegend: true,
-            legendText: "Incomes",
+            legendText: "Ingresos",
             markerSize: 5
           }
         ]

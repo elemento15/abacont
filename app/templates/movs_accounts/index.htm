@@ -33,8 +33,7 @@
   </div>
   <div class="col-sm-9 col-md-10">
     <div class="row">
-      <div class="col-sm-6">
-
+      <div class="col-sm-2">
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Nuevo
@@ -45,9 +44,19 @@
             <li class="cmd-add-transfer" style="cursor:pointer;"><a>Traspaso</a></li>
           </ul>
         </div>
-
       </div>
-      <div class="col-sm-6">
+      
+      <div class="col-sm-4">
+        <select class="form-control list-filter" name="cuenta_id">
+          <option value="">-- Todas las Cuentas --</option>
+        </select>
+      </div>
+      
+      <div class="col-sm-2">
+        <div id="div-account-balance-grid" class="pull-right" style="margin-top:5px;" title="Saldo de la cuenta">$0.00</div>
+      </div>
+      
+      <div class="col-sm-4">
         <%= tplSearch() %>
       </div>
     </div>
@@ -83,20 +92,6 @@
     <div class="row">
       <div class="pull-right">
         <%= tplPaging() %>
-      </div>
-    </div>
-    <div class="row" style="margin-top:5px">
-      <div class="col-sm-7">
-        <div class="form-inline">
-          <label>Cuenta: </label>
-          <select class="form-control list-filter" name="cuenta_id" style="max-width:300px;">
-            <option value="">-- TODAS --</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-sm-5">
-        <span>Saldo: </span>
-        <div id="div-account-balance-grid" style="margin-top:5px;">$0.00</div>
       </div>
     </div>
     <br>

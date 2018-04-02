@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css?v=1" />
     
     <!-- main require module -->
-    <script data-main="app/main.js?v=1.9" src="libs/require.js"></script>
+    <script data-main="app/main.js?v=1.11" src="libs/require.js"></script>
   </head>
   <body></body>
 </html>
