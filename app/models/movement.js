@@ -14,7 +14,10 @@ define(function (require) {
       subcategoria_id: 0,
       importe: 0,
       cancelado: 0,
-      observaciones: ''
+      observaciones: '',
+      dayOfWeek: function() {
+        return this.fecha.getDayOfWeek();
+      }
     },
     url: Defaults.ROUTE + 'movements/model',
     urlSave: Defaults.ROUTE + 'movements/save_movement',

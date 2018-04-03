@@ -14,3 +14,20 @@ String.prototype.formatMoney = function (c, d, t) {
 	var n = this;
 	return parseFloat(n).formatMoney(c, d, t);
 }
+
+String.prototype.getDayOfWeek = function () {
+	var sp = this.split('-');
+	var dt = new Date(parseInt(sp[0]), parseInt(sp[1]) - 1, parseInt(sp[2]));
+	var day;
+	
+	switch (dt.getDay()) {
+		case 0 : day = 'Domingo';   break;
+		case 1 : day = 'Lunes';     break;
+		case 2 : day = 'Martes';    break;
+		case 3 : day = 'Miércoles'; break;
+		case 4 : day = 'Jueves';    break;
+		case 5 : day = 'Viernes';   break;
+		case 6 : day = 'Sábado';    break;
+	}
+	return day;
+}

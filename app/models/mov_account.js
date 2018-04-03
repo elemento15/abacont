@@ -18,6 +18,9 @@ define(function (require) {
       observaciones: '',
       tipo_nombre: function() {
         return (this.tipo == 'A') ? 'Abono' : 'Cargo';
+      },
+      dayOfWeek: function() {
+        return this.fecha.getDayOfWeek();
       }
     },
     url: Defaults.ROUTE + 'movs_accounts/model',
