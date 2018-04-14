@@ -110,16 +110,15 @@ class Movements extends BaseController {
 		$this->pdf->printing();
 	}
 
-	/*public function change_extraordinary() {
-		$id = intval($_POST['id']);
+	public function rpt_incomes_expenses() {
+		$this->load->library('RptIncomesExpensesPdf', array(), 'pdf');
+		
+		$params = array(
+			'months' => $_REQUEST['months'],
+			'current' => $_REQUEST['current']
+		);
 
-		if ($mov = $this->model->find($id)) {
-			$data = array(
-				'id' => $id,
-				'extraordinario' => (! $mov->extraordinario)
-			);
-			$response = $this->model->save($data, true);
-			echo json_encode($response);
-		}
-	}*/
+		$this->pdf->setParams($params);
+		$this->pdf->printing();
+	}
 }

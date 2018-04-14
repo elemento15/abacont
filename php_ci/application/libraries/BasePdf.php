@@ -67,6 +67,27 @@ class BasePdf extends TCPDF {
             return true;
         }
     }
+
+    protected function getMonthName($month, $long_name = false) {
+        $txt = '';
+
+        switch (intval($month)) {
+            case  1 : $txt = 'Enero';      break;
+            case  2 : $txt = 'Febrero';    break;
+            case  3 : $txt = 'Marzo';      break;
+            case  4 : $txt = 'Abril';      break;
+            case  5 : $txt = 'Mayo';       break;
+            case  6 : $txt = 'Junio';      break;
+            case  7 : $txt = 'Julio';      break;
+            case  8 : $txt = 'Agosto';     break;
+            case  9 : $txt = 'Septiembre'; break;
+            case 10 : $txt = 'Octubre';    break;
+            case 11 : $txt = 'Noviembre';  break;
+            case 12 : $txt = 'Diciembre';  break;
+        }
+
+        return ($long_name) ? $txt : substr($txt, 0, 3);
+    }
 }
 
 /* End of file BasePdf.php */

@@ -14,20 +14,22 @@ define(function (require) {
     MovAccountsView = require('app/views/movs_accounts/index'),
     RptMovementsView = require('app/views/rpt_movements/index'),
     RptMovsAccountsView = require('app/views/rpt_movs_accounts/index'),
+    RptIncomesVsExpenses = require('app/views/rpt_incomes_expenses/index'),
     ChartsView = require('app/views/charts/index');
 
   return Backbone.Router.extend({
     routes: {
-      'cuentas'           : 'accounts',
-      'clases'            : 'categories',
-      'subclases'         : 'subcategories',
-      'ingresos'          : 'incomes',
-      'gastos'            : 'expenses',
-      'mov_cuentas'       : 'mov_accounts',
-      'rpt-movs'          : 'rpt_movements',
-      'rpt-movs-accounts' : 'rpt_movs_account',
-      'graficas'          : 'charts',
-      '*default'          : 'home'
+      'cuentas'              : 'accounts',
+      'clases'               : 'categories',
+      'subclases'            : 'subcategories',
+      'ingresos'             : 'incomes',
+      'gastos'               : 'expenses',
+      'mov_cuentas'          : 'mov_accounts',
+      'rpt-movs'             : 'rpt_movements',
+      'rpt-movs-accounts'    : 'rpt_movs_account',
+      'rpt-incomes-expenses' : 'rpt_incomes_expenses',
+      'graficas'             : 'charts',
+      '*default'             : 'home'
     },
 
     home: function () {
@@ -66,6 +68,10 @@ define(function (require) {
 
     rpt_movs_account: function () {
       this.showView(new RptMovsAccountsView([]), 'menu2','rpt-movs-accounts');
+    },
+
+    rpt_incomes_expenses: function () {
+      this.showView(new RptIncomesVsExpenses([]), 'menu2', 'rpt-incomes-expenses');
     },
 
     charts: function () {
