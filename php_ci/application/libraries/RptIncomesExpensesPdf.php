@@ -9,13 +9,15 @@ class RptIncomesExpensesPdf extends BasePdf {
     public function __construct() {
     	parent::__construct();
     	$this->title = 'Reporte de Gastos vs. Ingresos';
-    	$this->subtitle = '';
+        $this->subtitle = '';
         $this->download = false;
     }
 
     public function setParams($params) {
         $this->months = intval($params['months']);
         $this->current_month = intval($params['current']);
+    	
+        $this->subtitle = 'Ultimos '.$this->months.' meses';
     }
 
     public function printing() {
@@ -36,9 +38,11 @@ class RptIncomesExpensesPdf extends BasePdf {
         
         $total_inc = 0;
         $total_exp = 0;
+        $months = $this->months;
 
         // header
         $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(43, 5, '', '', 0, '', false);
         $this->Cell(10, 5, 'Año', $border, 0, 'C', $fill);
         $this->Cell(10, 5, 'Mes', $border, 0, 'C', $fill);
         $this->Cell(25, 5, 'Gastos', $border, 0, 'R', $fill);
@@ -58,12 +62,20 @@ class RptIncomesExpensesPdf extends BasePdf {
             $total_exp += $item['gastos'];
             $diff = $item['ingresos'] - $item['gastos'];
 
+            $this->Cell(43, 5, '', $border, 0, '', false);
             $this->Cell(10, 5, $txt_year, $border, 0, 'C', $fill);
             $this->Cell(10, 5, $txt_month, $border, 0, 'C', $fill);
             $this->Cell(25, 5, $this->formatCurrency($item['gastos']), $border, 0, 'R', $fill);
             $this->Cell(25, 5, $this->formatCurrency($item['ingresos']), $border, 0, 'R', $fill);
+
+            if ($diff < 0) {
+                $this->SetTextColor(255, 0, 0);
+            }
+
             $this->Cell(25, 5, $this->formatCurrency($diff), $border, 0, 'R', $fill);
             $this->Cell(0,  5, '', $border, 1, '', false);
+
+            $this->SetTextColor(0, 0, 0, 100); // reset text color
 
             $curr_year = $item['anio_fecha'];
             $fill = !$fill;
@@ -73,12 +85,39 @@ class RptIncomesExpensesPdf extends BasePdf {
         $this->SetFont('Helvetica', 'B', 9);
         $border = 'T';
 
-        $this->Cell(10, 5, '', $border, 0, 'C', $fill);
-        $this->Cell(10, 5, '', $border, 0, 'C', $fill);
-        $this->Cell(25, 5, $this->formatCurrency($total_exp), $border, 0, 'R', $fill);
-        $this->Cell(25, 5, $this->formatCurrency($total_inc), $border, 0, 'R', $fill);
-        $this->Cell(25, 5, $this->formatCurrency($total_inc - $total_exp), $border, 0, 'R', $fill);
-        $this->Cell(0,  5, '', '', 1, '', $fill);
+        $this->Cell(43, 5, '', '', 0, '', false);
+        $this->Cell(10, 5, '', $border, 0, 'C', false);
+        $this->Cell(10, 5, 'Totales:', $border, 0, 'R', false);
+        $this->Cell(25, 5, $this->formatCurrency($total_exp), $border, 0, 'R', false);
+        $this->Cell(25, 5, $this->formatCurrency($total_inc), $border, 0, 'R', false);
+
+        if (($diff = $total_inc - $total_exp) < 0) {
+            $this->SetTextColor(255, 0, 0);
+        }
+
+        $this->Cell(25, 5, $this->formatCurrency($diff), $border, 0, 'R', false);
+        $this->Cell(0,  5, '', '', 1, '', false);
+
+        $this->SetTextColor(0, 0, 0, 100); // reset text color
+
+        $this->SetFont('Helvetica', 'B', 8);
+        $border = '';
+
+        $this->Cell(43, 4, '', $border, 0, '', false);
+        $this->Cell(10, 4, '', $border, 0, 'C', false);
+        $this->Cell(10, 4, 'Prom. mes:', $border, 0, 'R', false);
+        $this->Cell(25, 4, $this->formatCurrency($total_exp / $months), $border, 0, 'R', false);
+        $this->Cell(25, 4, $this->formatCurrency($total_inc / $months), $border, 0, 'R', false);
+
+        $diff = ($total_inc - $total_exp)  / $months;
+        if ($diff < 0) {
+            $this->SetTextColor(255, 0, 0);
+        }
+
+        $this->Cell(25, 4, $this->formatCurrency($diff), $border, 0, 'R', false);
+        $this->Cell(0,  4, '', '', 1, '', false);
+
+        $this->SetTextColor(0, 0, 0, 100); // reset text color
     }
 
     private function getData() {
