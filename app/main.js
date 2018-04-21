@@ -70,6 +70,9 @@ require([
       $.unblockUI();
     };
 
+    // User data
+    App.User = false;
+
     App.router = new Router();
     Backbone.history.start();
     Backbone.emulateHTTP = true;

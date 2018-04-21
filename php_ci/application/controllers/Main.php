@@ -93,4 +93,37 @@ class Main extends CI_Controller {
 		$data = $query->result_array();
 		echo json_encode($data[0]);
 	}
+
+	public function get_user() {
+		$user = $this->getCurrentUser();
+		echo json_encode(array('success' => true, 'user' => $user));
+	}
+
+
+	private function getCurrentUser() {
+		$usr = $_SESSION['user'];
+
+		// get the display name
+		$name = explode(' ', $usr->nombre);
+		$display = '';
+		$i = 0;
+		
+		do {
+			$text = $name[$i].' ';
+			if (strlen($display . $text) < 15) {
+				$display = $display . $text;
+				$i++;
+			} else {
+				$i = 1000;
+			}
+		} while ($i < count($name));
+
+
+		return array(
+			'id'   => $usr->id,
+			'user' => $usr->usuario,
+			'name' => $usr->nombre,
+			'display' => $display
+		);
+	}
 }
