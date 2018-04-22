@@ -99,6 +99,53 @@ class Main extends CI_Controller {
 		echo json_encode(array('success' => true, 'user' => $user));
 	}
 
+	public function update_user() {
+		$user = $this->getCurrentUser();
+
+		$data = array(
+			'id' => $user['id'],
+			'nombre' => $_POST['name']
+		);
+
+		if ($this->user->save($data, true)) {
+			$_SESSION['user'] = $this->user->findUser($user['user']);
+			$response = array('success' => true, 'user' => $this->getCurrentUser());
+		} else {
+			$response = array('success' => false, 'msg' => 'Error al actualizar el usuario actual');
+		}
+
+		echo json_encode($response);
+	}
+
+	public function change_pass() {
+		$pass = $_POST['pass'];
+		$confirm = $_POST['confirm'];
+		$user = $this->getCurrentUser();
+		
+		if ($pass == '' || $confirm == '') {
+			echo json_encode(array('success' => false, 'error' => 'Password o confirmacion invalida'));
+			exit;
+		}
+
+		if ($pass != $confirm) {
+			echo json_encode(array('success' => false, 'error' => 'Password y confirmacion no coinciden'));
+			exit;
+		}
+
+		$data = array(
+			'id' => $user['id'],
+			'pass' => md5($pass)
+		);
+
+		// change password in user's table
+		if (! $this->user->save($data, true)) {
+			echo json_encode(array('success' => false, 'error' => 'Error al cambiar el password'));
+			exit;
+		}
+
+		echo json_encode(array('success' => true));
+	}
+
 
 	private function getCurrentUser() {
 		$usr = $_SESSION['user'];
@@ -110,7 +157,7 @@ class Main extends CI_Controller {
 		
 		do {
 			$text = $name[$i].' ';
-			if (strlen($display . $text) < 15) {
+			if (strlen($display . $text) < 16) {
 				$display = $display . $text;
 				$i++;
 			} else {

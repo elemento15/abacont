@@ -15,6 +15,7 @@ define(function (require) {
     RptMovementsView = require('app/views/rpt_movements/index'),
     RptMovsAccountsView = require('app/views/rpt_movs_accounts/index'),
     RptIncomesVsExpenses = require('app/views/rpt_incomes_expenses/index'),
+    ProfileView = require('app/views/profile/edit'),
     ChartsView = require('app/views/charts/index');
 
   return Backbone.Router.extend({
@@ -29,6 +30,7 @@ define(function (require) {
       'rpt-movs-accounts'    : 'rpt_movs_account',
       'rpt-incomes-expenses' : 'rpt_incomes_expenses',
       'graficas'             : 'charts',
+      'profile'              : 'profile',
       '*default'             : 'home'
     },
 
@@ -45,13 +47,13 @@ define(function (require) {
       this.showView(new SubCategoriesView([]), 'menu1','subclases');
     },
     incomes: function () {
-      this.showView(new IncomesView([]), 'ingresos');
+      this.showView(new IncomesView([]), 'menu3', 'ingresos');
     },
     expenses: function () {
-      this.showView(new ExpensesView([]), 'gastos');
+      this.showView(new ExpensesView([]), 'menu3', 'gastos');
     },
     mov_accounts: function () {
-      this.showView(new MovAccountsView([]), 'mov_cuentas');
+      this.showView(new MovAccountsView([]), 'menu3', 'mov_cuentas');
     },
     showView: function (view, opt, opt2) {
       $("body").html(new HeaderView([]).render().el);
@@ -76,6 +78,10 @@ define(function (require) {
 
     charts: function () {
       this.showView(new ChartsView([]), 'graficas');
+    },
+
+    profile: function () {
+      this.showView(new ProfileView([]), 'profile');
     },
 
     setActiveOption: function (opt, opt2) {

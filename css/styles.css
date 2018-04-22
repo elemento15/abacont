@@ -125,6 +125,16 @@ hr {
   background-color: #FFFFFF;
 }
 
+.cls-tab-content .tab-pane {
+  padding: 15px 25px;
+  border: 1px solid #ccc;
+}
+
+.cls-nav-tabs li a {
+  background-color: #f0f0f0;
+}
+
+
 
 #div-account-balance-grid,
 #div-account-balance-form {

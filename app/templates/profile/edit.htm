@@ -1,0 +1,74 @@
+<h3>Perfil</h3>
+<hr>
+
+<div class="row">
+	<div class="col-sm-12">
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs cls-nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#general" aria-controls="home" role="tab" data-toggle="tab">Generales</a></li>
+			<li role="presentation"><a href="#password" aria-controls="profile" role="tab" data-toggle="tab">Constraseña</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content cls-tab-content">
+			<div role="tabpanel" class="tab-pane active" id="general">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="text-muted">Datos generales del usuario</div>
+
+						<br>
+
+						<!-- User information form -->
+						<form role="form">
+						  <fieldset>
+					        <div class="form-group">
+					          <label for="nombre">Usuario:</label>
+					          <input type="text" name="usuario" class="form-control" maxlength="50">
+					        </div>
+
+					        <div class="form-group">
+					          <label for="nombre">Nombre:</label>
+					          <input type="text" name="nombre" class="form-control" maxlength="50">
+					        </div>
+
+					        <div class="form-group">
+					          <label for="nombre">Email:</label>
+					          <input type="text" name="email" class="form-control" maxlength="254">
+					        </div>
+						  
+						  	<button type="button" class="btn btn-primary btnSaveUser">Guardar</button>
+						  </fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div role="tabpanel" class="tab-pane" id="password">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="text-muted">Cambiar contraseña</div>
+
+						<br>
+
+						<!-- Password change form -->
+						<form role="form">
+						  <fieldset>
+					        <div class="form-group">
+					          <label for="nombre">Contraseña:</label>
+					          <input type="password" name="password" class="form-control" maxlength="50">
+					        </div>
+
+					        <div class="form-group">
+					          <label for="nombre">Confirmación:</label>
+					          <input type="password" name="confirmation" class="form-control" maxlength="50">
+					        </div>
+
+					        <button type="button" class="btn btn-primary btnSavePass">Guardar</button>
+						  </fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
