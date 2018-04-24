@@ -9,9 +9,15 @@ CREATE TABLE `usuarios` (
   UNIQUE INDEX `usuario_UNIQUE` (`usuario` ASC))
 ENGINE = InnoDB;
 
+ALTER TABLE `usuarios` 
+  ADD COLUMN `email` VARCHAR(254) NULL AFTER `nombre`,
+  ADD COLUMN `fecha` DATETIME NULL AFTER `dbase`,
+  ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC);
+
+
 # Create the first user
 # - pass is created using php md5() function
 # - pass = 'elemento'
 INSERT INTO usuarios 
-	(usuario, pass, nombre, dbase)
-	VALUES ('elemento','af07e46299656b47b88f1164e50eacb5','Luis Lomeli','db_abacont01');
+	(usuario, pass, nombre, email, dbase)
+	VALUES ('elemento','af07e46299656b47b88f1164e50eacb5','Luis Lomeli','luis@example.com','db_abacont01');

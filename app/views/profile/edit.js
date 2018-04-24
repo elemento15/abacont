@@ -47,8 +47,14 @@ define(function (require) {
           data: data
         })
       ).then(function (data, textStatus, jqXHR) {
+        if (data.success) {
+          App.User = data.user;
+          alert('Usuario modificado con exito');
+        } else {
+          alert(data.msg);
+        }
+
         App.unblock();
-        App.User = data.user;
       });
     },
 
@@ -78,7 +84,7 @@ define(function (require) {
 
           alert('Contraseña modificada con exito');
         } else {
-          alert(data.error);
+          alert(data.msg);
         }
 
       }, function () {

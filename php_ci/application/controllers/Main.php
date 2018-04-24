@@ -104,8 +104,14 @@ class Main extends CI_Controller {
 
 		$data = array(
 			'id' => $user['id'],
-			'nombre' => $_POST['name']
+			'nombre' => $_POST['name'],
+			'email' => $_POST['email']
 		);
+
+		if (! filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+			echo json_encode(array('success' => false, 'msg' => 'Email invalido'));
+			exit;
+		}
 
 		if ($this->user->save($data, true)) {
 			$_SESSION['user'] = $this->user->findUser($user['user']);
@@ -123,12 +129,12 @@ class Main extends CI_Controller {
 		$user = $this->getCurrentUser();
 		
 		if ($pass == '' || $confirm == '') {
-			echo json_encode(array('success' => false, 'error' => 'Password o confirmacion invalida'));
+			echo json_encode(array('success' => false, 'msg' => 'Password o confirmacion invalida'));
 			exit;
 		}
 
 		if ($pass != $confirm) {
-			echo json_encode(array('success' => false, 'error' => 'Password y confirmacion no coinciden'));
+			echo json_encode(array('success' => false, 'msg' => 'Password y confirmacion no coinciden'));
 			exit;
 		}
 
@@ -139,7 +145,7 @@ class Main extends CI_Controller {
 
 		// change password in user's table
 		if (! $this->user->save($data, true)) {
-			echo json_encode(array('success' => false, 'error' => 'Error al cambiar el password'));
+			echo json_encode(array('success' => false, 'msg' => 'Error al cambiar el password'));
 			exit;
 		}
 
@@ -170,6 +176,7 @@ class Main extends CI_Controller {
 			'id'   => $usr->id,
 			'user' => $usr->usuario,
 			'name' => $usr->nombre,
+			'email' => $usr->email,
 			'display' => $display
 		);
 	}

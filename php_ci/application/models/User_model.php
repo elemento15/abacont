@@ -5,9 +5,9 @@ include_once('BaseModel.php');
 class User_model extends BaseModel {
 
 	protected $table_name    = 'usuarios';
-	protected $list_fields   = array('id','usuario','nombre','activo','dbase');
-	protected $search_fields = array('usuario','nombre');
-	protected $save_fields   = array('usuario','nombre','activo','dbase');
+	protected $list_fields   = array('id','usuario','nombre','email','activo','dbase');
+	protected $search_fields = array('usuario','nombre','email');
+	protected $save_fields   = array('usuario','nombre','email','activo','dbase');
 	// protected $edit_fields   = array();
 	protected $avoid_delete  = true;
 
