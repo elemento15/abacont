@@ -24,6 +24,15 @@ class User_model extends BaseModel {
 	    }
 	    return $row;
 	}
+
+	public function findEmail($email) {
+	    $query = $this->db->get_where($this->table_name, array('email' => $email));
+	    $row = $query->row();
+	    if (!$row) {
+	      return false;
+	    }
+	    return $row;
+	}
 }
 
 ?>

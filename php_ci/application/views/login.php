@@ -35,7 +35,7 @@
             success: function (response) {
               var data = response.data;
               if (response.success) {
-                window.location = 'index.php';
+                location.reload();
               } else {
                 alert(response.msg || 'Error loging in');
               }
@@ -52,12 +52,14 @@
   <body>
     <div class="container">
       <form class="form-signin" id="formSignIn">
-        <h2 class="form-signin-heading">Bienvenido</h2>
+        <h3 class="form-signin-heading text-primary">Bienvenido</h3>
+        
         <label for="inputUser" class="sr-only">Usuario</label>
         <input type="text" id="inputUser" class="form-control" placeholder="Usuario" required autofocus autocomplete="off">
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+        <a class="pull-right" href="signin">Registro</a>
       </form>
     </div>
   </body>

@@ -17,6 +17,64 @@ class Main extends CI_Controller {
 		}
 	}
 
+	public function signin() {
+		$this->load->view('register');
+	}
+
+	public function register() {
+		$data = $_POST;
+		$error = false;
+
+		if (!$data['user'] || strlen($data['user']) < 6 || preg_match('/[^a-z|0-9]/i', $data['user'])) {
+			$error = 'Usuario invalido';
+		}
+
+		if (!$data['name']) {
+			$error = 'Nombre invalido';
+		}
+
+		if (!$data['email'] || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+			$error = 'Email invalido';
+		}
+
+		if (!$data['pass'] || strlen($data['pass']) < 6) {
+			$error = 'Password invalido';
+		}
+
+		if (!$data['confirm'] || $data['pass'] != $data['confirm']) {
+			$error = 'Confirmacion invalida';
+		}
+
+
+		// avoid duplicated user|email
+		if ($this->user->findUser($data['user']) || $this->user->findEmail($data['email'])) {
+			$error = 'Usuario ó email existente';
+		}
+
+		if ($error) {
+			echo json_encode(array('success' => false, 'msg' => $error));
+			exit;
+		}
+
+		$data = array(
+			'id' => 0,
+			'usuario' => $data['user'],
+			'nombre' => $data['name'],
+			'email' => $data['email'],
+			'pass' => md5($data['pass']),
+			'fecha' => date('Y-m-d h:i:s'),
+			'activo' => false,
+			'dbase' => 'db_abacont_'.str_replace(' ', '', $data['user'])
+		);
+
+		// create the new user
+		if ($this->user->save($data, true)) {
+			echo json_encode(array('success' => true));
+		} else {
+			echo json_encode(array('success' => false, 'msg' => 'Error al registrarse'));
+		}
+	}
+
 	public function login() {
 		$user = $_POST['user'];
 		$pass = $_POST['pass'];
