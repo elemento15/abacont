@@ -82,9 +82,11 @@ class Movs_Accounts extends BaseController {
 				'importe'       => $data['importe'],
 				'concepto'      => $data['concepto'],
 				'observaciones' => 'Cargo por Transferencia. '.$data['observaciones'],
-				'automatico'    => 0
+				'automatico'    => 0,
+				'traspaso'      => 1
 			);
-			if (!$id = $this->model->save($params)) {
+
+			if (!$id_01 = $this->model->save($params)) {
 				echo json_encode(array('success' => false, 'msg' => $this->model->getError()));
 				exit;
 			}
@@ -105,9 +107,12 @@ class Movs_Accounts extends BaseController {
 				'importe'       => $data['importe'],
 				'concepto'      => $data['concepto'],
 				'observaciones' => 'Abono por Transferencia. '.$data['observaciones'],
-				'automatico'    => 0
+				'automatico'    => 0,
+				'traspaso'      => 1,
+				'traspaso_id'   => $id_01 // save the reference
 			);
-			if (!$id = $this->model->save($params)) {
+
+			if (!$id_02 = $this->model->save($params)) {
 				echo json_encode(array('success' => false, 'msg' => $this->model->getError()));
 				exit;
 			}
@@ -117,6 +122,18 @@ class Movs_Accounts extends BaseController {
 				echo json_encode(array('success' => false, 'msg' => $this->modelAccount->getError()));
 				exit;
 			}
+
+			// update reference in first movement
+			$params = array(
+				'id'            => $id_01,
+				'traspaso_id'   => $id_02
+			);
+
+			if (!$id_01 = $this->model->save($params, true)) {
+				echo json_encode(array('success' => false, 'msg' => $this->model->getError()));
+				exit;
+			}
+
 		
 		} else {
 			echo json_encode(array('success' => false, 'msg' => 'No se puede editar una transferencia'));
@@ -131,19 +148,38 @@ class Movs_Accounts extends BaseController {
 		$id = intval($_POST['id']);
 		if ($mov = $this->model->find($id)) {
 			if ($mov->cancelado) {
-				throw new Exception("Record already canceled");
+				throw new Exception("No puede cancelar registros cancelados");
 			}
 
 			if ($mov->automatico) {
-				throw new Exception("Record generated automatically");
+				throw new Exception("No puede cancelar registros automaticos");
+			}
+
+			if ($mov->traspaso && !$mov->traspaso_id) {
+				throw new Exception("Movimiento de traspaso sin referencia");
 			}
 
 			// cancel movement
 			$params = array('id' => $id, 'cancelado' => 1);
-			$this->model->save($params, true);
-			
+			if (!$this->model->save($params, true)) {
+				throw new Exception("Error al cancelar movimiento");
+			}
+
 			// update account's balance
 			$this->modelAccount->updateBalance($mov->cuenta_id, $mov->importe, $mov->tipo == 'C');
+			
+
+			// if transfer, cancel second movement
+			if ($mov->traspaso) {
+				$mov_trasp = $this->model->find($mov->traspaso_id);
+
+				$params = array('id' => $mov_trasp->id, 'cancelado' => 1);
+				if (!$this->model->save($params, true)) {
+					throw new Exception("Error al cancelar movimiento de traspaso");
+				}
+				
+				$this->modelAccount->updateBalance($mov_trasp->cuenta_id, $mov_trasp->importe, $mov_trasp->tipo == 'C');
+			}
 		}
 	}
 

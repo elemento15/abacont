@@ -81,3 +81,12 @@ CREATE TABLE `movimientos` (
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
+
+
+/* DATE: 2018-04-25 */
+
+ALTER TABLE `movimientos_cuentas` 
+  ADD COLUMN `traspaso` TINYINT NOT NULL DEFAULT 0 AFTER `automatico`;
+
+ALTER TABLE `movimientos_cuentas` 
+  ADD COLUMN `traspaso_id` INT UNSIGNED NULL AFTER `traspaso`;

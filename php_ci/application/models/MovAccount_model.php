@@ -5,11 +5,11 @@ include_once('BaseModel.php');
 class MovAccount_model extends BaseModel {
 	
 	protected $table_name    = 'movimientos_cuentas';
-	protected $list_fields   = array('id','fecha','tipo','importe','cancelado','concepto','automatico','cuenta_id',
+	protected $list_fields   = array('id','fecha','tipo','importe','cancelado','concepto','automatico','traspaso','traspaso_id','cuenta_id',
 		                             'cuentas.nombre AS cuenta_nombre',
 		                             'cuentas.tipo AS cuenta_tipo');
 	protected $search_fields = array('fecha','concepto');
-	protected $save_fields   = array('fecha','cuenta_id','tipo','importe','concepto','automatico','observaciones');
+	protected $save_fields   = array('fecha','cuenta_id','tipo','importe','concepto','automatico','traspaso','traspaso_id','observaciones');
 	protected $edit_fields   = array('observaciones');
 	protected $avoid_delete  = true;
 

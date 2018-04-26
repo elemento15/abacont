@@ -45,7 +45,6 @@ define(function (require) {
           that.$("select[name=cuenta_id]").append('<option value="'+ item.id +'">'+ nombre +'</option>')
         });
 
-        that.filterTable = [];
         that.loadCollection(true);
       });
     },
