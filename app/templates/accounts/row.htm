@@ -1,8 +1,16 @@
 <td>
-  <span class="glyphicon glyphicon-edit row-btn-edit" style="visibility:hidden;"></span>
-  <%= nombre %>
+  <div>
+  	<span class="glyphicon glyphicon-edit row-btn-edit" style="visibility:hidden;"></span>
+  	<%= nombre %>
+  </div>
+  <div class="cls-sub-text">
+  	<span style="padding-left: 16px;"><%= (tipo == 'C') ? 'CREDITO' : ( (tipo == 'D') ? 'DEBITO' : 'EFECTIVO') %></span>
+  </div>
 </td>
-<td><%= (tipo == 'C') ? 'CREDITO' : ( (tipo == 'D') ? 'DEBITO' : 'EFECTIVO') %></td>
+<td>
+	<div class="cls-sub-text cursor-default" title="Num. de Tarjeta"><%= num_tarjeta %></div>
+	<div class="cls-sub-text cursor-default" title="Num. de Cuenta"><%= num_cuenta %></div>
+</td>
 <td align="right" class="<%= (saldo < 0) ? 'cls-negative' : '' %>">$<%= saldo.formatMoney() %></td>
 <td align="center">
 	<% if (parseInt(usa_ingresos)) { %>

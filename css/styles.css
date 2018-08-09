@@ -168,6 +168,10 @@ span.cls-mov-auto {
   cursor: pointer;
 }
 
+.cursor-default {
+  cursor: default;
+}
+
 .cls-kpi {
   text-align: center;
   /*display: inline-block;*/

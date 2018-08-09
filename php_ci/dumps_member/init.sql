@@ -90,3 +90,9 @@ ALTER TABLE `movimientos_cuentas`
 
 ALTER TABLE `movimientos_cuentas` 
   ADD COLUMN `traspaso_id` INT UNSIGNED NULL AFTER `traspaso`;
+
+
+/* DATE: 2018-08-08  */
+ALTER TABLE `cuentas` 
+  ADD COLUMN `num_cliente` VARCHAR(15) NULL AFTER `num_cuenta`,
+  ADD COLUMN `clabe` VARCHAR(25) NULL AFTER `num_cliente`;

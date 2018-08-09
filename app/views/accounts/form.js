@@ -25,6 +25,8 @@ define(function (require) {
       this.$("input[name=usa_ingresos]").attr('checked', this.model.forIncomes());
       this.$("input[name=num_tarjeta]").val(this.model.get('num_tarjeta'));
       this.$("input[name=num_cuenta]").val(this.model.get('num_cuenta'));
+      this.$("input[name=num_cliente]").val(this.model.get('num_cliente'));
+      this.$("input[name=clabe]").val(this.model.get('clabe'));
       this.$("textarea[name=observaciones]").val(this.model.get('observaciones'));
     },
     
@@ -36,6 +38,8 @@ define(function (require) {
       this.model.set('usa_ingresos', (this.$("input[name=usa_ingresos]:checked").length));
       this.model.set('num_tarjeta', this.$("input[name=num_tarjeta]").val());
       this.model.set('num_cuenta', this.$("input[name=num_cuenta]").val());
+      this.model.set('num_cliente', this.$("input[name=num_cliente]").val());
+      this.model.set('clabe', this.$("input[name=clabe]").val());
       this.model.set('observaciones', this.$("textarea[name=observaciones]").val());
     },
 
