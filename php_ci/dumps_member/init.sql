@@ -96,3 +96,8 @@ ALTER TABLE `movimientos_cuentas`
 ALTER TABLE `cuentas` 
   ADD COLUMN `num_cliente` VARCHAR(15) NULL AFTER `num_cuenta`,
   ADD COLUMN `clabe` VARCHAR(25) NULL AFTER `num_cliente`;
+
+
+/* DATE: 2018-10-04  */
+ALTER TABLE `movimientos` 
+  ADD COLUMN `es_meses_sin_intereses` TINYINT NOT NULL DEFAULT 0 AFTER `cancelado`;

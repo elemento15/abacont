@@ -10,6 +10,7 @@ class Accounts extends BaseController {
 	public function actives() {
 		$incomes = (isset($_POST['incomes']) && $_POST['incomes']) ? true : false;
 		$expenses = (isset($_POST['expenses']) && $_POST['expenses']) ? true : false;
+		$type = (isset($_POST['type'])) ? $_POST['type'] : false;
 
 		$params = array(
 	      'order'    => array('field' => 'nombre', 'type' => 'ASC'),
@@ -26,6 +27,10 @@ class Accounts extends BaseController {
 
 		if ($expenses) {
 			$params['filter'][] = array('field' => 'usa_gastos', 'value' => true);
+		}
+
+		if ($type) {
+			$params['filter'][] = array('field' => 'tipo', 'value' => $type);
 		}
 
 	    $recs = $this->model->findAll($params);

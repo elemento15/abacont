@@ -48,10 +48,12 @@ class Charts extends CI_Controller {
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
 		$months        = intval($_POST['months']);
+		$msi           = intval($_POST['msi']);
 
 		$filters = '';
-		$filters.= ($category)        ? " AND cat.id = $category " : "";
-		$filters.= ($subcategory)     ? " AND subcat.id = $subcategory " : "";
+		$filters.= ($category)    ? " AND cat.id = $category " : "";
+		$filters.= ($subcategory) ? " AND subcat.id = $subcategory " : "";
+		$filters.= " AND mov.es_meses_sin_intereses = $msi ";
 
 		$query = $this->db->query("
 			select DATE_FORMAT(mov.fecha, '%Y-%m') AS mov_fecha, SUM(mov.importe) AS total 
@@ -126,10 +128,12 @@ class Charts extends CI_Controller {
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
 		$months        = intval($_POST['months']);
+		$msi           = intval($_POST['msi']);
 
 		$filters = '';
 		$filters.= ($category)    ? " AND cat.id = $category " : "";
 		$filters.= ($subcategory) ? " AND subcat.id = $subcategory " : "";
+		$filters.= " AND mov.es_meses_sin_intereses = $msi ";
 
 		$query = $this->db->query("
 			select DATE_FORMAT(mov.fecha, '%Y-%m') AS mov_fecha, 

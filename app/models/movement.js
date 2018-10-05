@@ -14,6 +14,7 @@ define(function (require) {
       subcategoria_id: 0,
       importe: 0,
       cancelado: 0,
+      es_meses_sin_intereses: 0,
       observaciones: '',
       dayOfWeek: function() {
         return this.fecha.getDayOfWeek();

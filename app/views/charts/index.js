@@ -15,7 +15,8 @@ define(function (require) {
       'change .configChart'           : 'updateChart',
       'click ul.nav a'                : 'selectChart',
       'change [name="categorias"]'    : 'changeCategory',
-      'change [name="subcategorias"]' : 'changeSubCategory'
+      'change [name="subcategorias"]' : 'changeSubCategory',
+      'change [name="tipo"]'          : 'changeTypeAccount'
     },
 
     initialize: function (params) {
@@ -112,14 +113,27 @@ define(function (require) {
         },
         data: [
           {
-            type: 'column',
-            color: '#D38483',
+            type: 'stackedColumn',
+            color: '#ff7272',
             visible: true,
             dataPoints: [],
             showInLegend: true,
             legendText: "Gastos",
-            indexLabel: "{y}",
-            indexLabelPlacement: "outside",
+            //indexLabel: "{y}",
+            indexLabelPlacement: "inside",
+            indexLabelFontSize: 12,
+            indexLabelFontColor: "#333333",
+            fillOpacity: .6,
+            bevelEnabled: false
+          },{
+            type: 'stackedColumn',
+            color: '#ffaeae',
+            visible: true,
+            dataPoints: [],
+            showInLegend: true,
+            legendText: "Gastos MSI",
+            //indexLabel: "{y}",
+            indexLabelPlacement: "inside",
             indexLabelFontSize: 12,
             indexLabelFontColor: "#333333",
             fillOpacity: .6,
@@ -162,14 +176,27 @@ define(function (require) {
         },
         data: [
           {
-            type: 'column',
-            color: '#D38483',
+            type: 'stackedColumn',
+            color: '#ff7272',
             visible: true,
             dataPoints: [],
             showInLegend: true,
             legendText: "Gastos",
-            indexLabel: "{y}",
-            indexLabelPlacement: "outside",
+            //indexLabel: "{y}",
+            indexLabelPlacement: "inside",
+            indexLabelFontSize: 12,
+            indexLabelFontColor: "#333333",
+            fillOpacity: .6,
+            bevelEnabled: false
+          },{
+            type: 'stackedColumn',
+            color: '#ffaeae',
+            visible: true,
+            dataPoints: [],
+            showInLegend: true,
+            legendText: "Gastos MSI",
+            //indexLabel: "{y}",
+            indexLabelPlacement: "inside",
             indexLabelFontSize: 12,
             indexLabelFontColor: "#333333",
             fillOpacity: .6,
@@ -200,6 +227,8 @@ define(function (require) {
         });
       });
 
+      $('.divFrm01').show();
+
       this.updateChart01();
     },
 
@@ -211,8 +240,14 @@ define(function (require) {
     selectChart: function (evt) {
       var opt = $(evt.target).attr('opt');
       
-      $('#divFormOpt02').hide();
-      $('#divFormOpt03').hide();
+      // hide all options forms
+      $('.divFrm01').hide();
+      $('.divFrm02').hide();
+      $('.divFrm03').hide();
+      $('.divFrm04').hide();
+
+      // show the selected options forms
+      $('.divFrm'+opt).show();
 
       switch (opt) {
         case '01' : this.updateChart01(); break;
@@ -229,6 +264,9 @@ define(function (require) {
       });
     },
     changeSubCategory: function (evt) {
+      this.updateChart(false);
+    },
+    changeTypeAccount: function (evt) {
       this.updateChart(false);
     },
 
@@ -250,7 +288,9 @@ define(function (require) {
       $.when(
         $.ajax({
           url: Defaults.ROUTE + 'accounts/actives',
-          dataType: 'json'
+          dataType: 'json',
+          type: 'POST',
+          data: { type: me.getTypeAccount() }
         })
       ).then(function (data, textStatus, jqXHR) {
 
@@ -312,14 +352,12 @@ define(function (require) {
       });
 
       this.showedChart02 = true;
-      $('#divFormOpt02').show();
     },
     updateChart03: function () {
       var me = this;
       var dp_exp = [];
+      var dp_msi = [];
       var dp_inc = [];
-
-      $('#divFormOpt03').show();
 
       // expenses
       $.when(
@@ -330,7 +368,8 @@ define(function (require) {
           data: {
             category: me.getCategory(),
             subcategory: me.getSubCategory(),
-            months: me.getLastMonths()
+            months: me.getLastMonths(),
+            msi: 0
           }
         })
       ).then(function (data, textStatus, jqXHR) {
@@ -342,6 +381,31 @@ define(function (require) {
         });
 
         me.chart_03.options.data[0].dataPoints = dp_exp;
+        me.chart_03.render();
+      });
+
+      // expenses msi
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'charts/expenses_months',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            category: me.getCategory(),
+            subcategory: me.getSubCategory(),
+            months: me.getLastMonths(),
+            msi: 1
+          }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        data.forEach(function (item, index) {
+          dp_msi.push({
+            label: item.mov_fecha,
+            y: parseFloat(item.total)
+          });
+        });
+
+        me.chart_03.options.data[1].dataPoints = dp_msi;
         me.chart_03.render();
       });
 
@@ -365,16 +429,15 @@ define(function (require) {
           });
         });
 
-        me.chart_03.options.data[1].dataPoints = dp_inc;
+        me.chart_03.options.data[2].dataPoints = dp_inc;
         me.chart_03.render();
       });
     },
     updateChart04: function () {
       var me = this;
       var dp_exp = [];
+      var dp_msi = [];
       var dp_inc = [];
-
-      $('#divFormOpt03').show();
 
       // expenses
       $.when(
@@ -385,7 +448,8 @@ define(function (require) {
           data: {
             category: me.getCategory(),
             subcategory: me.getSubCategory(),
-            months: me.getLastMonths()
+            months: me.getLastMonths(),
+            msi: 0
           }
         })
       ).then(function (data, textStatus, jqXHR) {
@@ -397,6 +461,31 @@ define(function (require) {
         });
 
         me.chart_04.options.data[0].dataPoints = dp_exp;
+        me.chart_04.render();
+      });
+
+      // expenses msi
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'charts/expenses_months_avg',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            category: me.getCategory(),
+            subcategory: me.getSubCategory(),
+            months: me.getLastMonths(),
+            msi: 1
+          }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        data.forEach(function (item, index) {
+          dp_msi.push({
+            label: item.mov_fecha,
+            y: parseFloat(item.total)
+          });
+        });
+
+        me.chart_04.options.data[1].dataPoints = dp_msi;
         me.chart_04.render();
       });
 
@@ -420,7 +509,7 @@ define(function (require) {
           });
         });
 
-        me.chart_04.options.data[1].dataPoints = dp_inc;
+        me.chart_04.options.data[2].dataPoints = dp_inc;
         me.chart_04.render();
       });
     },
@@ -458,6 +547,10 @@ define(function (require) {
     },
     getLastMonths: function () {
       var value = $('select[name="last_months"]').val() || 0;
+      return value;
+    },
+    getTypeAccount: function () {
+      var value = $('select[name="tipo"]').val() || 0;
       return value;
     }
 

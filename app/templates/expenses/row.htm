@@ -11,10 +11,11 @@
 	<div class="cls-sub-text"><%= cuenta_nombre %></div>
 </td>
 <td style="text-align:right">$<%= importe.formatMoney() %></td>
-<!--<td style="text-align:center">-->
-	<% <!-- if (parseInt(extraordinario)) --> { %>
-		<!--<span class="label label-warning btn-mark cursor-pointer">Si</span>-->
-	<% <!-- } else { --> %>
-		<!--<span class="label label-default btn-mark cursor-pointer">No</span>-->
-	<% <!-- } --> %>
-<!--</td>-->
+<td style="text-align:center">
+	<% if (parseInt(es_meses_sin_intereses)) { %>
+		<span class="label label-warning">Si</span>
+	<% } else { %>
+		&nbsp;
+	<% } %>
+</td>
+

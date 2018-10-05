@@ -15,47 +15,55 @@
 <div class="row">
 	<div class="col-sm-2">
 		<div style="margin-bottom: 20px;">
-			<div class="form-group">
+			<div class="form-group divFrm01" style="display: none;">
+				<label>Tipo:</label>
+				<select name="tipo" class="form-control">
+					<option value="">-- Todos --</option>
+					<option value="E">Efectivo</option>
+					<option value="D">Débito</option>
+					<option value="C">Crédito</option>
+				</select>
+			</div>
+
+			<div class="form-group divFrm02 divFrm03 divFrm04" style="display: none;">
 				<label>Clase:</label>
 				<select name="categorias" class="form-control">
 					<option value="">-- Todos --</option>
 				</select>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group divFrm02 divFrm03 divFrm04" style="display: none;">
 				<label>Subclase:</label>
 				<select name="subcategorias" class="form-control">
 					<option value="">-- Todos --</option>
 				</select>
 			</div>
 
-			<div id="divFormOpt02" style="display: none;">
-				<div class="form-group">
-					<label>Año: </label>
-					<input type="number" name="year_02" class="form-control configChart" opt="02" value="">
-				</div>
-				
-				<div class="form-group">
-					<label>Mes:</label>
-					<select name="month_02" class="form-control configChart" opt="02">
-						<option value="">-- Todos --</option>
-						<option value="01">Enero</option>
-						<option value="02">Febrero</option>
-						<option value="03">Marzo</option>
-						<option value="04">Abril</option>
-						<option value="05">Mayo</option>
-						<option value="06">Junio</option>
-						<option value="07">Julio</option>
-						<option value="08">Agosto</option>
-						<option value="09">Septiembre</option>
-						<option value="10">Octubre</option>
-						<option value="11">Noviembre</option>
-						<option value="12">Diciembre</option>
-					</select>
-				</div>
+			<div class="form-group divFrm02" style="display: none;">
+				<label>Año: </label>
+				<input type="number" name="year_02" class="form-control configChart" opt="02" value="">
+			</div>
+			
+			<div class="form-group divFrm02" style="display: none;">
+				<label>Mes:</label>
+				<select name="month_02" class="form-control configChart" opt="02">
+					<option value="">-- Todos --</option>
+					<option value="01">Enero</option>
+					<option value="02">Febrero</option>
+					<option value="03">Marzo</option>
+					<option value="04">Abril</option>
+					<option value="05">Mayo</option>
+					<option value="06">Junio</option>
+					<option value="07">Julio</option>
+					<option value="08">Agosto</option>
+					<option value="09">Septiembre</option>
+					<option value="10">Octubre</option>
+					<option value="11">Noviembre</option>
+					<option value="12">Diciembre</option>
+				</select>
 			</div>
 
-			<div id="divFormOpt03" style="display: none;">
+			<div class="divFrm03 divFrm04" style="display: none;">
 				<div class="form-group">
 					<label>Mostrar:</label>
 					<select name="last_months" class="form-control configChart">

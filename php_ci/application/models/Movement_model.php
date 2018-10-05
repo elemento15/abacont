@@ -5,7 +5,8 @@ include_once('BaseModel.php');
 class Movement_model extends BaseModel {
 	
 	protected $table_name    = 'movimientos';
-	protected $list_fields   = array('id','fecha','tipo','importe','cancelado','movimiento_cuenta_id','subcategoria_id',
+	protected $list_fields   = array('id','fecha','tipo','importe','cancelado','es_meses_sin_intereses',
+		                             'movimiento_cuenta_id','subcategoria_id',
 		                             'subcategorias.nombre AS subcategoria_nombre', 'categorias.nombre AS categoria_nombre',
 		                             'cuentas.nombre AS cuenta_nombre');
 	protected $search_fields = array('fecha','subcategorias.nombre','categorias.nombre','cuentas.nombre');
@@ -23,7 +24,7 @@ class Movement_model extends BaseModel {
 	public function find($id) {
 		$this->db->select('mov.id, mov.fecha, mov.tipo, mov.importe, movimiento_cuenta_id, subcategoria_id, 
 			               subcategorias.categoria_id, mov.observaciones, movimientos_cuentas.cuenta_id, 
-			               movimientos_cuentas.cancelado, 
+			               es_meses_sin_intereses, movimientos_cuentas.cancelado, 
 			               subcategorias.nombre AS nombre_subcategoria,
 			               categorias.nombre AS nombre_categoria');
 		$this->db->join('movimientos_cuentas', 'movimientos_cuentas.id = movimiento_cuenta_id', 'left');
