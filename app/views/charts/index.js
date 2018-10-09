@@ -83,7 +83,12 @@ define(function (require) {
         zoomEnabled: true,
         data: [{
           type: 'spline',
-          dataPoints: []
+          cursor: 'pointer',
+          dataPoints: [],
+          click: function (e) {
+            var date = e.dataPoint.label;
+            that.showExpensesDetails(date);
+          }
         }]
       });
 
@@ -552,6 +557,60 @@ define(function (require) {
     getTypeAccount: function () {
       var value = $('select[name="tipo"]').val() || 0;
       return value;
+    },
+
+    showExpensesDetails: function (date) {
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'movements/read',
+          dataType: 'json',
+          data: {
+            order_by_id: true,
+            filter: [{
+              field: 'tipo',
+              value: 'G'
+            },{
+              field: 'cancelado',
+              value: 0
+            },{
+              field: 'fecha',
+              value: date
+            }]
+          },
+          method: 'POST'
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        var html = '';
+        
+        if (! data) {
+          alert('Error reading movements');
+        } else {
+
+          data.data.forEach(function (item) {
+            html += '<tr>';
+            html += '   <td>';
+            html += '      <div>'+ item.subcategoria_nombre +'</div>';
+            html += '      <div class="cls-sub-text">'+ item.categoria_nombre +'</div>';
+            html += '   </td>';
+            html += '   <td>';
+            html += '      <div class="cls-sub-text">'+ item.cuenta_nombre +'</div>';
+            html += '   </td>';
+            html += '   <td class="text-right">$'+ item.importe.formatMoney() +'</td>';
+            
+            if (parseInt(item.es_meses_sin_intereses)) {
+              html += '   <td class="text-center"><span class="label label-warning">MSI</span></td>';
+            } else {
+              html += '   <td>&nbsp;</td>';
+            }
+            
+            html += '</tr>';
+          });
+          
+          $('#dialog-expenses table tbody').html(html);
+          $('#dialog-expenses').modal();
+        }
+      });
+
     }
 
   });
