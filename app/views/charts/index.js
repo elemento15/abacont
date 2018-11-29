@@ -16,7 +16,8 @@ define(function (require) {
       'click ul.nav a'                : 'selectChart',
       'change [name="categorias"]'    : 'changeCategory',
       'change [name="subcategorias"]' : 'changeSubCategory',
-      'change [name="tipo"]'          : 'changeTypeAccount'
+      'change [name="tipo"]'          : 'changeTypeAccount',
+      'click .cls-expense-detail'     : 'showComments'
     },
 
     initialize: function (params) {
@@ -560,22 +561,30 @@ define(function (require) {
     },
 
     showExpensesDetails: function (date) {
+      var category = this.getCategory();
+      var subcategory = this.getSubCategory();
+
+      var filter = [
+        { field: 'tipo',      value: 'G' },
+        { field: 'cancelado', value: 0 },
+        { field: 'fecha',     value: date },
+      ];
+
+      if (category) {
+        filter.push({ field: 'subcategorias.categoria_id', value: category });
+      }
+
+      if (subcategory) {
+        filter.push({ field: 'subcategorias.id', value: subcategory });
+      }
+
       $.when(
         $.ajax({
           url: Defaults.ROUTE + 'movements/read',
           dataType: 'json',
           data: {
             order_by_id: true,
-            filter: [{
-              field: 'tipo',
-              value: 'G'
-            },{
-              field: 'cancelado',
-              value: 0
-            },{
-              field: 'fecha',
-              value: date
-            }]
+            filter: filter
           },
           method: 'POST'
         })
@@ -589,7 +598,9 @@ define(function (require) {
           data.data.forEach(function (item) {
             html += '<tr>';
             html += '   <td>';
-            html += '      <div>'+ item.subcategoria_nombre +'</div>';
+            html += '      <div class="text-info">';
+            html += '         <span class="cls-expense-detail" expId="'+ item.id +'">'+ item.subcategoria_nombre +'</span>';
+            html += '      </div>';
             html += '      <div class="cls-sub-text">'+ item.categoria_nombre +'</div>';
             html += '   </td>';
             html += '   <td>';
@@ -611,6 +622,33 @@ define(function (require) {
         }
       });
 
+      this.cleanComments();
+    },
+
+    showComments: function (evt) {
+      var me = this;
+      var id = evt.currentTarget.getAttribute('expId');
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'movements/model',
+          dataType: 'json',
+          data: { id: id },
+          method: 'GET'
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        if (data.observaciones) {
+          var html = '<span>'+ data.observaciones +'</span>';
+          $('.cls-expenses-detail-comments').html(html);
+        } else {
+          me.cleanComments();
+        }
+      });
+    },
+
+    cleanComments: function () {
+      var html = '<span class="text-muted">(Sin Comentarios)</span>';
+      $('.cls-expenses-detail-comments').html(html);
     }
 
   });

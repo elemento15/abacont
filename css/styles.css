@@ -198,3 +198,20 @@ span.cls-mov-auto {
   font-size: 11px;
   color: #666;
 }
+
+/* container for expenses detail in charts */
+.cls-expenses-detail-list {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.cls-expenses-detail-comments {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin: 10px 0px;
+  padding: 5px;
+}
+
+.cls-expense-detail {
+  cursor: pointer;
+}
