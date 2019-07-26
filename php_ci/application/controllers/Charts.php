@@ -238,7 +238,7 @@ class Charts extends CI_Controller {
 					(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
 					 from movimientos_cuentas as mc2 
 					 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
-					 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha <= concat(anio_mes,'-01') 
+					 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
 			        ), 0)) as saldo 
 			FROM movimientos_cuentas as mc 
 			LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
@@ -254,7 +254,7 @@ class Charts extends CI_Controller {
 					(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
 					 from movimientos_cuentas as mc2 
 					 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
-					 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha <= concat(anio_mes,'-01') 
+					 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
 			        ), 0)) as saldo 
 			FROM movimientos_cuentas as mc 
 			LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
