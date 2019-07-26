@@ -8,6 +8,7 @@
 			<li><a href="#chart2" aria-controls="chart2" data-toggle="tab" opt="02">Gastos por Día</a></li>
 			<li><a href="#chart3" aria-controls="chart3" data-toggle="tab" opt="03">Gastos Mensuales</a></li>
 			<li><a href="#chart4" aria-controls="chart4" data-toggle="tab" opt="04">Prom. Diario/Mes</a></li>
+			<li><a href="#chart5" aria-controls="chart5" data-toggle="tab" opt="05">Saldos Mensuales</a></li>
 		</ul>
 	</div>
 </div>
@@ -78,7 +79,7 @@
 		</div>
 	</div>
 
-	<div class="col-sm-10">
+	<div class="col-sm-9">
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="chart1">
 				<div class="row">
@@ -111,31 +112,39 @@
 					</div>
 				</div>
 			</div>
+
+			<div role="tabpanel" class="tab-pane" id="chart5">
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="canvas-chart05"></div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
 	<div class="modal fade" id="dialog-expenses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Detalle de Gastos</h4>
-        </div>
-        <div class="modal-body">
-          <div class="cls-expenses-detail-list">
-	        <table class="table table-condensed">
-	          <tbody class="main-data-list"></tbody>
-	        </table>
+	    <div class="modal-dialog" role="document">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	          <h4 class="modal-title" id="myModalLabel">Detalle de Gastos</h4>
+	        </div>
+	        <div class="modal-body">
+	          <div class="cls-expenses-detail-list">
+		        <table class="table table-condensed">
+		          <tbody class="main-data-list"></tbody>
+		        </table>
+		      </div>
+		      <div class="cls-expenses-detail-comments">
+		      	<span class="text-muted">(Sin Comentarios)</span>
+		      </div>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        </div>
 	      </div>
-	      <div class="cls-expenses-detail-comments">
-	      	<span class="text-muted">(Sin Comentarios)</span>
-	      </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
+	    </div>
+	</div>
 
 </div>

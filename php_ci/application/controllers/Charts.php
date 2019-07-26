@@ -80,7 +80,7 @@ class Charts extends CI_Controller {
 			}
 		}
 
-		echo json_encode($data);
+		echo json_encode( array_reverse($data) );
 	}
 
 	public function incomes_months() {
@@ -119,7 +119,7 @@ class Charts extends CI_Controller {
 			}
 		}
 
-		echo json_encode($data);
+		echo json_encode( array_reverse($data) );
 	}
 
 	public function expenses_months_avg() {
@@ -172,7 +172,7 @@ class Charts extends CI_Controller {
 			}
 		}
 
-		echo json_encode($data);
+		echo json_encode( array_reverse($data) );
 	}
 
 	public function incomes_months_avg() {
@@ -223,7 +223,46 @@ class Charts extends CI_Controller {
 			}
 		}
 
-		echo json_encode($data);
+		echo json_encode( array_reverse($data) );
+	}
+
+	public function balance_months() {
+		$debit = [];
+		$credit = [];
+
+		// debit
+		$query = $this->db->query("
+			select date_format(fecha, '%Y-%m') as anio_mes,
+				(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
+				 IFNULL(
+					(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
+					 from movimientos_cuentas as mc2 
+					 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
+					 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha <= concat(anio_mes,'-01') 
+			        ), 0)) as saldo 
+			FROM movimientos_cuentas as mc 
+			LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
+			WHERE cta.tipo = 'D' AND mc.cancelado = 0 
+			GROUP BY anio_mes;");
+		$debit = $query->result_array();
+
+		// credit
+		$query = $this->db->query("
+			select date_format(fecha, '%Y-%m') as anio_mes,
+				(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
+				 IFNULL(
+					(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
+					 from movimientos_cuentas as mc2 
+					 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
+					 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha <= concat(anio_mes,'-01') 
+			        ), 0)) as saldo 
+			FROM movimientos_cuentas as mc 
+			LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
+			WHERE cta.tipo = 'C' AND mc.cancelado = 0 
+			GROUP BY anio_mes;");
+		$credit = $query->result_array();
+
+		echo json_encode(array('debit' => $debit, 'credit' => $credit));
 	}
 
 

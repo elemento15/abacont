@@ -219,6 +219,62 @@ define(function (require) {
         ]
       });
 
+      this.chart_05 = new CanvasJS.Chart("canvas-chart05", {
+        theme: "theme3",
+        title: { text: "Saldos Mensuales de Cuentas (Débito/Crédito)", fontSize: 18 },
+        axisX: {
+          title: 'Meses',
+          titleFontSize: 16,
+          labelFontSize: 12,
+          labelAutoFit: true
+        },
+        axisY: {
+          title: '$',
+          titleFontSize: 16,
+          labelFontSize: 13,
+          gridColor: "#CCCCCC"
+        },
+        legend: {
+          fontFamily: 'Verdana',
+          fontSize: 12,
+          cursor: 'pointer',
+          itemclick: function (e) {
+            e.dataSeries.visible = !e.dataSeries.visible;
+            e.chart.render();
+          }
+        },
+        data: [
+          {
+            type: 'splineArea',
+            color: '#6694bb',
+            visible: true,
+            dataPoints: [],
+            showInLegend: true,
+            legendText: "Débito",
+            indexLabelPlacement: "inside",
+            indexLabelFontSize: 12,
+            indexLabelFontColor: "#333333",
+            fillOpacity: .6,
+            bevelEnabled: false,
+            markerSize: 4
+          },{
+            type: 'splineArea',
+            color: '#ff7272',
+            visible: true,
+            dataPoints: [],
+            showInLegend: true,
+            legendText: "Crédito",
+            indexLabelPlacement: "inside",
+            indexLabelFontSize: 12,
+            indexLabelFontColor: "#333333",
+            fillOpacity: .6,
+            bevelEnabled: false,
+            markerSize: 4
+          }
+        ]
+      });
+
+
       // fill the categories select, with all the categorias for expenses
       $.when(
         $.ajax({
@@ -251,6 +307,7 @@ define(function (require) {
       $('.divFrm02').hide();
       $('.divFrm03').hide();
       $('.divFrm04').hide();
+      $('.divFrm05').hide();
 
       // show the selected options forms
       $('.divFrm'+opt).show();
@@ -260,6 +317,7 @@ define(function (require) {
         case '02' : this.updateChart02(); break;
         case '03' : this.updateChart03(); break;
         case '04' : this.updateChart04(); break;
+        case '05' : this.updateChart05(); break;
       }
     },
     changeCategory: function (evt) {
@@ -285,6 +343,7 @@ define(function (require) {
         case '02' : this.updateChart02(); break;
         case '03' : this.updateChart03(); break;
         case '04' : this.updateChart04(); break;
+        case '05' : this.updateChart05(); break;
       }
     },
     updateChart01: function () {
@@ -517,6 +576,39 @@ define(function (require) {
 
         me.chart_04.options.data[2].dataPoints = dp_inc;
         me.chart_04.render();
+      });
+    },
+    updateChart05: function () {
+      var me = this;
+      var debit = [];
+      var credit = [];
+
+      // expenses
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'charts/balance_months',
+          dataType: 'json',
+          type: 'POST'
+        })
+      ).then(function (data, textStatus, jqXHR) {
+
+        data.debit.forEach(function (item, index) {
+          debit.push({
+            label: item.anio_mes,
+            y: parseFloat(item.saldo)
+          });
+        });
+
+        data.credit.forEach(function (item, index) {
+          credit.push({
+            label: item.anio_mes,
+            y: parseFloat(item.saldo)
+          });
+        });
+
+        me.chart_05.options.data[0].dataPoints = debit;
+        me.chart_05.options.data[1].dataPoints = credit;
+        me.chart_05.render();
       });
     },
 
