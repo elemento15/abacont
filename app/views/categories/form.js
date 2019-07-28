@@ -21,6 +21,12 @@ define(function (require) {
       this.model.set('nombre', this.$("input[name=nombre]").val());
       this.model.set('tipo', this.$("select[name=tipo]").val());
       this.model.set('activo', (this.$("input[name=activo]:checked").length));
+    },
+
+    afterRender: function () {
+      if (this.options.recId) {
+        this.$("select[name=tipo]").attr('disabled', 'disabled');
+      }
     }
   });
 

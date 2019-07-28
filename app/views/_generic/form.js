@@ -126,6 +126,11 @@ define(function (require) {
         recId: this.options.recId,
         tplBtns: _.template(tplBtns)
       }));
+
+      if (this.afterRender) {
+        this.afterRender();
+      }
+
       return this;
     },
     disableForm: function () {
