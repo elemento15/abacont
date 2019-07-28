@@ -60,6 +60,9 @@
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
         <a class="pull-right" href="signin">Registro</a>
+
+        <div style="clear:both;"></div>
+        <div class="text-muted cls-info">¿Dudas? Envía un correo a <b>luism.lomeli@gmail.com</b></div>
       </form>
     </div>
   </body>
