@@ -5,46 +5,62 @@
   <fieldset>
     <div class="row">
       <div class="col-xs-6">
-        <div class="form-group date">
-          <label for="fecha">Fecha:</label>
-          <div class="input-group date" style="max-width:150px">
-            <input type="text" name="fecha" class="form-control">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="form-group date">
+              <label for="fecha">Fecha:</label>
+              <div class="input-group date" style="max-width:150px">
+                <input type="text" name="fecha" class="form-control">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="importe">Importe:</label>
+              <input type="number" name="importe" class="form-control">
+            </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="cuenta_id">Cuenta Origen (Cargo):</label>
-          <select name="cuenta_id" class="form-control">
-            <option value="">-- Seleccione --</option>
-          </select>
-        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="cuenta_id">Cuenta Origen (Cargo):</label>
+              <select name="cuenta_id" class="form-control">
+                <option value="">-- Seleccione --</option>
+              </select>
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label for="cuenta_id_destino">Cuenta Destino (Abono):</label>
-          <select name="cuenta_id_destino" class="form-control">
-            <option value="">-- Seleccione --</option>
-          </select>
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="cuenta_id_destino">Cuenta Destino (Abono):</label>
+              <select name="cuenta_id_destino" class="form-control">
+                <option value="">-- Seleccione --</option>
+              </select>
+            </div>
+          </div>
         </div>
-
+        
         <div class="form-group">
-          <label for="importe">Importe:</label>
-          <input type="number" name="importe" class="form-control">
+          <label for="concepto">Concepto:</label>
+          <input type="text" name="concepto" class="form-control" maxlength="80">
         </div>
       </div>
 
       <div class="col-xs-6">
         <div class="form-group">
-          <label for="concepto">Concepto:</label>
-          <input type="text" name="concepto" class="form-control" maxlength="80">
-        </div>
-
-        <div class="form-group">
           <label for="observaciones">Observaciones:</label>
-          <textarea name="observaciones" class="form-control" rows="7"></textarea>
+          <textarea name="observaciones" class="form-control" rows="6"></textarea>
         </div>
+        
+        <div class="text-danger"><b>Nota:</b> Un traspaso genera 2 movimientos, uno de cargo y otro de abono</div>
       </div>
     </div>
+
     <%= tplBtns({ id: recId, btn_delete: false, btn_cancel: false }) %>
   </fieldset>
 </form>

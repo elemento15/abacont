@@ -30,6 +30,18 @@ define(function (require) {
       this.model.set('observaciones', this.$("textarea[name=observaciones]").val());
     },
 
+    afterRender: function () {
+      if (this.options.recId) {
+        this.$("select[name=cuenta_id]").attr('disabled', 'disabled');
+        this.$("input[name=fecha]").attr('disabled', 'disabled');
+        this.$("input[name=importe]").attr('disabled', 'disabled');
+        this.$("select[name=categoria_id]").attr('disabled', 'disabled');
+        this.$("select[name=subcategoria_id]").attr('disabled', 'disabled');
+
+        this.$('.form-group:has(> #div-account-balance-form)').hide();
+      }
+    },
+
     // filter subcategories by category selected
     searchSubCategories: function (category_id, callback) {
       var that = this;
@@ -96,6 +108,8 @@ define(function (require) {
         var account = $(this).val();
         that.searchAccountData(account);
       });
+
+
     },
 
     onInit: function () {

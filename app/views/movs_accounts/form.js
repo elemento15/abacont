@@ -36,29 +36,13 @@ define(function (require) {
       this.model.set('observaciones', this.$("textarea[name=observaciones]").val());
     },
 
-    // filter subcategories by category selected
-    searchSubCategories: function (category_id, callback) {
-      // var that = this;
-
-      // App.block();
-
-      // $.when(
-      //   $.ajax({
-      //     url: Defaults.ROUTE + 'subcategories/actives',
-      //     type: 'POST',
-      //     dataType: 'json',
-      //     data: { category_id: category_id }
-      //   })
-      // ).then(function (data, textStatus, jqXHR) {
-      //   var nombre;
-      //   that.$("select[name=subcategoria_id]").html('<option value="">-- Seleccione --</option>');
-      //   data.forEach(function (item) {
-      //     that.$("select[name=subcategoria_id]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
-      //   });
-
-      //   if (callback) { callback(); }
-      //   App.unblock();
-      // });
+    afterRender: function () {
+      if (this.options.recId) {
+        this.$("input[name=fecha]").attr('disabled', 'disabled');
+        this.$("input[name=tipo]").attr('disabled', 'disabled');
+        this.$("select[name=cuenta_id]").attr('disabled', 'disabled');
+        this.$("input[name=importe]").attr('disabled', 'disabled');
+      }
     },
 
     onRender: function () {

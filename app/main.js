@@ -1,9 +1,9 @@
 require.config({
   baseUrl: 'libs',
-  //urlArgs: "v=1.36",
+  urlArgs: "v=1.4.0",
   
   // uncomment in development mode, avoid cached JS
-  urlArgs: "v=" + (new Date()).getTime(),
+  //urlArgs: "v=" + (new Date()).getTime(),
 
   paths: {
     app:  '../app',
