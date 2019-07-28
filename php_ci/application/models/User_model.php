@@ -33,6 +33,11 @@ class User_model extends BaseModel {
 	    }
 	    return $row;
 	}
+
+	public function getAll() {
+		$query = $this->db->get($this->table_name);
+		return $query->result();
+	}
 }
 
 ?>

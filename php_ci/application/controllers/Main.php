@@ -103,6 +103,27 @@ class Main extends CI_Controller {
     	echo json_encode(array('success' => true));
 	}
 
+	public function all() {
+		// main/all
+		$this->load->view('all_users');
+	}
+
+	public function allUsers() {
+		$data = $this->user->getAll();
+		$response = [];
+
+		foreach ($data as $item) {
+			$response[] = [
+				'usuario' => $item->usuario,
+				'nombre'  => $item->nombre,
+				'activo'  => $item->activo,
+				'fecha'   => $item->fecha
+			];
+		}
+
+		echo json_encode($response);
+	}
+
 	public function kpis() {
 		// get dates for 30 days and 6 months
 		$query = $this->db->query("
