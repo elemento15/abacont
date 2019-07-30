@@ -174,10 +174,8 @@ span.cls-mov-auto {
 
 .cls-kpi {
   text-align: center;
-  /*display: inline-block;*/
   background: #fff;
-  padding: 3px 5px;
-  margin: 0px 0px 6px 0px;
+  margin: 0px 0px 15px 0px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
@@ -187,11 +185,14 @@ span.cls-mov-auto {
   font-weight: bold;
   border-bottom: 1px solid #ddd;
   margin-bottom: 2px;
+  background-color: #e7e7e7;
+  padding: 3px;
 }
 
 .cls-kpi-body > div:first-child {
   font-size: 22px;
   font-weight: bold;
+  padding: 3px;
 }
 
 .cls-kpi-small {

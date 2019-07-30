@@ -129,7 +129,8 @@ class Main extends CI_Controller {
 		$query = $this->db->query("
 			select DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 30 DAY), '%Y-%m-%d') AS date30d, 
 			       DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 6 MONTH), '%Y-%m-%d') AS date6m, 
-			       DATEDIFF(NOW(), DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 6 MONTH), '%Y-%m-%d')) AS days6m;");
+			       DATEDIFF(NOW(), DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 6 MONTH), '%Y-%m-%d')) AS days6m,
+			       DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH), '%Y-%m-%d') AS date12m;");
 
 		$res = $query->result_array();
 		$dates = $res[0];
@@ -154,6 +155,14 @@ class Main extends CI_Controller {
 			              tipo = 'G' AND NOT cancelado) / ".$dates['days6m']." AS exp6m,
 			       (SELECT SUM(importe) 
 			        FROM movimientos 
+			        WHERE fecha BETWEEN '".$dates['date12m']."' AND NOW() AND 
+			              tipo = 'I' AND NOT cancelado) / 365 AS ing12m,
+			       (SELECT SUM(importe) 
+			        FROM movimientos 
+			        WHERE fecha BETWEEN '".$dates['date12m']."' AND NOW() AND 
+			              tipo = 'G' AND NOT cancelado) / 365 AS exp12m,
+			       (SELECT SUM(importe) 
+			        FROM movimientos 
 			        WHERE fecha BETWEEN '".$dates['date30d']."' AND NOW() AND 
 			              tipo = 'I' AND NOT cancelado) AS ingtot30d, 
 			       (SELECT SUM(importe) 
@@ -167,7 +176,15 @@ class Main extends CI_Controller {
 			       (SELECT SUM(importe) 
 			        FROM movimientos 
 			        WHERE fecha BETWEEN '".$dates['date6m']."' AND NOW() AND 
-			              tipo = 'G' AND NOT cancelado) AS exptot6m");
+			              tipo = 'G' AND NOT cancelado) AS exptot6m,
+			       (SELECT SUM(importe) 
+			        FROM movimientos 
+			        WHERE fecha BETWEEN '".$dates['date12m']."' AND NOW() AND 
+			              tipo = 'I' AND NOT cancelado) AS ingtot12m, 
+			       (SELECT SUM(importe) 
+			        FROM movimientos 
+			        WHERE fecha BETWEEN '".$dates['date12m']."' AND NOW() AND 
+			              tipo = 'G' AND NOT cancelado) AS exptot12m");
 
 		$data = $query->result_array();
 		echo json_encode($data[0]);

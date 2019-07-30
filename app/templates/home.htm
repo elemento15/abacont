@@ -2,91 +2,144 @@
 <hr/>
 
 <div class="row">
-	<div class="col-sm-5 col-md-4">
+	<div class="col-md-10 col-md-offset-1 col-sm-12">
 		<div class="row">
 			<div class="col-xs-6">
-				<div class="cls-kpi">
-					<div class="cls-kpi-title">Ingreso Diario</div>
-					<div class="cls-kpi-body">
-						<div id="kpiIng30d" class="text-primary">$0.00</div>
-						<div class="cls-kpi-small">30 dias</div>
+				<div class="panel panel-default">
+					<div class="panel-heading text-center">
+						<b class="text-info">Promedio Diario</b>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Ingreso</div>
+									<div class="cls-kpi-body">
+										<div id="kpiIng30d" class="text-primary">$0.00</div>
+										<div class="cls-kpi-small">30 dias</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Gasto</div>
+									<div class="cls-kpi-body">
+										<div id="kpiExp30d" class="text-danger">$0.00</div>
+										<div class="cls-kpi-small">30 dias</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Ingreso</div>
+									<div class="cls-kpi-body">
+										<div id="kpiIng6m" class="text-primary">$0.00</div>
+										<div class="cls-kpi-small">6 meses</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Gasto</div>
+									<div class="cls-kpi-body">
+										<div id="kpiExp6m" class="text-danger">$0.00</div>
+										<div class="cls-kpi-small">6 meses</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Ingreso</div>
+									<div class="cls-kpi-body">
+										<div id="kpiIng12m" class="text-primary">$0.00</div>
+										<div class="cls-kpi-small">12 meses</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Gasto</div>
+									<div class="cls-kpi-body">
+										<div id="kpiExp12m" class="text-danger">$0.00</div>
+										<div class="cls-kpi-small">12 meses</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-				
-			<div class="col-xs-6">
-				<div class="cls-kpi">
-					<div class="cls-kpi-title">Gasto Diario</div>
-					<div class="cls-kpi-body">
-						<div id="kpiExp30d" class="text-danger">$0.00</div>
-						<div class="cls-kpi-small">30 dias</div>
-					</div>
-				</div>
-			</div>
-		</div>
 
-		<div class="row">
 			<div class="col-xs-6">
-				<div class="cls-kpi">
-					<div class="cls-kpi-title">Ingreso Diario</div>
-					<div class="cls-kpi-body">
-						<div id="kpiIng6m" class="text-primary">$0.00</div>
-						<div class="cls-kpi-small">6 meses</div>
+				<div class="panel panel-default">
+					<div class="panel-heading text-center">
+						<b class="text-info">Totales</b>
 					</div>
-				</div>
-			</div>
-				
-			<div class="col-xs-6">
-				<div class="cls-kpi">
-					<div class="cls-kpi-title">Gasto Diario</div>
-					<div class="cls-kpi-body">
-						<div id="kpiExp6m" class="text-danger">$0.00</div>
-						<div class="cls-kpi-small">6 meses</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="col-sm-5 col-md-4 col-sm-offset-1 col-md-offset-1">
-		<div class="row">
-			<div class="col-xs-6">
-				<div class="cls-kpi">
-					<div class="cls-kpi-title">Ingreso Total</div>
-					<div class="cls-kpi-body">
-						<div id="kpiIngTot30d" class="text-primary">$0.00</div>
-						<div class="cls-kpi-small">30 dias</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-xs-6">
-				<div class="cls-kpi">
-					<div class="cls-kpi-title">Gasto Total</div>
-					<div class="cls-kpi-body">
-						<div id="kpiExpTot30d" class="text-danger">$0.00</div>
-						<div class="cls-kpi-small">30 dias</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-6">
-				<div class="cls-kpi">
-					<div class="cls-kpi-title">Ingreso Total</div>
-					<div class="cls-kpi-body">
-						<div id="kpiIngTot6m" class="text-primary">$0.00</div>
-						<div class="cls-kpi-small">6 meses</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-xs-6">
-				<div class="cls-kpi">
-					<div class="cls-kpi-title">Gasto Total</div>
-					<div class="cls-kpi-body">
-						<div id="kpiExpTot6m" class="text-danger">$0.00</div>
-						<div class="cls-kpi-small">6 meses</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Ingreso</div>
+									<div class="cls-kpi-body">
+										<div id="kpiIngTot30d" class="text-primary">$0.00</div>
+										<div class="cls-kpi-small">30 dias</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Gasto</div>
+									<div class="cls-kpi-body">
+										<div id="kpiExpTot30d" class="text-danger">$0.00</div>
+										<div class="cls-kpi-small">30 dias</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Ingreso</div>
+									<div class="cls-kpi-body">
+										<div id="kpiIngTot6m" class="text-primary">$0.00</div>
+										<div class="cls-kpi-small">6 meses</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Gasto</div>
+									<div class="cls-kpi-body">
+										<div id="kpiExpTot6m" class="text-danger">$0.00</div>
+										<div class="cls-kpi-small">6 meses</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Ingreso</div>
+									<div class="cls-kpi-body">
+										<div id="kpiIngTot12m" class="text-primary">$0.00</div>
+										<div class="cls-kpi-small">12 meses</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="cls-kpi">
+									<div class="cls-kpi-title">Gasto</div>
+									<div class="cls-kpi-body">
+										<div id="kpiExpTot12m" class="text-danger">$0.00</div>
+										<div class="cls-kpi-small">12 meses</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
