@@ -40,20 +40,22 @@ class RptIncomesExpensesPdf extends BasePdf {
         $total_exp = 0;
         $months = $this->months;
         $currMonth = $this->current_month;
+        $sum = 0;
 
         // header
         $this->SetFont('Helvetica', 'B', 8);
-        $this->Cell(43, 5, '', '', 0, '', false);
+        $this->Cell(30, 5, '', '', 0, '', false);
         $this->Cell(10, 5, 'Año', $border, 0, 'C', $fill);
         $this->Cell(10, 5, 'Mes', $border, 0, 'C', $fill);
         $this->Cell(25, 5, 'Ingresos', $border, 0, 'R', $fill);
         $this->Cell(25, 5, 'Gastos', $border, 0, 'R', $fill);
         $this->Cell(25, 5, 'Diferencia', $border, 0, 'R', $fill);
+        $this->Cell(25, 5, 'Acumulado', $border, 0, 'R', $fill);
         $this->Cell(0,  5, '', '', 1, '', $fill);
 
         $this->SetFont('Helvetica', '', 9);
         $border = false;
-        
+
         foreach ($data as $key => $item) {
 
             $txt_year = ($curr_year != $item['anio_fecha']) ? $item['anio_fecha'] : '';
@@ -63,7 +65,7 @@ class RptIncomesExpensesPdf extends BasePdf {
             $total_exp += $item['gastos'];
             $diff = $item['ingresos'] - $item['gastos'];
 
-            $this->Cell(43, 5, '', $border, 0, '', false);
+            $this->Cell(30, 5, '', $border, 0, '', false);
             $this->Cell(10, 5, $txt_year, $border, 0, 'C', $fill);
             $this->Cell(10, 5, $txt_month, $border, 0, 'C', $fill);
             $this->Cell(25, 5, $this->formatCurrency($item['ingresos']), $border, 0, 'R', $fill);
@@ -72,8 +74,13 @@ class RptIncomesExpensesPdf extends BasePdf {
             if ($diff < 0) {
                 $this->SetTextColor(255, 0, 0);
             }
-
             $this->Cell(25, 5, $this->formatCurrency($diff), $border, 0, 'R', $fill);
+
+            if (($sum += $diff) < 0) {
+                $this->SetTextColor(255, 0, 0);
+            }
+            $this->Cell(25, 5, $this->formatCurrency($sum), $border, 0, 'R', $fill);
+
             $this->Cell(0,  5, '', $border, 1, '', false);
 
             $this->SetTextColor(0, 0, 0, 100); // reset text color
@@ -86,7 +93,7 @@ class RptIncomesExpensesPdf extends BasePdf {
         $this->SetFont('Helvetica', 'B', 9);
         $border = 'T';
 
-        $this->Cell(43, 5, '', '', 0, '', false);
+        $this->Cell(30, 5, '', '', 0, '', false);
         $this->Cell(10, 5, '', $border, 0, 'C', false);
         $this->Cell(10, 5, 'Totales:', $border, 0, 'R', false);
         $this->Cell(25, 5, $this->formatCurrency($total_inc), $border, 0, 'R', false);
@@ -97,6 +104,7 @@ class RptIncomesExpensesPdf extends BasePdf {
         }
 
         $this->Cell(25, 5, $this->formatCurrency($diff), $border, 0, 'R', false);
+        $this->Cell(25, 5, '', $border, 0, 'R', false);
         $this->Cell(0,  5, '', '', 1, '', false);
 
         $this->SetTextColor(0, 0, 0, 100); // reset text color
@@ -106,11 +114,11 @@ class RptIncomesExpensesPdf extends BasePdf {
 
         $monthsDivisor = ($currMonth ? $months + 1 : $months );
 
-        $this->Cell(43, 4, '', $border, 0, '', false);
+        $this->Cell(30, 4, '', $border, 0, '', false);
         $this->Cell(10, 4, '', $border, 0, 'C', false);
         $this->Cell(10, 4, 'Prom. mes:', $border, 0, 'R', false);
-        $this->Cell(25, 4, $this->formatCurrency($total_exp / $monthsDivisor), $border, 0, 'R', false);
         $this->Cell(25, 4, $this->formatCurrency($total_inc / $monthsDivisor), $border, 0, 'R', false);
+        $this->Cell(25, 4, $this->formatCurrency($total_exp / $monthsDivisor), $border, 0, 'R', false);
 
         $diff = ($total_inc - $total_exp)  / $monthsDivisor;
         if ($diff < 0) {
