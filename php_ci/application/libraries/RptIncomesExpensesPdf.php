@@ -64,6 +64,7 @@ class RptIncomesExpensesPdf extends BasePdf {
             $total_inc += $item['ingresos']; 
             $total_exp += $item['gastos'];
             $diff = $item['ingresos'] - $item['gastos'];
+            $sum += $diff;
 
             $this->Cell(30, 5, '', $border, 0, '', false);
             $this->Cell(10, 5, $txt_year, $border, 0, 'C', $fill);
@@ -76,7 +77,9 @@ class RptIncomesExpensesPdf extends BasePdf {
             }
             $this->Cell(25, 5, $this->formatCurrency($diff), $border, 0, 'R', $fill);
 
-            if (($sum += $diff) < 0) {
+            $this->SetTextColor(0, 0, 0, 100); // reset text color
+
+            if ($sum < 0) {
                 $this->SetTextColor(255, 0, 0);
             }
             $this->Cell(25, 5, $this->formatCurrency($sum), $border, 0, 'R', $fill);
