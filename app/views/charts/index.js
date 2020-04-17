@@ -17,6 +17,7 @@ define(function (require) {
       'change [name="categorias"]'    : 'changeCategory',
       'change [name="subcategorias"]' : 'changeSubCategory',
       'change [name="tipo"]'          : 'changeTypeAccount',
+      'change [name="cuentas"]'       : 'changeAccount',
       'click .cls-expense-detail'     : 'showComments'
     },
 
@@ -289,6 +290,21 @@ define(function (require) {
         });
       });
 
+      // fill the accounts select
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'accounts/actives',
+          type: 'POST',
+          dataType: 'json',
+          data: { }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        data.forEach(function (item) {
+          that.$("select[name=cuentas]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
+        });
+      });
+
+
       $('.divFrm01').show();
 
       this.updateChart01();
@@ -331,6 +347,9 @@ define(function (require) {
       this.updateChart(false);
     },
     changeTypeAccount: function (evt) {
+      this.updateChart(false);
+    },
+    changeAccount: function (evt) {
       this.updateChart(false);
     },
 
@@ -583,12 +602,12 @@ define(function (require) {
       var debit = [];
       var credit = [];
 
-      // expenses
       $.when(
         $.ajax({
           url: Defaults.ROUTE + 'charts/balance_months',
           dataType: 'json',
-          type: 'POST'
+          type: 'POST',
+          data: { account: me.getAccount() }
         })
       ).then(function (data, textStatus, jqXHR) {
 
@@ -641,6 +660,10 @@ define(function (require) {
     },
     getSubCategory: function () {
       var value = $('select[name="subcategorias"]').val() || 0;
+      return value;
+    },
+    getAccount: function () {
+      var value = $('select[name="cuentas"]').val() || 0;
       return value;
     },
     getLastMonths: function () {

@@ -14,6 +14,7 @@ class Charts extends CI_Controller {
 	    }
 
 	    $this->load->model('Movement_model','modelMov',true);
+	    $this->load->model('Account_model','account',true);
 	}
 
 	public function expenses_day() {
@@ -230,37 +231,65 @@ class Charts extends CI_Controller {
 		$debit = [];
 		$credit = [];
 
-		// debit
-		$query = $this->db->query("
-			select date_format(fecha, '%Y-%m') as anio_mes,
-				(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
-				 IFNULL(
-					(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
-					 from movimientos_cuentas as mc2 
-					 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
-					 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
-			        ), 0)) as saldo 
-			FROM movimientos_cuentas as mc 
-			LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
-			WHERE cta.tipo = 'D' AND mc.cancelado = 0 
-			GROUP BY anio_mes;");
-		$debit = $query->result_array();
+		$account = intval($_POST['account']);
 
-		// credit
-		$query = $this->db->query("
-			select date_format(fecha, '%Y-%m') as anio_mes,
-				(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
-				 IFNULL(
-					(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
-					 from movimientos_cuentas as mc2 
-					 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
-					 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
-			        ), 0)) as saldo 
-			FROM movimientos_cuentas as mc 
-			LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
-			WHERE cta.tipo = 'C' AND mc.cancelado = 0 
-			GROUP BY anio_mes;");
-		$credit = $query->result_array();
+		if ($account) {
+			// get the type
+			$model_account = $this->account->find($account);
+
+			$query = $this->db->query("
+				select date_format(fecha, '%Y-%m') as anio_mes,
+					(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
+					 IFNULL(
+						(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
+						 from movimientos_cuentas as mc2 
+						 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
+						 where cta2.id = cta.id and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
+				        ), 0)) as saldo 
+				FROM movimientos_cuentas as mc 
+				LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
+				WHERE cta.id = '$account' AND mc.cancelado = 0 
+				GROUP BY anio_mes;");
+
+			if ($model_account->tipo == 'D' || $model_account->tipo == 'E') {
+				$debit = $query->result_array();
+			} else {
+				$credit = $query->result_array();
+			}
+
+		} else {
+			// debit
+			$query = $this->db->query("
+				select date_format(fecha, '%Y-%m') as anio_mes,
+					(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
+					 IFNULL(
+						(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
+						 from movimientos_cuentas as mc2 
+						 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
+						 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
+				        ), 0)) as saldo 
+				FROM movimientos_cuentas as mc 
+				LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
+				WHERE cta.tipo = 'D' AND mc.cancelado = 0 
+				GROUP BY anio_mes;");
+			$debit = $query->result_array();
+
+			// credit
+			$query = $this->db->query("
+				select date_format(fecha, '%Y-%m') as anio_mes,
+					(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
+					 IFNULL(
+						(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
+						 from movimientos_cuentas as mc2 
+						 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
+						 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
+				        ), 0)) as saldo 
+				FROM movimientos_cuentas as mc 
+				LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
+				WHERE cta.tipo = 'C' AND mc.cancelado = 0 
+				GROUP BY anio_mes;");
+			$credit = $query->result_array();
+		}
 
 		echo json_encode(array('debit' => $debit, 'credit' => $credit));
 	}
