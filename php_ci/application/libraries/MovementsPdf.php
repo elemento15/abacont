@@ -97,10 +97,9 @@ class MovementsPdf extends BasePdf {
     private function printConcentrated() {
         $data = $this->getDataConcentrated();
 
-        $total = 0;
         $category = 0;
 
-        foreach ($data as $key => $item) {
+        foreach ($data['rows'] as $key => $item) {
             if ($category != $item['id_categoria']) {
                 if ($category) $this->Ln(3);
 
@@ -108,8 +107,12 @@ class MovementsPdf extends BasePdf {
                 $this->SetFont('Helvetica', 'B', 10);
                 $this->Cell(75, 5, $item['nombre_categoria'], $border, 0, 'L', false);
 
-                $subtotal = $this->getSubTotalCategory($item['id_categoria'], $data);
-                $this->Cell(25, 5, $subtotal, $border, 1, 'R', false);
+                $subtotal = $this->getSubTotalCategory($item['id_categoria'], $data['rows']);
+                $this->Cell(25, 5, $this->formatCurrency($subtotal), $border, 0, 'R', false);
+
+                $this->SetFont('Helvetica', 'B', 9);
+                $percent = ($subtotal / $data['total']) * 100;
+                $this->Cell(18, 5, number_format($percent,2).' %', $border, 1, 'R', false);
 
 
                 $category = $item['id_categoria'];
@@ -124,7 +127,6 @@ class MovementsPdf extends BasePdf {
             $this->Cell(25, 5, $this->formatCurrency($item['importe']), $border, 1, 'R', $fill);
             // $this->Cell(0,  5, '', $border, 1, '', $fill);
 
-            $total += $item['importe'];
             $fill = !$fill;
         }
 
@@ -134,7 +136,7 @@ class MovementsPdf extends BasePdf {
         $this->Cell(115, 7, '', false, 0, '', false);
         $this->Cell(30, 7, 'Total: ', false, 0, 'R', false);
         
-        $this->Cell(30, 7, $this->formatCurrency($total), false, 0, 'R', false);
+        $this->Cell(30, 7, $this->formatCurrency($data['total']), false, 0, 'R', false);
         $this->Cell(0,  7, '', false, 1, '', false);
     }
 
@@ -206,7 +208,25 @@ class MovementsPdf extends BasePdf {
         $CI->db->order_by('sub.nombre', 'ASC');
 
         $data = $CI->db->get();
-        return $data->result_array();
+        $rows = $data->result_array();
+
+        // get totals
+        $total = 0;
+        $groups = [];
+        foreach ($rows as $item) {
+            $total += $item['importe'];
+            if (array_key_exists($item['nombre_categoria'], $groups)) {
+                $groups[$item['nombre_categoria']] += $item['importe'];
+            } else {
+                $groups[$item['nombre_categoria']] = $item['importe'];
+            }
+        }
+
+        return [
+            'rows'   => $rows,
+            'total'  => $total,
+            'groups' => $groups
+        ];
     }
 
     private function getSubTotalCategory($category, $array) {
@@ -218,7 +238,7 @@ class MovementsPdf extends BasePdf {
             }
         }
 
-        return $this->formatCurrency($total);
+        return $total;
     }
 }
 
