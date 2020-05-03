@@ -12,7 +12,8 @@ class MovementsPdf extends BasePdf {
     	$this->subtitle = '';
     }
 
-    public function setParams($params) {
+    public function setParams($params, $orientation = 'P') {
+        $this->orientation = $orientation;
         $this->rpt = $params['rpt'];
         $this->type = $params['type'];
         $this->account = intval($params['account']);
@@ -23,7 +24,7 @@ class MovementsPdf extends BasePdf {
         $this->comments = intval($params['comments']);
         $this->download = intval($params['download']);
 
-        if ($this->rpt != 'D' && $this->rpt != 'C') {
+        if ($this->rpt != 'D' && $this->rpt != 'C' && $this->rpt != 'X') {
             echo "Report Unknown"; exit;
         }
 
@@ -32,7 +33,19 @@ class MovementsPdf extends BasePdf {
         }
 
         $this->title .= ($this->type == 'G') ? 'Gastos' : 'Ingresos';
-        $this->subtitle = ($this->rpt == 'D') ? 'Detallado' : 'Concentrado';
+        switch ($this->rpt) {
+            case 'D':
+                $this->subtitle = 'Detallado';
+                break;
+
+            case 'C':
+                $this->subtitle = 'Concentrado';
+                break;
+            
+            case 'X':
+                $this->subtitle = 'Comparativo';
+                break;
+        }
 
         if (! $this->validDate($this->date_ini)) {
             echo "Invalid Initial Date"; exit;
@@ -44,17 +57,20 @@ class MovementsPdf extends BasePdf {
     }
 
     public function printing() {
-    	$this->AddPage();
+        $this->AddPage($this->orientation);
 
         if ($this->rpt == 'D') {
             $this->printDetailed();
-        } else {
+        } elseif ($this->rpt == 'C') {
             $this->printConcentrated();
+        } else {
+            $this->printCompared();
         }
 
         $destination = ($this->download) ? 'D' : 'I';
     	$this->Output('rpt.pdf', $destination);
     }
+
 
     private function printDetailed() {
     	$border = false;
@@ -138,6 +154,75 @@ class MovementsPdf extends BasePdf {
         
         $this->Cell(30, 7, $this->formatCurrency($data['total']), false, 0, 'R', false);
         $this->Cell(0,  7, '', false, 1, '', false);
+    }
+
+    private function printCompared() {
+        $data = $this->getDataCompared();
+
+        // ===== start column headers =====
+        $border = true;  // 'B';
+        $this->SetFont('Helvetica', 'B', 6);
+        $this->SetLineStyle(array('width' => 0.1, 'color' => array(150, 150, 150)));
+        $this->Cell(45, 5, 'CATEGORIAS - SUBCATEGORIAS', $border, 0, 'C', true);
+        foreach ($data['amounts'] as $key => $item) {
+            $this->Cell(18, 5, $key, $border, 0, 'C', true);
+        }
+        $this->Cell(0,  5, '', false, 1);
+        $this->Ln(1);
+        // ===== end column headers =====
+
+
+        // set line color darker again
+        $this->SetLineStyle(array('width' => 0.1, 'color' => array(100, 100, 100)));
+
+        foreach ($data['categories'] as $cKey => $cItem) {
+            $border = 'B';  // 'B';
+            $this->SetFont('Helvetica', 'BI', 6);
+            $this->Cell(45, 5, $cItem['name'], $border, 0, 'L');
+            foreach ($data['amounts'] as $key => $item) {
+                $this->SetFont('Helvetica', 'BI', 8);
+                $this->Cell(18, 5, $this->sumCategory($data['amounts'][$key], $cItem), $border, 0, 'R');
+            }
+            $this->Cell(0,  5, '', $border, 1);
+            
+            $fill = false;
+            foreach ($cItem['subcategories'] as $sKey => $sItem) {
+                $border = false;  // 'B';
+                $this->SetFont('Helvetica', '', 7);
+                $this->Cell(3,  4, '', $border, 0, 'L', $fill);
+                $this->Cell(42, 4, $sItem, $border, 0, 'L', $fill);
+
+                $this->SetFont('Helvetica', '', 8);
+                foreach ($data['amounts'] as $key => $amounts) {
+                    $this->Cell(18, 4, $this->getArrData($amounts, $sKey), $border, 0, 'R', $fill);
+                }
+                
+                $fill = !$fill;
+                $this->Cell(0,  4, '', $border, 1);
+            }
+
+            $this->Ln(2);
+        }
+
+        // ===== start summary =====
+        $this->Ln(2);
+        
+        $border = true;  // 'B';
+        $this->SetFont('Helvetica', 'B', 6);
+        $this->SetLineStyle(array('width' => 0.1, 'color' => array(150, 150, 150)));
+        $this->Cell(45, 5, 'TOTALES', $border, 0, 'C', true);
+        foreach ($data['amounts'] as $key => $item) {
+            $this->Cell(18, 5, $key, $border, 0, 'C', true);
+        }
+        $this->Cell(0,  5, '', false, 1);
+
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(45, 5, '', $border, 0, 'C', false);
+        foreach ($data['amounts'] as $key => $item) {
+            $this->Cell(18, 5, $this->sumPeriod($item), $border, 0, 'R', false);
+        }
+        $this->Cell(0,  5, '', false, 1);
+        // ===== end summary =====
     }
 
     private function getDataDetailed() {
@@ -229,6 +314,78 @@ class MovementsPdf extends BasePdf {
         ];
     }
 
+    private function getDataCompared() {
+        $CI =& get_instance();
+
+        $CI->db->select('SUBSTR(mv.fecha, 1, 7) AS periodo, s.id AS sID, SUM(mv.importe) AS total,
+                         s.nombre AS subcategoria, c.id AS cID, c.nombre AS categoria ');
+        $CI->db->from('movimientos AS mv');
+        $CI->db->join('subcategorias AS s', 's.id = mv.subcategoria_id', 'left');
+        $CI->db->join('categorias AS c', 'c.id = s.categoria_id', 'left');
+        $CI->db->join('movimientos_cuentas AS mov_cue', 'mov_cue.id = mv.movimiento_cuenta_id', 'left');
+        
+        $CI->db->where('mv.fecha BETWEEN "'.$this->date_ini.'" AND "'.$this->date_end.'"');
+        $CI->db->where('mv.tipo', $this->type);
+        $CI->db->where('mv.cancelado', 0);
+
+        if ($this->account) {
+            $CI->db->where('mov_cue.cuenta_id', $this->account);
+        }
+
+        if ($this->category) {
+            $CI->db->where('c.id', $this->category);
+        }
+
+        if ($this->subcategory) {
+            $CI->db->where('s.id', $this->subcategory);
+        }
+
+        $CI->db->group_by("SUBSTR(mv.fecha, 1, 7), mv.subcategoria_id"); 
+
+        $CI->db->order_by('c.nombre', 'ASC');
+        $CI->db->order_by('s.nombre', 'ASC');
+
+        $data = $CI->db->get();
+        $rows = $data->result_array();
+
+        $categories = array();
+        $amounts = array();
+        
+        foreach ($rows as $item) {
+            // add to categories
+            $ckey = 'c' . $item['cID'];
+            if (! array_key_exists($ckey, $categories)) {
+                $categories[$ckey] = [
+                    'name' => $item['categoria'],
+                    'subcategories' => []
+                ];
+            }
+            // add to category's subcategories
+            $skey = 's' . $item['sID'];
+            if (! array_key_exists($skey, $categories[$ckey]['subcategories'])) {
+                $categories[$ckey]['subcategories'][$skey] = $item['subcategoria'];
+            }
+
+            // add to amounts
+            $dkey = $item['periodo'];
+            if (! array_key_exists($dkey, $amounts)) {
+                $amounts[$dkey] = [];
+            }
+            // add to amount's subcategories
+            $skey = 's' . $item['sID'];
+            if (! array_key_exists($skey, $amounts[$dkey])) {
+                $amounts[$dkey][$skey] = $item['total'];
+            }
+        }
+
+        ksort($amounts);
+
+        return [
+            'categories' => $categories,
+            'amounts'    => $amounts,
+        ];
+    }
+
     private function getSubTotalCategory($category, $array) {
         $total = 0;
 
@@ -239,6 +396,34 @@ class MovementsPdf extends BasePdf {
         }
 
         return $total;
+    }
+
+    private function getArrData($array, $key) {
+        if (isset($array[$key])) {
+            $value = $array[$key];
+        } else {
+            $value = 0;
+        }
+
+        return $this->formatNumber($value, false);
+    }
+
+    private function sumCategory($amounts, $category) {
+        $sum = 0;
+        foreach ($amounts as $key => $amount) {
+            if (array_key_exists($key, $category['subcategories'])) {
+                $sum += $amount;
+            }
+        }
+        return $this->formatNumber($sum, true);
+    }
+
+    private function sumPeriod($amounts) {
+        $sum = 0;
+        foreach ($amounts as $value) {
+            $sum += $value;
+        }
+        return $this->formatNumber($sum, true);
     }
 }
 

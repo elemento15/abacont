@@ -78,10 +78,10 @@ define(function (require) {
     changeRpt: function (evt) {
       var rpt = evt.target.value;
 
-      if (rpt == 'C') {
-        this.$el.find('.cls-ver-comentarios').hide();
-      } else {
+      if (rpt == 'D') {
         this.$el.find('.cls-ver-comentarios').show();
+      } else {
+        this.$el.find('.cls-ver-comentarios').hide();
       }
     },
 

@@ -106,7 +106,8 @@ class Movements extends BaseController {
 			'download' => $_REQUEST['download']
 		);
 
-		$this->pdf->setParams($params);
+		$orientation = ($_REQUEST['rpt'] == 'X') ? 'L' : 'P';
+		$this->pdf->setParams($params, $orientation);
 		$this->pdf->printing();
 	}
 

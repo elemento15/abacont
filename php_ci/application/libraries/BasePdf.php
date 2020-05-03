@@ -6,6 +6,7 @@ require_once APPPATH.'third_party/tcpdf/tcpdf.php';
 class BasePdf extends TCPDF { 
 	protected $title = 'PDF TITLE';
 	protected $subtitle = 'Extra Information for PDF';
+    protected $orientation = 'P'; // (P) Portrait or (L) Landscape
 
     public function __construct() {
     	parent::__construct();
@@ -37,7 +38,8 @@ class BasePdf extends TCPDF {
             $this->subHeader(); // define as protected
         }
 
-    	$this->Line($this->GetX(), $this->GetY(), 195, $this->GetY());
+        $line_size = ($this->orientation == 'P') ? 195 : 282;
+    	$this->Line($this->GetX(), $this->GetY(), $line_size, $this->GetY());
     }
 
     protected function formatCurrency($number, $show_zero = true) {
@@ -45,6 +47,14 @@ class BasePdf extends TCPDF {
             return '-';
         } else {
             return '$'.number_format($number, 2);
+        }
+    }
+
+    protected function formatNumber($number, $show_zero = true) {
+        if (! $show_zero && $number == 0) {
+            return '-';
+        } else {
+            return number_format($number, 2);
         }
     }
 
