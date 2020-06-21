@@ -12,14 +12,14 @@
 	<div class="cls-sub-text cursor-default" title="Num. de Cuenta"><%= num_cuenta %></div>
 </td>
 <td align="right" class="<%= (saldo < 0) ? 'cls-negative' : '' %>">$<%= saldo.formatMoney() %></td>
-<td align="center">
+<td align="center" class="hidden-xs hidden-sm">
 	<% if (parseInt(usa_ingresos)) { %>
 	<span class="label label-success">SI</span>
 	<% } else { %>
 	&nbsp;
 	<% } %>
 </td>
-<td align="center">
+<td align="center" class="hidden-xs hidden-sm">
 	<% if (parseInt(usa_gastos)) { %>
 	<span class="label label-success">SI</span>
 	<% } else { %>

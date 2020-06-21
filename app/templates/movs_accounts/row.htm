@@ -17,9 +17,11 @@
 <td style="text-align:right">$<%= importe.formatMoney() %></td>
 <td style="text-align:center">
 	<% if (parseInt(automatico)) { %>
-		<span class="label label-info cls-mov-auto">Automático</span>
+		<span class="label label-info cls-mov-auto hidden-xs">Automático</span>
+		<span class="label label-info cls-mov-auto visible-xs">A</span>
 	<% } else { %>
-		<span class="label label-primary">Manual</span>
+		<span class="label label-primary hidden-xs">Manual</span>
+		<span class="label label-primary visible-xs">M</span>
 	<% } %>
 </td>
 <td style="text-align:center">
