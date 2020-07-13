@@ -41,7 +41,7 @@ define(function (require) {
       ).then(function (data, textStatus, jqXHR) {
         var nombre;
         data.forEach(function (item) {
-          nombre = item.nombre + ' (' + ((item.tipo == 'C') ? 'Crédito' : ( (item.tipo == 'D') ? 'Débito' : 'Efectivo')) + ')';
+          nombre = item.nombre + ' (' + ((item.tipo == 'C') ? 'Crédito' : ( (item.tipo == 'D') ? 'Débito' : ( (item.tipo == 'E') ? 'Efectivo' : 'Inversión'))) + ')';
           that.$("select[name=cuenta_id]").append('<option value="'+ item.id +'">'+ nombre +'</option>')
         });
 

@@ -251,7 +251,7 @@ class Charts extends CI_Controller {
 				WHERE cta.id = '$account' AND mc.cancelado = 0 
 				GROUP BY anio_mes;");
 
-			if ($model_account->tipo == 'D' || $model_account->tipo == 'E') {
+			if ($model_account->tipo == 'D' || $model_account->tipo == 'E' || $model_account->tipo == 'I') {
 				$debit = $query->result_array();
 			} else {
 				$credit = $query->result_array();
@@ -270,7 +270,7 @@ class Charts extends CI_Controller {
 				        ), 0)) as saldo 
 				FROM movimientos_cuentas as mc 
 				LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
-				WHERE cta.tipo = 'D' AND mc.cancelado = 0 
+				WHERE (cta.tipo = 'D' OR cta.tipo = 'I') AND mc.cancelado = 0 
 				GROUP BY anio_mes;");
 			$debit = $query->result_array();
 

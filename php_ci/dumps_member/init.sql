@@ -101,3 +101,7 @@ ALTER TABLE `cuentas`
 /* DATE: 2018-10-04  */
 ALTER TABLE `movimientos` 
   ADD COLUMN `es_meses_sin_intereses` TINYINT NOT NULL DEFAULT 0 AFTER `cancelado`;
+
+/* DATE: 2020-07-14  */
+ALTER TABLE `cuentas`
+  CHANGE COLUMN `tipo` `tipo` ENUM('C','D','E','I') NOT NULL DEFAULT 'E' AFTER `nombre`;
