@@ -15,6 +15,7 @@ class Charts extends CI_Controller {
 
 	    $this->load->model('Movement_model','modelMov',true);
 	    $this->load->model('Account_model','account',true);
+	    $this->load->model('MovAccount_model','modelMovAcc',true);
 	}
 
 	public function expenses_day() {
@@ -231,64 +232,30 @@ class Charts extends CI_Controller {
 		$debit = [];
 		$credit = [];
 
-		$account = intval($_POST['account']);
+		$periods = $this->getPeriodsList($this->modelMovAcc->firstMovDate());
 
-		if ($account) {
-			// get the type
-			$model_account = $this->account->find($account);
+		if ($type = $_POST['type']) {
+			$account = intval($_POST['account']);
+			
+			if ($account) {
+				$model_account = $this->account->find($account);
+				$type = $model_account->tipo;
+			}
 
-			$query = $this->db->query("
-				select date_format(fecha, '%Y-%m') as anio_mes,
-					(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
-					 IFNULL(
-						(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
-						 from movimientos_cuentas as mc2 
-						 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
-						 where cta2.id = cta.id and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
-				        ), 0)) as saldo 
-				FROM movimientos_cuentas as mc 
-				LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
-				WHERE cta.id = '$account' AND mc.cancelado = 0 
-				GROUP BY anio_mes;");
-
-			if ($model_account->tipo == 'D' || $model_account->tipo == 'E' || $model_account->tipo == 'I') {
-				$debit = $query->result_array();
+			if ($type == 'E' || $type == 'D' || $type == 'I') {
+				$debit = $this->getPeriodsBalance($type, $account, $periods);
+				$credit = [];
+			} else if ($type == 'C') {
+				$debit = [];
+				$credit = $this->getPeriodsBalance($type, $account, $periods);
 			} else {
-				$credit = $query->result_array();
+				$debit = [];
+				$credit = [];
 			}
 
 		} else {
-			// debit
-			$query = $this->db->query("
-				select date_format(fecha, '%Y-%m') as anio_mes,
-					(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
-					 IFNULL(
-						(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
-						 from movimientos_cuentas as mc2 
-						 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
-						 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
-				        ), 0)) as saldo 
-				FROM movimientos_cuentas as mc 
-				LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
-				WHERE (cta.tipo = 'D' OR cta.tipo = 'I') AND mc.cancelado = 0 
-				GROUP BY anio_mes;");
-			$debit = $query->result_array();
-
-			// credit
-			$query = $this->db->query("
-				select date_format(fecha, '%Y-%m') as anio_mes,
-					(SUM(IF(mc.tipo = 'A', mc.importe, mc.importe * -1)) + 
-					 IFNULL(
-						(select SUM(IF(mc2.tipo = 'A', mc2.importe, mc2.importe * -1)) as saldo_anterior 
-						 from movimientos_cuentas as mc2 
-						 left join cuentas as cta2 on cta2.id = mc2.cuenta_id 
-						 where cta2.tipo = cta.tipo and mc2.cancelado = 0 and mc2.fecha < concat(anio_mes,'-01') 
-				        ), 0)) as saldo 
-				FROM movimientos_cuentas as mc 
-				LEFT JOIN cuentas as cta on cta.id = mc.cuenta_id 
-				WHERE cta.tipo = 'C' AND mc.cancelado = 0 
-				GROUP BY anio_mes;");
-			$credit = $query->result_array();
+			$debit = $this->getPeriodsBalance(["'E'","'D'","'I'"], false, $periods);
+			$credit = $this->getPeriodsBalance('C', false, $periods);
 		}
 
 		echo json_encode(array('debit' => $debit, 'credit' => $credit));
@@ -328,5 +295,91 @@ class Charts extends CI_Controller {
 		}
 
 		return $list;
+	}
+
+
+	private function getPeriodsList($start_date) {
+		$periods = array();
+		$dt = explode('-', $start_date);
+		$period = $dt[0].'-'.$dt[1];
+		$now = explode('-', date('Y-m'));
+		$today = $now[0].'-'.$now[1];
+		
+		do {
+			$periods[] = $period;
+			$period = $this->getNextPeriod($period);
+		} while ($period <= $today);
+
+		return $periods;
+	}
+
+	private function getNextPeriod($period) {
+		$dt = explode('-', $period);
+
+		$year = intval($dt[0]);
+		$month = intval($dt[1]);
+
+		if ($month < 12) {
+			$month++;
+		} else {
+			$month = 1;
+			$year++;
+		}
+
+		return $year . '-' . (($month < 10) ? ('0' . $month) : $month);
+	}
+
+	private function getPeriodsBalance($type, $account, $periods) {
+		$data = array();
+		$amounts = $this->getAccountsMovsByPeriod($type, $account);
+		$balance = 0;
+
+		foreach ($periods as $period) {
+			if (array_key_exists($period, $amounts)) {
+				$balance += $amounts[$period];
+			}
+
+			$data[] = array(
+				'anio_mes' => $period,
+				'saldo' => $balance
+			);
+		}
+
+		return $data;
+	}
+
+	private function getAccountsMovsByPeriod($type = false, $account = false) {
+		$type_filter = '';
+		$account_filter = '';
+
+		if ($type) {
+			if (gettype($type) == 'array') {
+				$type_filter = " AND c.tipo IN (". implode(',',$type) .") ";
+			} else {
+				$type_filter = " AND c.tipo = '$type' ";
+			}
+		}
+
+		if ($account) {
+			$account_filter = " AND c.id = '$account' ";
+		}
+
+		$sql = "select DATE_FORMAT(mc.fecha, '%Y-%m') AS periodo, 
+                       SUM(IF(mc.tipo = 'A', importe, importe * -1)) AS total 
+                FROM movimientos_cuentas AS mc 
+                LEFT JOIN cuentas AS c ON c.id = mc.cuenta_id 
+                WHERE NOT mc.cancelado $type_filter $account_filter 
+                GROUP BY periodo 
+                ORDER BY periodo ";
+
+        $query = $this->db->query($sql);
+        $records = $query->result_array();
+
+        $data = array();
+        foreach ($records as $item) {
+        	$data[$item['periodo']] = $item['total'];
+        }
+
+        return $data;
 	}
 }

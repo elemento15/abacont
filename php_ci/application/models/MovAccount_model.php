@@ -17,6 +17,17 @@ class MovAccount_model extends BaseModel {
   	          array('table' => 'cuentas', 'type' => 'left', 'fk' => 'cuenta_id')
             );
 
+	public function firstMovDate() {
+		$this->db->select('fecha');
+		$this->db->from('movimientos_cuentas');
+		$this->db->where('NOT cancelado');
+		$this->db->order_by('fecha');
+		$this->db->limit('1');
+
+		$query = $this->db->get();
+		return ($query->row()) ? $query->row()->fecha : false;
+	}
+
 }
 
 ?>

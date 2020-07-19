@@ -290,21 +290,6 @@ define(function (require) {
         });
       });
 
-      // fill the accounts select
-      $.when(
-        $.ajax({
-          url: Defaults.ROUTE + 'accounts/actives',
-          type: 'POST',
-          dataType: 'json',
-          data: { }
-        })
-      ).then(function (data, textStatus, jqXHR) {
-        data.forEach(function (item) {
-          that.$("select[name=cuentas]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
-        });
-      });
-
-
       $('.divFrm01').show();
 
       this.updateChart01();
@@ -347,7 +332,11 @@ define(function (require) {
       this.updateChart(false);
     },
     changeTypeAccount: function (evt) {
-      this.updateChart(false);
+      var that = this;
+      var value = evt.target.value;
+      this.searchAccounts(value || false, function () {
+        that.updateChart(false);
+      });
     },
     changeAccount: function (evt) {
       this.updateChart(false);
@@ -607,7 +596,7 @@ define(function (require) {
           url: Defaults.ROUTE + 'charts/balance_months',
           dataType: 'json',
           type: 'POST',
-          data: { account: me.getAccount() }
+          data: { type: me.getTypeAccount(), account: me.getAccount() }
         })
       ).then(function (data, textStatus, jqXHR) {
 
@@ -628,6 +617,29 @@ define(function (require) {
         me.chart_05.options.data[0].dataPoints = debit;
         me.chart_05.options.data[1].dataPoints = credit;
         me.chart_05.render();
+      });
+    },
+
+    searchAccounts: function (type, callback) {
+      var that = this;
+
+      App.block();
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'accounts/actives',
+          type: 'POST',
+          dataType: 'json',
+          data: { type: type }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        that.$("select[name=cuentas]").html('<option value="">-- Todas --</option>');
+        data.forEach(function (item) {
+          that.$("select[name=cuentas]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
+        });
+
+        if (callback) { callback(); }
+        App.unblock();
       });
     },
 
@@ -765,7 +777,6 @@ define(function (require) {
       var html = '<span class="text-muted">(Sin Comentarios)</span>';
       $('.cls-expenses-detail-comments').html(html);
     }
-
   });
 
 });
