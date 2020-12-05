@@ -6,4 +6,4 @@
 */cache/*
 !*/cache/index.html
 !*/cache/.htaccess
-/php_ci/applications/logs/*.log
+/php_ci/application/logs/*.log
