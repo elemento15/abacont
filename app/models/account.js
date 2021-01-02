@@ -16,6 +16,7 @@ define(function (require) {
       num_tarjeta: '',
       num_cuenta: '',
       saldo: 0,
+      orden: '100',
       observaciones: ''
     },
     url: Defaults.ROUTE + 'accounts/model',

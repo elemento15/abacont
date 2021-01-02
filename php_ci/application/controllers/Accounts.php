@@ -11,10 +11,11 @@ class Accounts extends BaseController {
 		$incomes = (isset($_POST['incomes']) && $_POST['incomes']) ? true : false;
 		$expenses = (isset($_POST['expenses']) && $_POST['expenses']) ? true : false;
 		$type = (isset($_POST['type'])) ? $_POST['type'] : false;
+		$order = (isset($_POST['order'])) ? $_POST['order'] : false;
 		$omit_inversions = (isset($_POST['omitInversions'])) ? $_POST['omitInversions'] : false;
 
 		$params = array(
-	      'order'    => array('field' => 'nombre', 'type' => 'ASC'),
+	      'order'    => ($order) ? $order : ['field' => 'nombre', 'type' => 'ASC'],
 	      'order_id' => false,
 	      'start'    => 0,
 	      'length'   => 0,

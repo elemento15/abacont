@@ -1,5 +1,5 @@
 /* Accounts */
-INSERT INTO `cuentas` VALUES (1, 'EFECTIVO', 'E', 1, 1, 1, '', '', '', '', 0.00, 'Cuenta para manejo diario de efectivo');
+INSERT INTO `cuentas` VALUES (1, 'EFECTIVO', 'E', 1, 1, 1, '', '', '', '', 0.00, 1, 'Cuenta para manejo diario de efectivo');
 
 /* Clases */
 INSERT INTO `categorias` VALUES (1, 'NOMINA', 'I', 1);

@@ -389,7 +389,8 @@ define(function (require) {
           type: 'POST',
           data: { 
             type: me.getTypeAccount(),
-            omitInversions: me.getOmitInversion()
+            omitInversions: me.getOmitInversion(),
+            order: { field: 'orden', type: 'ASC' }
           }
         })
       ).then(function (data, textStatus, jqXHR) {

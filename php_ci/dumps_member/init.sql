@@ -105,3 +105,7 @@ ALTER TABLE `movimientos`
 /* DATE: 2020-07-14  */
 ALTER TABLE `cuentas`
   CHANGE COLUMN `tipo` `tipo` ENUM('C','D','E','I') NOT NULL DEFAULT 'E' AFTER `nombre`;
+
+/* DATE: 2021-01-02 */
+ALTER TABLE `cuentas`
+  ADD COLUMN `orden` TINYINT NOT NULL DEFAULT '0' AFTER `saldo`;
