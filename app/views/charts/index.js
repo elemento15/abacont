@@ -18,12 +18,13 @@ define(function (require) {
       'change [name="subcategorias"]' : 'changeSubCategory',
       'change [name="tipo"]'          : 'changeTypeAccount',
       'change [name="cuentas"]'       : 'changeAccount',
-      'click .cls-expense-detail'     : 'showComments'
+      'click .cls-expense-detail'     : 'showComments',
+      'change [name=omit_inversion]'  : 'changeOmitInversion'
     },
 
     initialize: function (params) {
-      // TODO
       this.showedChart02 = false;
+      this.omitInversionsVisible = true;
     },
     
     render: function () {
@@ -313,6 +314,17 @@ define(function (require) {
       // show the selected options forms
       $('.divFrm'+opt).show();
 
+      // depending on charts show or hide the omitInversions checkbox
+      if (opt == '01' || opt == '05') {
+        if (this.getTypeAccount()) {
+          $('.divOmitInversion').hide();
+        } else {
+          $('.divOmitInversion').show();
+        }
+      } else {
+          $('.divOmitInversion').hide();
+      }
+
       switch (opt) {
         case '01' : this.updateChart01(); break;
         case '02' : this.updateChart02(); break;
@@ -334,11 +346,23 @@ define(function (require) {
     changeTypeAccount: function (evt) {
       var that = this;
       var value = evt.target.value;
+
+      // if "type" selected, omitInversion checkbox is not needed
+      if (value) {
+        this.$el.find('[name="omit_inversion"]').prop("checked", false);
+        $('.divOmitInversion').hide();
+      } else {
+        $('.divOmitInversion').show();
+      }
+
       this.searchAccounts(value || false, function () {
         that.updateChart(false);
       });
     },
     changeAccount: function (evt) {
+      this.updateChart(false);
+    },
+    changeOmitInversion: function (evt) {
       this.updateChart(false);
     },
 
@@ -363,7 +387,10 @@ define(function (require) {
           url: Defaults.ROUTE + 'accounts/actives',
           dataType: 'json',
           type: 'POST',
-          data: { type: me.getTypeAccount() }
+          data: { 
+            type: me.getTypeAccount(),
+            omitInversions: me.getOmitInversion()
+          }
         })
       ).then(function (data, textStatus, jqXHR) {
 
@@ -596,7 +623,11 @@ define(function (require) {
           url: Defaults.ROUTE + 'charts/balance_months',
           dataType: 'json',
           type: 'POST',
-          data: { type: me.getTypeAccount(), account: me.getAccount() }
+          data: { 
+            type: me.getTypeAccount(), 
+            account: me.getAccount(),
+            omitInversions: me.getOmitInversion()
+          }
         })
       ).then(function (data, textStatus, jqXHR) {
 
@@ -685,6 +716,9 @@ define(function (require) {
     getTypeAccount: function () {
       var value = $('select[name="tipo"]').val() || 0;
       return value;
+    },
+    getOmitInversion: function() {
+      return this.$el.find('[name="omit_inversion"]:checked').val() || 0;
     },
 
     showExpensesDetails: function (date) {

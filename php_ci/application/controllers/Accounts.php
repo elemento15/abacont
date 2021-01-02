@@ -11,6 +11,7 @@ class Accounts extends BaseController {
 		$incomes = (isset($_POST['incomes']) && $_POST['incomes']) ? true : false;
 		$expenses = (isset($_POST['expenses']) && $_POST['expenses']) ? true : false;
 		$type = (isset($_POST['type'])) ? $_POST['type'] : false;
+		$omit_inversions = (isset($_POST['omitInversions'])) ? $_POST['omitInversions'] : false;
 
 		$params = array(
 	      'order'    => array('field' => 'nombre', 'type' => 'ASC'),
@@ -34,7 +35,20 @@ class Accounts extends BaseController {
 		}
 
 	    $recs = $this->model->findAll($params);
-	    echo json_encode($recs['data']);
+		
+		if (! $omit_inversions) {
+			$data = $recs['data'];
+		} else {
+			$data = [];
+
+			foreach ($recs['data'] as $item) {
+				if ($item->tipo != 'I') {
+					$data[] = $item;
+				}
+			}
+		}
+
+	    echo json_encode($data);
 	}
 
 	public function print_list() {

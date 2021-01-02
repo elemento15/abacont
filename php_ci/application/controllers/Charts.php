@@ -254,7 +254,10 @@ class Charts extends CI_Controller {
 			}
 
 		} else {
-			$debit = $this->getPeriodsBalance(["'E'","'D'","'I'"], false, $periods);
+			$omitInversions = $_POST['omitInversions'];
+			$types = (! $_POST['omitInversions']) ? ["'E'","'D'","'I'"] : ["'E'","'D'"];
+
+			$debit = $this->getPeriodsBalance($types, false, $periods);
 			$credit = $this->getPeriodsBalance('C', false, $periods);
 		}
 
