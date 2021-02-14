@@ -49,7 +49,7 @@ class Charts extends CI_Controller {
 
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
-		$months        = intval($_POST['months']);
+		$months        = intval($_POST['months']) ?: $this->getMonthsSinceFirstMov();
 		$msi           = intval($_POST['msi']);
 
 		$filters = '';
@@ -90,7 +90,7 @@ class Charts extends CI_Controller {
 
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
-		$months        = intval($_POST['months']);
+		$months        = intval($_POST['months']) ?: $this->getMonthsSinceFirstMov();
 
 		$filters = '';
 		$filters.= ($category)        ? " AND cat.id = $category " : "";
@@ -129,7 +129,7 @@ class Charts extends CI_Controller {
 
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
-		$months        = intval($_POST['months']);
+		$months        = intval($_POST['months']) ?: $this->getMonthsSinceFirstMov();;
 		$msi           = intval($_POST['msi']);
 
 		$filters = '';
@@ -182,7 +182,7 @@ class Charts extends CI_Controller {
 
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
-		$months        = intval($_POST['months']);
+		$months        = intval($_POST['months']) ?: $this->getMonthsSinceFirstMov();;
 
 		$filters = '';
 		$filters.= ($category)    ? " AND cat.id = $category " : "";
@@ -298,6 +298,16 @@ class Charts extends CI_Controller {
 		}
 
 		return $list;
+	}
+
+	protected function getMonthsSinceFirstMov() {
+		$sql = "select TIMESTAMPDIFF(
+		                  MONTH, 
+		                  (SELECT DATE_FORMAT(fecha, '%Y-%m-01') FROM movimientos WHERE NOT cancelado LIMIT 1), 
+		                  LAST_DAY(NOW())
+		               ) AS total_months ";
+		$query = $this->db->query($sql);
+        return $query->row()->total_months + 1;
 	}
 
 

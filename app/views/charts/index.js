@@ -14,6 +14,7 @@ define(function (require) {
     events: {
       'change .configChart'           : 'updateChart',
       'click ul.nav a'                : 'selectChart',
+      'change [name="tipo_mov"]'      : 'changeTypeMov',
       'change [name="categorias"]'    : 'changeCategory',
       'change [name="subcategorias"]' : 'changeSubCategory',
       'change [name="tipo"]'          : 'changeTypeAccount',
@@ -276,21 +277,6 @@ define(function (require) {
         ]
       });
 
-
-      // fill the categories select, with all the categorias for expenses
-      $.when(
-        $.ajax({
-          url: Defaults.ROUTE + 'categories/actives',
-          type: 'POST',
-          dataType: 'json',
-          data: { type: 'G' }
-        })
-      ).then(function (data, textStatus, jqXHR) {
-        data.forEach(function (item) {
-          that.$("select[name=categorias]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
-        });
-      });
-
       $('.divFrm01').show();
 
       this.updateChart01();
@@ -332,6 +318,14 @@ define(function (require) {
         case '04' : this.updateChart04(); break;
         case '05' : this.updateChart05(); break;
       }
+    },
+    changeTypeMov: function (evt) {
+      var that = this;
+      var value = evt.target.value;
+      this.searchCategories(value || '', function () {
+        that.searchSubCategories('');
+        that.updateChart(false);
+      });
     },
     changeCategory: function (evt) {
       var that = this;
@@ -466,6 +460,7 @@ define(function (require) {
       var dp_exp = [];
       var dp_msi = [];
       var dp_inc = [];
+      var type = this.getTypeMov();
 
       // expenses
       $.when(
@@ -474,8 +469,8 @@ define(function (require) {
           dataType: 'json',
           type: 'POST',
           data: {
-            category: me.getCategory(),
-            subcategory: me.getSubCategory(),
+            category: (type == 'G') ? me.getCategory() : 0,
+            subcategory: (type == 'G') ? me.getSubCategory() : 0,
             months: me.getLastMonths(),
             msi: 0
           }
@@ -499,8 +494,8 @@ define(function (require) {
           dataType: 'json',
           type: 'POST',
           data: {
-            category: me.getCategory(),
-            subcategory: me.getSubCategory(),
+            category: (type == 'G') ? me.getCategory() : 0,
+            subcategory: (type == 'G') ? me.getSubCategory() : 0,
             months: me.getLastMonths(),
             msi: 1
           }
@@ -524,8 +519,8 @@ define(function (require) {
           dataType: 'json',
           type: 'POST',
           data: {
-            category: '',
-            subcategory: '',
+            category: (type == 'I') ? me.getCategory() : 0,
+            subcategory: (type == 'I') ? me.getSubCategory() : 0,
             months: me.getLastMonths()
           }
         })
@@ -546,6 +541,7 @@ define(function (require) {
       var dp_exp = [];
       var dp_msi = [];
       var dp_inc = [];
+      var type = this.getTypeMov();
 
       // expenses
       $.when(
@@ -554,8 +550,8 @@ define(function (require) {
           dataType: 'json',
           type: 'POST',
           data: {
-            category: me.getCategory(),
-            subcategory: me.getSubCategory(),
+            category: (type == 'G') ? me.getCategory() : 0,
+            subcategory: (type == 'G') ? me.getSubCategory() : 0,
             months: me.getLastMonths(),
             msi: 0
           }
@@ -579,8 +575,8 @@ define(function (require) {
           dataType: 'json',
           type: 'POST',
           data: {
-            category: me.getCategory(),
-            subcategory: me.getSubCategory(),
+            category: (type == 'G') ? me.getCategory() : 0,
+            subcategory: (type == 'G') ? me.getSubCategory() : 0,
             months: me.getLastMonths(),
             msi: 1
           }
@@ -604,8 +600,8 @@ define(function (require) {
           dataType: 'json',
           type: 'POST',
           data: {
-            category: '',
-            subcategory: '',
+            category: (type == 'I') ? me.getCategory() : 0,
+            subcategory: (type == 'I') ? me.getSubCategory() : 0,
             months: me.getLastMonths()
           }
         })
@@ -682,6 +678,29 @@ define(function (require) {
       });
     },
 
+    searchCategories: function (type, callback) {
+      var that = this;
+
+      App.block();
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'categories/actives',
+          type: 'POST',
+          dataType: 'json',
+          data: { type: type }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        that.$("select[name=categorias]").html('<option value="">-- Todas --</option>');
+        data.forEach(function (item) {
+          that.$("select[name=categorias]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
+        });
+
+        if (callback) { callback(); }
+        App.unblock();
+      });
+    },
+
     searchSubCategories: function (category_id, callback) {
       var that = this;
 
@@ -705,6 +724,10 @@ define(function (require) {
       });
     },
 
+    getTypeMov: function () {
+      var value = $('select[name="tipo_mov"]').val() || false;
+      return value;
+    },
     getCategory: function () {
       var value = $('select[name="categorias"]').val() || 0;
       return value;
