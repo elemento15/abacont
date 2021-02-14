@@ -381,6 +381,7 @@ define(function (require) {
     updateChart01: function () {
       var me = this;
       var dps = [];
+      var total_balance = 0;
 
       $.when(
         $.ajax({
@@ -401,7 +402,13 @@ define(function (require) {
             y: parseFloat(item.saldo),
             color: (parseFloat(item.saldo) < 0) ? '#e45d5d' : '#6694bb' 
           });
+
+          total_balance += parseFloat(item.saldo);
         });
+
+        // show "total_balance"
+        var cls = (total_balance >= 0) ? 'text-info' : 'text-danger';
+        me.$el.find('#total-balance').html('<span class="'+ cls +'"><b>$ ' + total_balance.formatMoney() + '</b></span>');
 
         me.chart_01.options.data[0].dataPoints = dps;
         me.chart_01.render();
