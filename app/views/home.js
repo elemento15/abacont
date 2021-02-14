@@ -34,10 +34,10 @@ define(function (require) {
 
         $('#kpiIngTot30d').html('$'+(data.ingtot30d || 0).formatMoney());
         $('#kpiExpTot30d').html('$'+(data.exptot30d || 0).formatMoney());
-        $('#kpiIngTot6m').html('$'+(data.ingtot6m || 0).formatMoney());
-        $('#kpiExpTot6m').html('$'+(data.exptot6m || 0).formatMoney());
-        $('#kpiIngTot12m').html('$'+(data.ingtot12m || 0).formatMoney());
-        $('#kpiExpTot12m').html('$'+(data.exptot12m || 0).formatMoney());
+        $('#kpiIngTot6m').html('$'+((data.ingtot6m || 0) / 6).formatMoney());
+        $('#kpiExpTot6m').html('$'+((data.exptot6m || 0) / 6).formatMoney());
+        $('#kpiIngTot12m').html('$'+((data.ingtot12m || 0) / 12).formatMoney());
+        $('#kpiExpTot12m').html('$'+((data.exptot12m || 0) / 12).formatMoney());
       });
     }
 
