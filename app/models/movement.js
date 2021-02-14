@@ -28,6 +28,12 @@ define(function (require) {
       }
       return false;
     },
+    isMsi: function () {
+      if (parseInt(this.get('es_meses_sin_intereses'), 10) === 1) {
+        return true;
+      }
+      return false;
+    },
     validate: function (attrs) {
       this.errors = [];
 

@@ -44,7 +44,8 @@ class Movements extends BaseController {
 			'movimiento_cuenta_id' => $id_mov_acc,
 			'subcategoria_id' => $data['subcategoria_id'],
 			'importe'         => $data['importe'],
-			'observaciones'   => $data['observaciones']
+			'observaciones'   => $data['observaciones'],
+			'es_meses_sin_intereses' => $data['es_meses_sin_intereses'],
 		);
 		$id = $this->model->save($params);
 

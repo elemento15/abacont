@@ -10,7 +10,8 @@ class Movement_model extends BaseModel {
 		                             'subcategorias.nombre AS subcategoria_nombre', 'categorias.nombre AS categoria_nombre',
 		                             'cuentas.nombre AS cuenta_nombre');
 	protected $search_fields = array('fecha','subcategorias.nombre','categorias.nombre','cuentas.nombre');
-	protected $save_fields   = array('fecha','tipo','importe','movimiento_cuenta_id','subcategoria_id','observaciones');
+	protected $save_fields   = array('fecha','tipo','importe','movimiento_cuenta_id','subcategoria_id',
+		                             'observaciones','es_meses_sin_intereses');
 	protected $edit_fields   = array('observaciones');
 	protected $avoid_delete  = true;
 

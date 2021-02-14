@@ -5,15 +5,20 @@
   <fieldset>
     <div class="row">
       <div class="col-sm-5">
-        <div class="form-group">
-          <label for="cuenta_id">Cuenta:</label>
-          <select name="cuenta_id" class="form-control">
-            <option value="">-- Seleccione --</option>
-          </select>
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="form-group">
+              <label for="cuenta_id">Cuenta:</label>
+              <select name="cuenta_id" class="form-control">
+                <option value="">-- Seleccione --</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-4">&nbsp;</div>
         </div>
 
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <div class="form-group date">
               <label for="fecha">Fecha:</label>
               <div class="input-group date" style="max-width:150px">
@@ -23,10 +28,19 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <div class="form-group">
               <label for="importe">Importe:</label>
-              <input type="number" name="importe" class="form-control">
+              <input type="number" name="importe" class="form-control text-right">
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="importe">Saldo:</label>
+              <div>
+                <div class="form-control text-right" id="div-account-balance-form">$0.00</div>
+              </div>
             </div>
           </div>
         </div>
@@ -46,11 +60,6 @@
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="form-group hidden-xs">
-          <label>Saldo en Cuenta:</label>
-          <div id="div-account-balance-form">$0.00</div>
-        </div>
-
         <div class="form-group">
           <label for="observaciones">Observaciones:</label>
           <textarea name="observaciones" class="form-control" rows="12" style="resize:none;"></textarea>

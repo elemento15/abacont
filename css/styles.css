@@ -138,8 +138,6 @@ hr {
 
 #div-account-balance-grid,
 #div-account-balance-form {
-  display: inline-block;
-  width: 75px;
   text-align: right;
   font-weight: bold;
 }

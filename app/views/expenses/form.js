@@ -17,6 +17,7 @@ define(function (require) {
       this.$("input[name=importe]").val(this.model.get('importe'));
       this.$("select[name=cuenta_id]").val(this.model.get('cuenta_id'));
       this.$("textarea[name=observaciones]").val(this.model.get('observaciones'));
+      this.$("input[name=es_meses_sin_intereses]").attr('checked', this.model.isMsi());
     },
     
     getForm: function () {
@@ -28,6 +29,7 @@ define(function (require) {
       this.model.set('cuenta_id', this.$("select[name=cuenta_id]").val());
       this.model.set('subcategoria_id', this.$("select[name=subcategoria_id]").val());
       this.model.set('observaciones', this.$("textarea[name=observaciones]").val());
+      this.model.set('es_meses_sin_intereses', (this.$("input[name=es_meses_sin_intereses]:checked").length));
     },
 
     afterRender: function () {
@@ -37,6 +39,7 @@ define(function (require) {
         this.$("input[name=importe]").attr('disabled', 'disabled');
         this.$("select[name=categoria_id]").attr('disabled', 'disabled');
         this.$("select[name=subcategoria_id]").attr('disabled', 'disabled');
+        this.$("input[name=es_meses_sin_intereses]").attr('disabled', 'disabled');
 
         this.$('.form-group:has(> #div-account-balance-form)').hide();
       }
@@ -85,6 +88,13 @@ define(function (require) {
           if (parseFloat(data.saldo) < 0) {
             that.$('#div-account-balance-form').addClass('cls-negative');
           }
+        }
+
+        if (data.tipo == 'C') {
+          that.$('#div-msi').show();
+        } else {
+          that.$("input[name=es_meses_sin_intereses]").attr('checked', false);
+          that.$('#div-msi').hide();
         }
       });
     },
