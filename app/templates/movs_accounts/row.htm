@@ -3,6 +3,31 @@
   <%= fecha %>
   <div class="cls-sub-text" style="margin-left:18px"><%= dayOfWeek() %></div>
 </td>
+<td>
+	<div><%= concepto %></div>
+	<% if (traspaso == 0) { %>
+	<div class="cls-sub-text"><%= cuenta_nombre %></div>
+	<% } else if (tipo == 'C') { %>
+	<div class="cls-sub-text">
+		<span><%= cuenta_nombre %></span>
+		<span class="glyphicon glyphicon-arrow-right" style="margin: 0px 5px;"></span>
+		<span title="Cuenta Destino"><%= cuenta_traspaso %></span>
+	</div>
+	<% } else { %>
+	<div class="cls-sub-text">
+		<span><%= cuenta_nombre %></span>
+		<span class="glyphicon glyphicon-arrow-left" style="margin: 0px 5px;"></span>
+		<span title="Cuenta Origen"><%= cuenta_traspaso %></span>
+	</div>
+	<% } %>
+</td>
+<td style="text-align:right">
+	<% if (tipo == 'A') { %>
+	<span><%= importe.formatMoney() %></span>
+	<% } else { %>
+	<span class="text-danger">-<%= importe.formatMoney() %></span>
+	<% } %>
+</td>
 <td style="text-align:center">
 	<% if (tipo == 'A') { %>
 		<span class="label label-success"><%= tipo_nombre() %></span>
@@ -10,11 +35,6 @@
 	<span class="label label-warning"><%= tipo_nombre() %></span>
 	<% } %>
 </td>
-<td>
-	<div><%= concepto %></div>
-	<div class="cls-sub-text"><%= cuenta_nombre %></div>
-</td>
-<td style="text-align:right">$<%= importe.formatMoney() %></td>
 <td style="text-align:center">
 	<% if (parseInt(automatico)) { %>
 		<span class="label label-info cls-mov-auto hidden-xs">Automático</span>
