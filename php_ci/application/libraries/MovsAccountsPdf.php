@@ -4,7 +4,7 @@ require_once 'BasePdf.php';
 
 class MovsAccountsPdf extends BasePdf {
 
-    private $account, $date_ini, $option;
+    private $account, $date_ini;
     protected $margin_header = 4;
 
     public function __construct() {
@@ -28,7 +28,6 @@ class MovsAccountsPdf extends BasePdf {
     public function setParams($params) {
         $this->account = intval($params['account']);
         $this->date_ini = $params['date_ini'];
-        $this->option = $params['option'];
 
         if (! $this->account) {
             echo "Invalid Account"; exit;
@@ -85,9 +84,7 @@ class MovsAccountsPdf extends BasePdf {
             $fill = !$fill;
         }
 
-
-    	$destination = ($this->option == 'PDF') ? 'D' : 'I';
-        $this->Output('rpt.pdf', $destination);
+        $this->Output('rpt.pdf', 'I');
     }
 
     private function getInitialBalance() {

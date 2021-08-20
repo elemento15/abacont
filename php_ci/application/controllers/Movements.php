@@ -103,8 +103,7 @@ class Movements extends BaseController {
 			'subcategory' => $_REQUEST['subcategory'],
 			'date_ini' => $_REQUEST['date_ini'],
 			'date_end' => $_REQUEST['date_end'],
-			'comments' => $_REQUEST['comments'],
-			'download' => $_REQUEST['download']
+			'comments' => $_REQUEST['comments']
 		);
 
 		$orientation = ($_REQUEST['rpt'] == 'X') ? 'L' : 'P';

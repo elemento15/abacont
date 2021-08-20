@@ -67,10 +67,9 @@ define(function (require) {
       var date_ini = this.$el.find('[name="fecha_ini"]').datepicker('getFormattedDate','yyyy-mm-dd');
       var date_end = this.$el.find('[name="fecha_fin"]').datepicker('getFormattedDate','yyyy-mm-dd');
       var comments = this.$el.find('[name="ver_comentarios"]:checked').val() || 0;
-      var download = this.$el.find('[name="download_pdf"]:checked').val() || 0;
 
       var params = '?rpt='+ rpt +'&type='+ type +'&account='+ account +'&comments='+ comments;
-      params += '&date_ini='+ date_ini +'&date_end='+ date_end +'&download='+ download;
+      params += '&date_ini='+ date_ini +'&date_end='+ date_end;
       params += '&category='+ category + '&subcategory='+ subcategory;
       window.open('movements/rpt_movements'+ params);
     },
