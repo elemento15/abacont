@@ -98,6 +98,7 @@ class Movements extends BaseController {
 		$params = array(
 			'rpt' => $_REQUEST['rpt'],
 			'type' => $_REQUEST['type'],
+			'type_date' => $_REQUEST['type_date'],
 			'account' => $_REQUEST['account'],
 			'category' => $_REQUEST['category'],
 			'subcategory' => $_REQUEST['subcategory'],

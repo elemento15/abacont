@@ -16,6 +16,7 @@ class MovementsPdf extends BasePdf {
         $this->orientation = $orientation;
         $this->rpt = $params['rpt'];
         $this->type = $params['type'];
+        $this->type_date = $params['type_date'];
         $this->account = intval($params['account']);
         $this->category = intval($params['category']);
         $this->subcategory = intval($params['subcategory']);
@@ -46,12 +47,15 @@ class MovementsPdf extends BasePdf {
                 break;
         }
 
-        if (! $this->validDate($this->date_ini)) {
-            echo "Invalid Initial Date"; exit;
-        }
+        // omit dates validation only when 'Comparativo' and 'Anual' 
+        if (!($this->rpt == 'X' && $this->type_date == 'A')) {
+            if (! $this->validDate($this->date_ini)) {
+                echo "Invalid Initial Date"; exit;
+            }
 
-        if (! $this->validDate($this->date_end)) {
-            echo "Invalid Final Date"; exit;
+            if (! $this->validDate($this->date_end)) {
+                echo "Invalid Final Date"; exit;
+            }
         }
     }
 
@@ -315,14 +319,19 @@ class MovementsPdf extends BasePdf {
     private function getDataCompared() {
         $CI =& get_instance();
 
-        $CI->db->select('SUBSTR(mv.fecha, 1, 7) AS periodo, s.id AS sID, SUM(mv.importe) AS total,
+        $period_offset = ($this->type_date == 'M') ? '7' : '4';
+
+        $CI->db->select('SUBSTR(mv.fecha, 1, '. $period_offset .') AS periodo, s.id AS sID, SUM(mv.importe) AS total,
                          s.nombre AS subcategoria, c.id AS cID, c.nombre AS categoria ');
         $CI->db->from('movimientos AS mv');
         $CI->db->join('subcategorias AS s', 's.id = mv.subcategoria_id', 'left');
         $CI->db->join('categorias AS c', 'c.id = s.categoria_id', 'left');
         $CI->db->join('movimientos_cuentas AS mov_cue', 'mov_cue.id = mv.movimiento_cuenta_id', 'left');
         
-        $CI->db->where('mv.fecha BETWEEN "'.$this->date_ini.'" AND "'.$this->date_end.'"');
+        if ($this->type_date == 'M') {
+            $CI->db->where('mv.fecha BETWEEN "'.$this->date_ini.'" AND "'.$this->date_end.'"');
+        }
+
         $CI->db->where('mv.tipo', $this->type);
         $CI->db->where('mv.cancelado', 0);
 
@@ -338,7 +347,7 @@ class MovementsPdf extends BasePdf {
             $CI->db->where('s.id', $this->subcategory);
         }
 
-        $CI->db->group_by("SUBSTR(mv.fecha, 1, 7), mv.subcategoria_id"); 
+        $CI->db->group_by("SUBSTR(mv.fecha, 1, $period_offset), mv.subcategoria_id"); 
 
         $CI->db->order_by('c.nombre', 'ASC');
         $CI->db->order_by('s.nombre', 'ASC');

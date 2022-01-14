@@ -14,6 +14,7 @@ define(function (require) {
       'click .btn-generate'  : 'generateRpt',
       'change [name="rpt"]'  : 'changeRpt',
       'change [name="tipo"]' : 'changeCategory',
+      'change [name="tipo_fecha"]' : 'changeDateType',
       'change [name="categoria_id"]' : 'fillSubcategoriesList'
     },
 
@@ -61,6 +62,7 @@ define(function (require) {
       
       var rpt = this.$el.find('[name="rpt"]').val();
       var type = this.$el.find('[name="tipo"]').val();
+      var type_date = this.$el.find('[name="tipo_fecha"]').val();
       var account = this.$el.find('[name="cuenta_id"]').val();
       var category = this.$el.find('[name="categoria_id"]').val() || 0;
       var subcategory = this.$el.find('[name="subcategoria_id"]').val() || 0;
@@ -69,7 +71,7 @@ define(function (require) {
       var comments = this.$el.find('[name="ver_comentarios"]:checked').val() || 0;
 
       var params = '?rpt='+ rpt +'&type='+ type +'&account='+ account +'&comments='+ comments;
-      params += '&date_ini='+ date_ini +'&date_end='+ date_end;
+      params += '&type_date='+ type_date +'&date_ini='+ date_ini +'&date_end='+ date_end;
       params += '&category='+ category + '&subcategory='+ subcategory;
       window.open('movements/rpt_movements'+ params);
     },
@@ -82,11 +84,27 @@ define(function (require) {
       } else {
         this.$el.find('.cls-ver-comentarios').hide();
       }
+
+      if (rpt == 'X') {
+        this.$el.find('.cls-ver-tipo-fecha').show();
+      } else {
+        this.$el.find('.cls-ver-tipo-fecha').hide();
+        this.$el.find('.cls-ver-fechas').show();
+      }
     },
 
     changeCategory: function () {
       this.fillCategoriesList();
       this.fillSubcategoriesList();
+    },
+
+    changeDateType: function (evt) {
+      var type = evt.target.value;
+      if (type == 'M') {
+        this.$el.find('.cls-ver-fechas').show();
+      } else {
+        this.$el.find('.cls-ver-fechas').hide();
+      }
     },
 
     fillCategoriesList: function () {
