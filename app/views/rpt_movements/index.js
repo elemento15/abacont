@@ -69,15 +69,17 @@ define(function (require) {
       var date_ini = this.$el.find('[name="fecha_ini"]').datepicker('getFormattedDate','yyyy-mm-dd');
       var date_end = this.$el.find('[name="fecha_fin"]').datepicker('getFormattedDate','yyyy-mm-dd');
       var comments = this.$el.find('[name="ver_comentarios"]:checked').val() || 0;
+      var csv = this.$el.find('[name="descargar_csv"]:checked').val() || 0;
 
       var params = '?rpt='+ rpt +'&type='+ type +'&account='+ account +'&comments='+ comments;
       params += '&type_date='+ type_date +'&date_ini='+ date_ini +'&date_end='+ date_end;
-      params += '&category='+ category + '&subcategory='+ subcategory;
+      params += '&category='+ category + '&subcategory='+ subcategory +'&csv='+ csv;
       window.open('movements/rpt_movements'+ params);
     },
 
     changeRpt: function (evt) {
       var rpt = evt.target.value;
+
 
       if (rpt == 'D') {
         this.$el.find('.cls-ver-comentarios').show();
@@ -87,9 +89,11 @@ define(function (require) {
 
       if (rpt == 'X') {
         this.$el.find('.cls-ver-tipo-fecha').show();
+        this.$el.find('.cls-descargar-csv').show();
       } else {
         this.$el.find('.cls-ver-tipo-fecha').hide();
         this.$el.find('.cls-ver-fechas').show();
+        this.$el.find('.cls-descargar-csv').hide();
       }
     },
 

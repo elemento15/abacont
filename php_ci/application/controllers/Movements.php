@@ -94,7 +94,6 @@ class Movements extends BaseController {
 	}
 
 	public function rpt_movements() {
-		$this->load->library('MovementsPdf', array(), 'pdf');
 		$params = array(
 			'rpt' => $_REQUEST['rpt'],
 			'type' => $_REQUEST['type'],
@@ -107,9 +106,19 @@ class Movements extends BaseController {
 			'comments' => $_REQUEST['comments']
 		);
 
-		$orientation = ($_REQUEST['rpt'] == 'X') ? 'L' : 'P';
-		$this->pdf->setParams($params, $orientation);
-		$this->pdf->printing();
+		// csv only for comparative report
+		$csv = ($params['rpt'] == 'X' && $_REQUEST['csv'] == '1');
+
+		if ($csv) {
+			$this->load->library('MovementsCsv', array(), 'csv');
+			$this->csv->setParams($params);
+			$this->csv->printing();
+		} else {
+			$this->load->library('MovementsPdf', array(), 'pdf');
+			$orientation = ($params['rpt'] == 'X') ? 'L' : 'P';
+			$this->pdf->setParams($params, $orientation);
+			$this->pdf->printing();
+		}
 	}
 
 	public function rpt_incomes_expenses() {
