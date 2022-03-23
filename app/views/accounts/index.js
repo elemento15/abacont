@@ -19,6 +19,7 @@ define(function (require) {
 
     onInit: function () {
       this.filterTable = [{ field: 'activo', value: 1 }];
+      this.orderTable = { field: 'orden', type: 'ASC' };
     },
 
     onLoadCollection: function () {
