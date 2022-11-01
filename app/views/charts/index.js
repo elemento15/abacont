@@ -15,12 +15,15 @@ define(function (require) {
       'change .configChart'           : 'updateChart',
       'click ul.nav a'                : 'selectChart',
       'change [name="categorias"]'    : 'changeCategory',
+      'change [name="categorias-2"]'  : 'changeCategory2',
       'change [name="subcategorias"]' : 'changeSubCategory',
       'change [name="tipo"]'          : 'changeTypeAccount',
       'change [name="cuentas"]'       : 'changeAccount',
       'click .cls-expense-detail'     : 'showComments',
       'change [name=omit_inversion]'  : 'changeOmitInversion',
       'click .cls-mov-type'           : 'changeTypeMov',
+      'click .cls-mov-type-2'         : 'changeTypeMov2',
+      'click .cls-search-06'          : 'updateChart06',
     },
 
     initialize: function (params) {
@@ -37,10 +40,18 @@ define(function (require) {
     onRender: function () {
       var that = this;
 
+      $.fn.datepicker.defaults.format = 'dd/mm/yyyy';
+
+      $('.input-group.date').datepicker({
+        language: "es",
+        autoclose: true,
+        todayHighlight: true
+      });
+
       this.chart_01 = new CanvasJS.Chart("canvas-chart01", {
         theme: "theme3",
         title: { 
-          text: "Saldos de Cuentas",
+          text: "Saldo en Cuentas",
           fontSize: 18
         },
         axisX: {
@@ -98,7 +109,7 @@ define(function (require) {
 
       this.chart_03 = new CanvasJS.Chart("canvas-chart03", {
         theme: "theme3",
-        title: { text: "Gastos Mensuales", fontSize: 18 },
+        title: { text: "Movimientos Mensuales", fontSize: 18 },
         axisX: {
           title: 'Meses',
           titleFontSize: 16,
@@ -224,7 +235,7 @@ define(function (require) {
 
       this.chart_05 = new CanvasJS.Chart("canvas-chart05", {
         theme: "theme3",
-        title: { text: "Saldos Mensuales (Débito/Crédito)", fontSize: 18 },
+        title: { text: "Saldo Mensual", fontSize: 18 },
         axisX: {
           title: 'Meses',
           titleFontSize: 16,
@@ -278,6 +289,35 @@ define(function (require) {
         ]
       });
 
+      this.chart_06 = new CanvasJS.Chart("canvas-chart06", {
+        theme: "light2",
+        title: { text: "Movimientos Porcentuales", fontSize: 18 },
+        legend: {
+          fontFamily: 'Verdana',
+          fontSize: 10,
+          maxWidth: 600,
+          itemWidth: 150,
+          /*itemclick: function (e) {
+            //e.dataSeries.visible = !e.dataSeries.visible;
+            //e.chart.render();
+          }*/
+        },
+        data: [
+          {
+            type: 'pie',
+            dataPoints: [],
+            showInLegend: true,
+            toolTipContent: "{y} - #percent %",
+            legendText: "{label}",
+            indexLabelFontSize: 12,
+            indexLabelFontColor: "#333333",
+            fillOpacity: .7,
+            bevelEnabled: false,
+          }
+        ]
+      });
+
+
       $('.divFrm01').show();
 
       this.updateChart01();
@@ -297,6 +337,7 @@ define(function (require) {
       $('.divFrm03').hide();
       $('.divFrm04').hide();
       $('.divFrm05').hide();
+      $('.divFrm06').hide();
 
       // show the selected options forms
       $('.divFrm'+opt).show();
@@ -333,7 +374,26 @@ define(function (require) {
         that.updateChart(false);
       });
     },
+    changeTypeMov2: function (evt) {
+      var that = this;
+      var opt = $(evt.target).attr('opt');
+
+      $('button.cls-mov-type-2').removeClass('btn-primary');
+      $('button.cls-mov-type-2').addClass('btn-default');
+      $(evt.target).addClass('btn-primary');
+
+      this.searchCategories2(opt || '', function () {
+        that.updateChart(false);
+      });
+    },
     changeCategory: function (evt) {
+      var that = this;
+      var value = evt.target.value;
+      this.searchSubCategories(parseInt(value || 0), function () {
+        that.updateChart(false);
+      });
+    },
+    changeCategory2: function (evt) {
       var that = this;
       var value = evt.target.value;
       this.searchSubCategories(parseInt(value || 0), function () {
@@ -376,6 +436,7 @@ define(function (require) {
         case '03' : this.updateChart03(); break;
         case '04' : this.updateChart04(); break;
         case '05' : this.updateChart05(); break;
+        case '06' : this.updateChart06(); break;
       }
     },
     updateChart01: function () {
@@ -660,6 +721,40 @@ define(function (require) {
         me.chart_05.render();
       });
     },
+    updateChart06: function () {
+      var me = this;
+      var items = [];
+
+      this.$("input[name=fecha_ini]").datepicker('setDate');
+      this.$("input[name=fecha_fin]").datepicker('setDate');
+
+      var date_ini = this.$el.find('[name="fecha_ini"]').datepicker('getFormattedDate','yyyy-mm-dd');
+      var date_end = this.$el.find('[name="fecha_fin"]').datepicker('getFormattedDate','yyyy-mm-dd');
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'charts/movements_percent',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            type: me.getTypeMov2(),
+            category: me.getCategory2() || false,
+            date_ini: date_ini,
+            date_end: date_end,
+          }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        data.forEach(function (item, index) {
+          items.push({
+            label: item.nombre,
+            y: parseFloat(item.total)
+          });
+        });
+
+        me.chart_06.options.data[0].dataPoints = items;
+        me.chart_06.render();
+      });
+    },
 
     searchAccounts: function (type, callback) {
       var that = this;
@@ -707,6 +802,29 @@ define(function (require) {
       });
     },
 
+    searchCategories2: function (type, callback) {
+      var that = this;
+
+      App.block();
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'categories/actives',
+          type: 'POST',
+          dataType: 'json',
+          data: { type: type }
+        })
+      ).then(function (data, textStatus, jqXHR) {
+        that.$("select[name=categorias-2]").html('<option value="">-- Todas --</option>');
+        data.forEach(function (item) {
+          that.$("select[name=categorias-2]").append('<option value="'+ item.id +'">'+ item.nombre +'</option>')
+        });
+
+        if (callback) { callback(); }
+        App.unblock();
+      });
+    },
+
     searchSubCategories: function (category_id, callback) {
       var that = this;
 
@@ -732,11 +850,18 @@ define(function (require) {
 
     getTypeMov: function () {
       var value = $('button.cls-mov-type.btn-primary').attr('opt') || false;
-
+      return value;
+    },
+    getTypeMov2: function () {
+      var value = $('button.cls-mov-type-2.btn-primary').attr('opt') || false;
       return value;
     },
     getCategory: function () {
       var value = $('select[name="categorias"]').val() || 0;
+      return value;
+    },
+    getCategory2: function () {
+      var value = $('select[name="categorias-2"]').val() || 0;
       return value;
     },
     getSubCategory: function () {

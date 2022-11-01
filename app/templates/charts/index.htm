@@ -6,7 +6,8 @@
 		<ul class="nav nav-pills">
 			<li class="active"><a href="#chart1" aria-controls="chart1" data-toggle="tab" opt="01">Saldo en Cuentas</a></li>
 			<li><a href="#chart5" aria-controls="chart5" data-toggle="tab" opt="05">Saldo Mensual</a></li>
-			<li><a href="#chart3" aria-controls="chart3" data-toggle="tab" opt="03">Gastos Mensuales</a></li>
+			<li><a href="#chart3" aria-controls="chart3" data-toggle="tab" opt="03">Movs. Mensuales</a></li>
+			<li><a href="#chart6" aria-controls="chart6" data-toggle="tab" opt="06">Movs. Porcentuales</a></li>
 			<li><a href="#chart4" aria-controls="chart4" data-toggle="tab" opt="04">Prom. Diario/Mes</a></li>
 			<li><a href="#chart2" aria-controls="chart2" data-toggle="tab" opt="02">Gastos por Día</a></li>
 		</ul>
@@ -101,6 +102,43 @@
 				</select>
 			</div>
 
+			<div class="form-group divFrm06" style="display: none;">
+				<label>Tipo:</label>
+				<div>
+					<div class="btn-group" role="group" aria-label="...">
+						<button type="button" class="btn btn-primary btn-xs cls-mov-type-2" opt="I">Ingreso</button>
+						<button type="button" class="btn btn-default btn-xs cls-mov-type-2" opt="G">Gasto</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group divFrm06" style="display: none;">
+				<label>Clase:</label>
+				<select name="categorias-2" class="form-control">
+					<option value="">-- Todos --</option>
+				</select>
+			</div>
+
+			<div class="form-group divFrm06" style="display: none;">
+				<label>Fecha Inicial:</label>
+				<div class="input-group date" style="max-width:150px">
+					<input type="text" name="fecha_ini" class="form-control">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+				</div>
+			</div>
+
+			<div class="form-group divFrm06" style="display: none;">
+				<label>Fecha Final:</label>
+				<div class="input-group date" style="max-width:150px">
+					<input type="text" name="fecha_fin" class="form-control">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+				</div>
+			</div>
+
+			<div class="form-group divFrm06" style="display: none;">
+				<button type="button" class="btn btn-default btn-sm cls-search-06">Buscar</button>
+			</div>
+
 			<div class="form-group divOmitInversion" style="">
 				<div class="checkbox">
 					<label>
@@ -149,6 +187,14 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div id="canvas-chart05"></div>
+					</div>
+				</div>
+			</div>
+
+			<div role="tabpanel" class="tab-pane" id="chart6">
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="canvas-chart06"></div>
 					</div>
 				</div>
 			</div>

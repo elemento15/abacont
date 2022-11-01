@@ -264,6 +264,45 @@ class Charts extends CI_Controller {
 		echo json_encode(array('debit' => $debit, 'credit' => $credit));
 	}
 
+	public function movements_percent() {
+		$type = $_POST['type'];
+		$category = intval($_POST['category']);
+		$date_ini = $_POST['date_ini'];
+		$date_end = $_POST['date_end'];
+
+		if ($type != 'I' && $type != 'G') {
+			echo json_encode([]);
+			return false;
+		}
+
+		if ($category) {
+			$query = $this->db->query("
+				select s.id AS sID, s.nombre, SUM(m.importe) AS total 
+				FROM movimientos AS m 
+				LEFT JOIN subcategorias AS s ON s.id = m.subcategoria_id 
+				WHERE m.fecha BETWEEN '$date_ini' AND '$date_end' 
+				  AND m.tipo = '$type'
+				  AND s.categoria_id = '$category'
+				  AND NOT m.cancelado 
+				GROUP BY s.id 
+				ORDER BY total DESC ;");
+		} else {
+			$query = $this->db->query("
+				select c.id AS cID, c.nombre, SUM(m.importe) AS total 
+				FROM movimientos AS m 
+				LEFT JOIN subcategorias AS s ON s.id = m.subcategoria_id 
+				LEFT JOIN categorias AS c ON c.id = s.categoria_id 
+				WHERE m.fecha BETWEEN '$date_ini' AND '$date_end' 
+				  AND m.tipo = '$type' 
+				  AND NOT m.cancelado 
+				GROUP BY c.id 
+				ORDER BY total DESC ;");
+		}
+
+		$data = $query->result_array();
+		echo json_encode($data);
+	}
+
 
 	protected function getListPastMonths($months) {
 		$date = new DateTime();
