@@ -224,7 +224,7 @@ define(function (require) {
 
       this.chart_05 = new CanvasJS.Chart("canvas-chart05", {
         theme: "theme3",
-        title: { text: "Saldos Mensuales de Cuentas (Débito/Crédito)", fontSize: 18 },
+        title: { text: "Saldos Mensuales (Débito/Crédito)", fontSize: 18 },
         axisX: {
           title: 'Meses',
           titleFontSize: 16,
@@ -246,6 +246,7 @@ define(function (require) {
             e.chart.render();
           }
         },
+        zoomEnabled: true,
         data: [
           {
             type: 'splineArea',
