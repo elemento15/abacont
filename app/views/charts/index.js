@@ -14,13 +14,13 @@ define(function (require) {
     events: {
       'change .configChart'           : 'updateChart',
       'click ul.nav a'                : 'selectChart',
-      'change [name="tipo_mov"]'      : 'changeTypeMov',
       'change [name="categorias"]'    : 'changeCategory',
       'change [name="subcategorias"]' : 'changeSubCategory',
       'change [name="tipo"]'          : 'changeTypeAccount',
       'change [name="cuentas"]'       : 'changeAccount',
       'click .cls-expense-detail'     : 'showComments',
-      'change [name=omit_inversion]'  : 'changeOmitInversion'
+      'change [name=omit_inversion]'  : 'changeOmitInversion',
+      'click .cls-mov-type'           : 'changeTypeMov',
     },
 
     initialize: function (params) {
@@ -322,8 +322,13 @@ define(function (require) {
     },
     changeTypeMov: function (evt) {
       var that = this;
-      var value = evt.target.value;
-      this.searchCategories(value || '', function () {
+      var opt = $(evt.target).attr('opt');
+
+      $('button.cls-mov-type').removeClass('btn-primary');
+      $('button.cls-mov-type').addClass('btn-default');
+      $(evt.target).addClass('btn-primary');
+
+      this.searchCategories(opt || '', function () {
         that.searchSubCategories('');
         that.updateChart(false);
       });
@@ -726,7 +731,8 @@ define(function (require) {
     },
 
     getTypeMov: function () {
-      var value = $('select[name="tipo_mov"]').val() || false;
+      var value = $('button.cls-mov-type.btn-primary').attr('opt') || false;
+
       return value;
     },
     getCategory: function () {
