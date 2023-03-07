@@ -273,7 +273,7 @@ define(function (require) {
             bevelEnabled: false,
             markerSize: 4
           },{
-            type: 'splineArea',
+            type: 'area',
             color: '#ff7272',
             visible: true,
             dataPoints: [],
