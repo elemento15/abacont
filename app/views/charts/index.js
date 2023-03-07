@@ -260,7 +260,7 @@ define(function (require) {
         zoomEnabled: true,
         data: [
           {
-            type: 'splineArea',
+            type: 'area',
             color: '#6694bb',
             visible: true,
             dataPoints: [],
