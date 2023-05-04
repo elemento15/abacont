@@ -13,6 +13,8 @@ define(function (require) {
       activo: true,
       usa_gastos: false,
       usa_ingresos: false,
+      es_inversion: false,
+      es_ahorro: false,
       num_tarjeta: '',
       num_cuenta: '',
       saldo: 0,
@@ -34,6 +36,18 @@ define(function (require) {
     },
     forIncomes: function () {
       if (parseInt(this.get('usa_ingresos'), 10) === 1) {
+        return true;
+      }
+      return false;
+    },
+    isInversion: function () {
+      if (parseInt(this.get('es_inversion'), 10) === 1) {
+        return true;
+      }
+      return false;
+    },
+    isSaving: function () {
+      if (parseInt(this.get('es_ahorro'), 10) === 1) {
         return true;
       }
       return false;

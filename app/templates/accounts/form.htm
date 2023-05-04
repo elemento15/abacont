@@ -18,7 +18,6 @@
                 <option value="E">EFECTIVO</option>
                 <option value="D">DEBITO</option>
                 <option value="C">CREDITO</option>
-                <option value="I">INVERSION</option>
               </select>
             </div>
           </div>
@@ -62,22 +61,39 @@
         </div>
         
         
-        
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="activo" checked="checked"> Activo
-          </label>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="activo" checked="checked"> Activo
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="usa_gastos" checked="checked"> Se usa en Gastos
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="usa_ingresos" checked="checked"> Se usa en Ingresos
+              </label>
+            </div>
+          </div>
+
+          <div class="col-sm-4 cls-only-debit" style="display: none;">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="es_inversion"> Es Inversión
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="es_ahorro"> Es Ahorro
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="usa_gastos" checked="checked"> Se usa en Gastos
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" name="usa_ingresos" checked="checked"> Se usa en Ingresos
-          </label>
-        </div>
+
       </div>
       <div class="col-sm-6">
         <div class="form-group">

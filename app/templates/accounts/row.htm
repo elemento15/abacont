@@ -4,12 +4,15 @@
   	<%= nombre %>
   </div>
   <div class="cls-sub-text">
-  	<span style="padding-left: 16px;"><%= (tipo == 'C') ? 'CREDITO' : ( (tipo == 'D') ? 'DEBITO' : ((tipo == 'E') ? 'EFECTIVO' : 'INVERSION')) %></span>
+  	<span style="padding-left: 16px;"><%= (tipo == 'C') ? 'CREDITO' : ( (tipo == 'D') ? 'DEBITO' : ((tipo == 'E') ? 'EFECTIVO' : '???')) %></span>
   </div>
 </td>
 <td>
 	<div class="cls-sub-text cursor-default" title="Num. de Tarjeta"><%= num_tarjeta %></div>
 	<div class="cls-sub-text cursor-default" title="Num. de Cuenta"><%= num_cuenta %></div>
+</td>
+<td>
+	<div class="cls-sub-text"><%= clabe %></div>
 </td>
 <td align="right" class="<%= (saldo < 0) ? 'cls-negative' : '' %>">$<%= saldo.formatMoney() %></td>
 <td align="center" class="hidden-xs hidden-sm">

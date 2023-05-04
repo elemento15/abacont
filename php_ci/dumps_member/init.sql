@@ -109,3 +109,11 @@ ALTER TABLE `cuentas`
 /* DATE: 2021-01-02 */
 ALTER TABLE `cuentas`
   ADD COLUMN `orden` TINYINT NOT NULL DEFAULT '0' AFTER `saldo`;
+
+/* DATE: 2023-05-03  */
+ALTER TABLE `cuentas`
+  CHANGE COLUMN `tipo` `tipo` ENUM('C','D','E') NOT NULL DEFAULT 'E' AFTER `nombre`;
+
+ALTER TABLE `cuentas`
+	ADD COLUMN `es_inversion` TINYINT(4) NOT NULL DEFAULT '0' AFTER `usa_ingresos`,
+	ADD COLUMN `es_ahorro` TINYINT(4) NOT NULL DEFAULT '0' AFTER `es_inversion`;

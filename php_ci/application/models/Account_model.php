@@ -5,10 +5,12 @@ include_once('BaseModel.php');
 class Account_model extends BaseModel {
 	
 	protected $table_name    = 'cuentas';
-	protected $list_fields   = array('id','nombre','tipo','activo','usa_gastos','usa_ingresos',
+	protected $list_fields   = array('id','nombre','tipo','activo',
+	                                 'usa_gastos','usa_ingresos','es_inversion','es_ahorro',
 		                             'num_tarjeta','num_cuenta','num_cliente','clabe','saldo','orden');
 	protected $search_fields = array('nombre','num_tarjeta','num_cuenta','num_cliente','clabe');
-	protected $save_fields   = array('nombre','tipo','activo','usa_gastos','usa_ingresos','orden',
+	protected $save_fields   = array('nombre','tipo','activo','usa_gastos','usa_ingresos',
+	                                 'orden','es_inversion','es_ahorro',
 		                             'num_tarjeta','num_cuenta','num_cliente','clabe','observaciones');
 	// protected $edit_fields   = array();
 	protected $avoid_delete  = false;

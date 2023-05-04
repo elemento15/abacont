@@ -20,7 +20,9 @@ define(function (require) {
       'change [name="tipo"]'          : 'changeTypeAccount',
       'change [name="cuentas"]'       : 'changeAccount',
       'click .cls-expense-detail'     : 'showComments',
-      'change [name=omit_inversion]'  : 'changeOmitInversion',
+      //'change [name=omit_inversion]'  : 'changeOmitInversion',
+      'change [name=filtro_inversion]': 'updateChart',
+      'change [name=filtro_ahorro]'   : 'updateChart',
       'click .cls-mov-type'           : 'changeTypeMov',
       'click .cls-mov-type-2'         : 'changeTypeMov2',
       'click .cls-search-06'          : 'updateChart06',
@@ -28,7 +30,10 @@ define(function (require) {
 
     initialize: function (params) {
       this.showedChart02 = false;
-      this.omitInversionsVisible = true;
+      //this.omitInversionsVisible = true;
+
+      this.init_date = this.getStartDate();
+      this.end_date = this.getFinalDate();
     },
     
     render: function () {
@@ -47,6 +52,9 @@ define(function (require) {
         autoclose: true,
         todayHighlight: true
       });
+
+      $( "input[name=fecha_ini]" ).datepicker( "setDate", this.init_date);
+      $( "input[name=fecha_fin]" ).datepicker( "setDate", this.end_date);
 
       this.chart_01 = new CanvasJS.Chart("canvas-chart01", {
         theme: "theme3",
@@ -343,7 +351,7 @@ define(function (require) {
       $('.divFrm'+opt).show();
 
       // depending on charts show or hide the omitInversions checkbox
-      if (opt == '01' || opt == '05') {
+      /*if (opt == '01' || opt == '05') {
         if (this.getTypeAccount()) {
           $('.divOmitInversion').hide();
         } else {
@@ -351,7 +359,9 @@ define(function (require) {
         }
       } else {
           $('.divOmitInversion').hide();
-      }
+      }*/
+
+      this.toggleFilters(opt);
 
       switch (opt) {
         case '01' : this.updateChart01(); break;
@@ -359,6 +369,7 @@ define(function (require) {
         case '03' : this.updateChart03(); break;
         case '04' : this.updateChart04(); break;
         case '05' : this.updateChart05(); break;
+        case '06' : this.updateChart06(); break;
       }
     },
     changeTypeMov: function (evt) {
@@ -408,12 +419,14 @@ define(function (require) {
       var value = evt.target.value;
 
       // if "type" selected, omitInversion checkbox is not needed
-      if (value) {
+      /*if (value) {
         this.$el.find('[name="omit_inversion"]').prop("checked", false);
         $('.divOmitInversion').hide();
       } else {
         $('.divOmitInversion').show();
-      }
+      }*/
+
+      this.toggleFilters(false);
 
       this.searchAccounts(value || false, function () {
         that.updateChart(false);
@@ -422,9 +435,9 @@ define(function (require) {
     changeAccount: function (evt) {
       this.updateChart(false);
     },
-    changeOmitInversion: function (evt) {
+    /*changeOmitInversion: function (evt) {
       this.updateChart(false);
-    },
+    },*/
 
     updateChart: function (evt) {
       var that = this;
@@ -451,7 +464,8 @@ define(function (require) {
           type: 'POST',
           data: { 
             type: me.getTypeAccount(),
-            omitInversions: me.getOmitInversion(),
+            filter_inversion: me.getFilterInversion(),
+            filter_saving: me.getFilterSaving(),
             order: { field: 'orden', type: 'ASC' }
           }
         })
@@ -697,7 +711,9 @@ define(function (require) {
           data: { 
             type: me.getTypeAccount(), 
             account: me.getAccount(),
-            omitInversions: me.getOmitInversion()
+            filter_inversion: me.getFilterInversion(),
+            filter_saving: me.getFilterSaving(),
+            //omitInversions: me.getOmitInversion()
           }
         })
       ).then(function (data, textStatus, jqXHR) {
@@ -880,9 +896,17 @@ define(function (require) {
       var value = $('select[name="tipo"]').val() || 0;
       return value;
     },
-    getOmitInversion: function() {
-      return this.$el.find('[name="omit_inversion"]:checked').val() || 0;
+    getFilterInversion: function () {
+      var value = $('select[name="filtro_inversion"]').val() || 0;
+      return value;
     },
+    getFilterSaving: function () {
+      var value = $('select[name="filtro_ahorro"]').val() || 0;
+      return value;
+    },
+    /*getOmitInversion: function() {
+      return this.$el.find('[name="omit_inversion"]:checked').val() || 0;
+    },*/
 
     showExpensesDetails: function (date) {
       var category = this.getCategory();
@@ -973,6 +997,31 @@ define(function (require) {
     cleanComments: function () {
       var html = '<span class="text-muted">(Sin Comentarios)</span>';
       $('.cls-expenses-detail-comments').html(html);
+    },
+    toggleFilters: function (opt) {
+      // show filter for inversions and savings
+      var opt = opt || this.getActivePanel();
+      var value = this.getTypeAccount();
+
+      if ((opt == '01' || opt == '05') && value == 'D') {
+        $('.divOnlyDebit').show();
+      } else {
+        $('.divOnlyDebit').hide();
+      }
+    },
+    getStartDate: function () {
+      var now = new Date();
+      var arr_date = ['01', this.padText(now.getMonth() + 1), now.getFullYear()];
+      return arr_date.join('/');
+    },
+    getFinalDate: function () {
+      var now = new Date();
+      var last_day = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      var arr_date = [this.padText(last_day.getDate()), this.padText(last_day.getMonth() + 1), last_day.getFullYear()];
+      return arr_date.join('/');
+    },
+    padText: function (num) {
+      return (num < 10) ? '0' + num : num;
     }
   });
 

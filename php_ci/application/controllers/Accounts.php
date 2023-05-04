@@ -12,7 +12,8 @@ class Accounts extends BaseController {
 		$expenses = (isset($_POST['expenses']) && $_POST['expenses']) ? true : false;
 		$type = (isset($_POST['type'])) ? $_POST['type'] : false;
 		$order = (isset($_POST['order'])) ? $_POST['order'] : false;
-		$omit_inversions = (isset($_POST['omitInversions'])) ? $_POST['omitInversions'] : false;
+		$filter_inversion = (isset($_POST['filter_inversion'])) ? $_POST['filter_inversion'] : false;
+		$filter_saving = (isset($_POST['filter_saving'])) ? $_POST['filter_saving'] : false;
 
 		$params = array(
 	      'order'    => ($order) ? $order : ['field' => 'nombre', 'type' => 'ASC'],
@@ -35,19 +36,18 @@ class Accounts extends BaseController {
 			$params['filter'][] = array('field' => 'tipo', 'value' => $type);
 		}
 
-	    $recs = $this->model->findAll($params);
-		
-		if (! $omit_inversions) {
-			$data = $recs['data'];
-		} else {
-			$data = [];
-
-			foreach ($recs['data'] as $item) {
-				if ($item->tipo != 'I') {
-					$data[] = $item;
-				}
-			}
+		if ($filter_inversion) {
+			$value = ($filter_inversion == 'S') ? 1 : 0;
+			$params['filter'][] = array('field' => 'es_inversion', 'value' => $value);
 		}
+
+		if ($filter_saving) {
+			$value = ($filter_saving == 'S') ? 1 : 0;
+			$params['filter'][] = array('field' => 'es_ahorro', 'value' => $value);
+		}
+
+	    $recs = $this->model->findAll($params);
+		$data = $recs['data'];
 
 	    echo json_encode($data);
 	}

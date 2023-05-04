@@ -14,11 +14,10 @@
       <div class="col-sm-12 form-group">
         <label>Tipo:</label>
         <select class="form-control list-filter" name="tipo" style="max-width:150px;">
-          <option value="">Todos</option>
+          <option value="">- Todos -</option>
           <option value="E">Efectivo</option>
           <option value="D">Débito</option>
           <option value="C">Crédito</option>
-          <option value="I">Inversión</option>
         </select>
       </div>
     </div>
@@ -46,18 +45,23 @@
               </td>
               <td>
                 <span class="order-field" orderfield="tipo" ordertype="ASC">
-                  Cuenta/Tarjeta <span class="glyphicon"></span>
+                  Tarjeta/Cuenta <span class="glyphicon"></span>
+                </span>
+              </td>
+              <td>
+                <span>
+                  CLABE <span class="glyphicon"></span>
                 </span>
               </td>
               <td>
                 <span>Saldo</span>
               </td>
-              <td class="hidden-xs hidden-sm">
+              <td class="hidden-xs hidden-sm" width="75">
                 <span class="order-field" orderfield="usa_ingresos" ordertype="ASC">
                   Ingreso <span class="glyphicon"></span>
                 </span>
               </td>
-              <td class="hidden-xs hidden-sm">
+              <td class="hidden-xs hidden-sm" width="75">
                 <span class="order-field" orderfield="usa_gastos" ordertype="ASC">
                   Gasto <span class="glyphicon"></span>
                 </span>

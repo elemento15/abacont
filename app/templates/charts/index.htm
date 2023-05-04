@@ -24,7 +24,31 @@
 					<option value="E">Efectivo</option>
 					<option value="D">Débito</option>
 					<option value="C">Crédito</option>
-					<option value="I">Inversión</option>
+				</select>
+			</div>
+
+			<div class="form-group divFrm05" style="display: none;">
+				<label>Cuenta:</label>
+				<select name="cuentas" class="form-control">
+					<option value="">-- Todas --</option>
+				</select>
+			</div>
+
+			<div class="form-group divOnlyDebit" style="display: none;">
+				<label>Inversión:</label>
+				<select name="filtro_inversion" class="form-control">
+					<option value="">-- Todos --</option>
+					<option value="S">Solo Inversión</option>
+					<option value="N">Omitir Inversión</option>
+				</select>
+			</div>
+
+			<div class="form-group divOnlyDebit" style="display: none;">
+				<label>Ahorro:</label>
+				<select name="filtro_ahorro" class="form-control">
+					<option value="">-- Todos --</option>
+					<option value="S">Solo Ahorro</option>
+					<option value="N">Omitir Ahorro</option>
 				</select>
 			</div>
 
@@ -95,19 +119,12 @@
 	            </div>
 			</div>
 
-			<div class="form-group divFrm05" style="display: none;">
-				<label>Cuenta:</label>
-				<select name="cuentas" class="form-control">
-					<option value="">-- Todas --</option>
-				</select>
-			</div>
-
 			<div class="form-group divFrm06" style="display: none;">
 				<label>Tipo:</label>
 				<div>
 					<div class="btn-group" role="group" aria-label="...">
-						<button type="button" class="btn btn-primary btn-xs cls-mov-type-2" opt="I">Ingreso</button>
-						<button type="button" class="btn btn-default btn-xs cls-mov-type-2" opt="G">Gasto</button>
+						<button type="button" class="btn btn-default btn-xs cls-mov-type-2" opt="I">Ingreso</button>
+						<button type="button" class="btn btn-primary btn-xs cls-mov-type-2" opt="G">Gasto</button>
 					</div>
 				</div>
 			</div>
@@ -139,13 +156,13 @@
 				<button type="button" class="btn btn-default btn-sm cls-search-06">Buscar</button>
 			</div>
 
-			<div class="form-group divOmitInversion" style="">
+			<!--<div class="form-group divOmitInversion" style="">
 				<div class="checkbox">
 					<label>
 						<input type="checkbox" name="omit_inversion" value="1"> Omitir Inversiones
 					</label>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</div>
 

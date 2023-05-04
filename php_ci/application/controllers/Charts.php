@@ -234,6 +234,11 @@ class Charts extends CI_Controller {
 
 		$periods = $this->getPeriodsList($this->modelMovAcc->firstMovDate());
 
+		$extra_filters = [
+			'inversion' => $_POST['filter_inversion'] ?: false,
+			'saving' => $_POST['filter_saving'] ?: false,
+		];
+
 		if ($type = $_POST['type']) {
 			$account = intval($_POST['account']);
 			
@@ -242,8 +247,8 @@ class Charts extends CI_Controller {
 				$type = $model_account->tipo;
 			}
 
-			if ($type == 'E' || $type == 'D' || $type == 'I') {
-				$debit = $this->getPeriodsBalance($type, $account, $periods);
+			if ($type == 'E' || $type == 'D') {
+				$debit = $this->getPeriodsBalance($type, $account, $periods, $extra_filters);
 				$credit = [];
 			} else if ($type == 'C') {
 				$debit = [];
@@ -254,10 +259,9 @@ class Charts extends CI_Controller {
 			}
 
 		} else {
-			$omitInversions = $_POST['omitInversions'];
-			$types = (! $_POST['omitInversions']) ? ["'E'","'D'","'I'"] : ["'E'","'D'"];
+			$types = ["'E'","'D'"];
 
-			$debit = $this->getPeriodsBalance($types, false, $periods);
+			$debit = $this->getPeriodsBalance($types, false, $periods, $extra_filters);
 			$credit = $this->getPeriodsBalance('C', false, $periods);
 		}
 
@@ -381,9 +385,9 @@ class Charts extends CI_Controller {
 		return $year . '-' . (($month < 10) ? ('0' . $month) : $month);
 	}
 
-	private function getPeriodsBalance($type, $account, $periods) {
+	private function getPeriodsBalance($type, $account, $periods, $extra_filters = false) {
 		$data = array();
-		$amounts = $this->getAccountsMovsByPeriod($type, $account);
+		$amounts = $this->getAccountsMovsByPeriod($type, $account, $extra_filters);
 		$balance = 0;
 
 		foreach ($periods as $period) {
@@ -400,9 +404,10 @@ class Charts extends CI_Controller {
 		return $data;
 	}
 
-	private function getAccountsMovsByPeriod($type = false, $account = false) {
+	private function getAccountsMovsByPeriod($type = false, $account = false, $extra = false) {
 		$type_filter = '';
 		$account_filter = '';
+		$extra_filter = '';
 
 		if ($type) {
 			if (gettype($type) == 'array') {
@@ -416,11 +421,21 @@ class Charts extends CI_Controller {
 			$account_filter = " AND c.id = '$account' ";
 		}
 
+		if ($extra) {
+			if ($extra['inversion']) {
+				$extra_filter .= ($extra['inversion'] == 'S') ? " AND c.es_inversion " : " AND NOT c.es_inversion ";
+			}
+
+			if ($extra['saving']) {
+				$extra_filter .= ($extra['saving'] == 'S') ? " AND c.es_ahorro " : " AND NOT c.es_ahorro ";
+			}
+		}
+
 		$sql = "select DATE_FORMAT(mc.fecha, '%Y-%m') AS periodo, 
                        SUM(IF(mc.tipo = 'A', importe, importe * -1)) AS total 
                 FROM movimientos_cuentas AS mc 
                 LEFT JOIN cuentas AS c ON c.id = mc.cuenta_id 
-                WHERE NOT mc.cancelado $type_filter $account_filter 
+                WHERE NOT mc.cancelado $type_filter $account_filter $extra_filter
                 GROUP BY periodo 
                 ORDER BY periodo ";
 
