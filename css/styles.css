@@ -214,3 +214,8 @@ span.cls-mov-auto {
 .cls-expense-detail {
   cursor: pointer;
 }
+
+.cls-canvas-chart {
+  height: 400px;
+  margin-bottom: 20px;
+}
