@@ -14,7 +14,7 @@ class RptIncomesExpensesPdf extends BasePdf {
     }
 
     public function setParams($params) {
-        $this->months = intval($params['months']);
+        $this->months = intval($params['months']) ?? 1000;
         $this->current_month = intval($params['current']);
     	
         $this->subtitle = 'Ultimos '.$this->months.' meses';
@@ -39,7 +39,6 @@ class RptIncomesExpensesPdf extends BasePdf {
         $total_inc = 0;
         $total_exp = 0;
         $months = count($data);
-        $currMonth = $this->current_month;
         $sum = 0;
 
         // header
@@ -114,8 +113,6 @@ class RptIncomesExpensesPdf extends BasePdf {
 
         $this->SetFont('Helvetica', 'B', 8);
         $border = '';
-
-        //$monthsDivisor = ($currMonth ? $months + 1 : $months );
 
         $this->Cell(30, 4, '', $border, 0, '', false);
         $this->Cell(10, 4, '', $border, 0, 'C', false);
