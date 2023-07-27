@@ -38,7 +38,7 @@ class RptIncomesExpensesPdf extends BasePdf {
         
         $total_inc = 0;
         $total_exp = 0;
-        $months = $this->months;
+        $months = count($data);
         $currMonth = $this->current_month;
         $sum = 0;
 
@@ -115,15 +115,15 @@ class RptIncomesExpensesPdf extends BasePdf {
         $this->SetFont('Helvetica', 'B', 8);
         $border = '';
 
-        $monthsDivisor = ($currMonth ? $months + 1 : $months );
+        //$monthsDivisor = ($currMonth ? $months + 1 : $months );
 
         $this->Cell(30, 4, '', $border, 0, '', false);
         $this->Cell(10, 4, '', $border, 0, 'C', false);
         $this->Cell(10, 4, 'Prom. mes:', $border, 0, 'R', false);
-        $this->Cell(25, 4, $this->formatCurrency($total_inc / $monthsDivisor), $border, 0, 'R', false);
-        $this->Cell(25, 4, $this->formatCurrency($total_exp / $monthsDivisor), $border, 0, 'R', false);
+        $this->Cell(25, 4, $this->formatCurrency($total_inc / $months), $border, 0, 'R', false);
+        $this->Cell(25, 4, $this->formatCurrency($total_exp / $months), $border, 0, 'R', false);
 
-        $diff = ($total_inc - $total_exp)  / $monthsDivisor;
+        $diff = ($total_inc - $total_exp)  / $months;
         if ($diff < 0) {
             $this->SetTextColor(255, 0, 0);
         }
