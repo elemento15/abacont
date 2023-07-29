@@ -198,20 +198,20 @@ span.cls-mov-auto {
   color: #666;
 }
 
-/* container for expenses detail in charts */
-.cls-expenses-detail-list {
+/* container for movements detail in charts */
+.cls-movements-detail-list {
   max-height: 300px;
   overflow-y: scroll;
 }
 
-.cls-expenses-detail-comments {
+.cls-movements-detail-comments {
   border: 1px solid #ddd;
   border-radius: 3px;
   margin: 10px 0px;
   padding: 5px;
 }
 
-.cls-expense-detail {
+.cls-movement-detail {
   cursor: pointer;
 }
 

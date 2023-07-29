@@ -19,7 +19,7 @@ define(function (require) {
       'change [name="subcategorias"]' : 'changeSubCategory',
       'change [name="tipo"]'          : 'changeTypeAccount',
       'change [name="cuentas"]'       : 'changeAccount',
-      'click .cls-expense-detail'     : 'showComments',
+      'click .cls-movement-detail'    : 'showComments',
       //'change [name=omit_inversion]'  : 'changeOmitInversion',
       'change [name=filtro_inversion]': 'updateChart',
       'change [name=filtro_ahorro]'   : 'updateChart',
@@ -962,10 +962,10 @@ define(function (require) {
         } else {
 
           data.data.forEach(function (item) {
-            html += '<tr>';
+            html += '<tr class="cls-movement-detail" expId="'+ item.id +'">';
             html += '   <td>';
             html += '      <div class="text-info">';
-            html += '         <span class="cls-expense-detail" expId="'+ item.id +'">'+ item.subcategoria_nombre +'</span>';
+            html += '         <span>'+ item.subcategoria_nombre +'</span>';
             html += '      </div>';
             html += '      <div class="cls-sub-text">'+ item.categoria_nombre +'</div>';
             html += '   </td>';
@@ -983,8 +983,8 @@ define(function (require) {
             html += '</tr>';
           });
           
-          $('#dialog-expenses table tbody').html(html);
-          $('#dialog-expenses').modal();
+          $('#dialog-movements table tbody').html(html);
+          $('#dialog-movements').modal();
         }
       });
 
@@ -1005,7 +1005,7 @@ define(function (require) {
       ).then(function (data, textStatus, jqXHR) {
         if (data.observaciones) {
           var html = '<span>'+ data.observaciones +'</span>';
-          $('.cls-expenses-detail-comments').html(html);
+          $('.cls-movements-detail-comments').html(html);
         } else {
           me.cleanComments();
         }
@@ -1014,7 +1014,7 @@ define(function (require) {
 
     cleanComments: function () {
       var html = '<span class="text-muted">(Sin Comentarios)</span>';
-      $('.cls-expenses-detail-comments').html(html);
+      $('.cls-movements-detail-comments').html(html);
     },
     toggleFilters: function (opt) {
       // show filter for inversions and savings
