@@ -18,27 +18,36 @@ class Charts extends CI_Controller {
 	    $this->load->model('MovAccount_model','modelMovAcc',true);
 	}
 
-	public function expenses_day() {
+	public function movements_day() {
 		$data          = [];
 		$month         = $_POST['month'];
 		$year          = intval($_POST['year']);
 		$category      = intval($_POST['category']);
 		$subcategory   = intval($_POST['subcategory']);
+
+		$data = [
+			'incomes'  => [],
+			'expenses' => [],
+		];
 		
-		$records = $this->modelMov->movs_grouped('D', 'G', $month, $year, $category, $subcategory);
-		
-
-		// create list of days in the period
-		$data = $this->getListDaysInMonth($year, $month);
-
-		foreach ($data as $index => $item) {
-			$data[$index]['total'] = 0;
-
-			foreach ($records as $rec) {
-				if ($rec->fecha == $item['fecha']) {
-					$data[$index]['total'] = $rec->total;
+		foreach ($data as $key => $type) {
+			$type = $key == 'incomes' ? 'I' : 'G';
+			$records = $this->modelMov->movs_grouped('D', $type, $month, $year, $category, $subcategory);
+			
+			// create list of days in the period
+			$dates = $this->getListDaysInMonth($year, $month);
+			
+			foreach ($dates as $index => $item) {
+				$dates[$index]['total'] = 0;
+	
+				foreach ($records as $rec) {
+					if ($rec->fecha == $item['fecha']) {
+						$dates[$index]['total'] = $rec->total;
+					}
 				}
 			}
+
+			$data[$key] = $dates;
 		}
 
 		echo json_encode($data);

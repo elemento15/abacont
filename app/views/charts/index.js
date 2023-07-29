@@ -90,7 +90,7 @@ define(function (require) {
 
       this.chart_02 = new CanvasJS.Chart("canvas-chart02", {
         theme: "theme3",
-        title: { text: "Gastos por Día", fontSize: 18 },
+        title: { text: "Movimientos por Día", fontSize: 18 },
         axisX: {
           title: 'Dias',
           titleFontSize: 16,
@@ -105,12 +105,24 @@ define(function (require) {
         },
         zoomEnabled: true,
         data: [{
-          type: 'spline',
+          // incomes
+          type: 'line',
+          color: '#6694bb',
           cursor: 'pointer',
           dataPoints: [],
           click: function (e) {
             var date = e.dataPoint.label;
-            that.showExpensesDetails(date);
+            that.showMovsDetails(date, 'I');
+          }
+        },{
+          // expenses
+          type: 'line',
+          color: '#ff7272',
+          cursor: 'pointer',
+          dataPoints: [],
+          click: function (e) {
+            var date = e.dataPoint.label;
+            that.showMovsDetails(date, 'G');
           }
         }]
       });
@@ -435,9 +447,6 @@ define(function (require) {
     changeAccount: function (evt) {
       this.updateChart(false);
     },
-    /*changeOmitInversion: function (evt) {
-      this.updateChart(false);
-    },*/
 
     updateChart: function (evt) {
       var that = this;
@@ -512,7 +521,7 @@ define(function (require) {
 
       $.when(
         $.ajax({
-          url: Defaults.ROUTE + 'charts/expenses_day',
+          url: Defaults.ROUTE + 'charts/movements_day',
           dataType: 'json',
           type: 'POST',
           data: {
@@ -523,15 +532,27 @@ define(function (require) {
           }
         })
       ).then(function (data, textStatus, jqXHR) {
-        data.forEach(function (item, index) {
+        // incomes
+        data.incomes.forEach(function (item) {
           dps.push({
             label: item.fecha,
             y: parseFloat(item.total)
           });
         });
-
         me.chart_02.options.data[0].dataPoints = dps;
-        me.chart_02.render();
+
+        dps = []; // clear data
+
+        // expenses
+        data.expenses.forEach(function (item) {
+          dps.push({
+            label: item.fecha,
+            y: parseFloat(item.total)
+          });
+        });
+        me.chart_02.options.data[1].dataPoints = dps;
+        
+        me.chart_02.render(); // render chart
       });
 
       this.showedChart02 = true;
@@ -904,16 +925,13 @@ define(function (require) {
       var value = $('select[name="filtro_ahorro"]').val() || 0;
       return value;
     },
-    /*getOmitInversion: function() {
-      return this.$el.find('[name="omit_inversion"]:checked').val() || 0;
-    },*/
 
-    showExpensesDetails: function (date) {
+    showMovsDetails: function (date, type) {
       var category = this.getCategory();
       var subcategory = this.getSubCategory();
 
       var filter = [
-        { field: 'tipo',      value: 'G' },
+        { field: 'tipo',      value: type },
         { field: 'cancelado', value: 0 },
         { field: 'fecha',     value: date },
       ];
