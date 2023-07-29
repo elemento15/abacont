@@ -34,8 +34,9 @@ define(function (require) {
     generateRpt: function () {
       var months = this.$el.find('[name="months"]').val() || 0;
       var curr_month = this.$el.find('[name="curr_month"]:checked').val() || 0;
+      var option = this.$el.find('[name="option_report"]:checked').val();
 
-      var params = '?months='+ months +'&current='+ curr_month;
+      var params = '?months='+ months +'&current='+ curr_month +'&option='+ option;
       window.open('movements/rpt_incomes_expenses'+ params);
     },
   });

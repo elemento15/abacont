@@ -122,14 +122,13 @@ class Movements extends BaseController {
 	}
 
 	public function rpt_incomes_expenses() {
-		$this->load->library('RptIncomesExpensesPdf', array(), 'pdf');
-		
+		$library = ($_REQUEST['option'] == 'CSV') ? 'RptIncomesExpensesCsv' : 'RptIncomesExpensesPdf';
+		$this->load->library($library, array(), 'library');
 		$params = array(
 			'months' => $_REQUEST['months'],
 			'current' => $_REQUEST['current']
 		);
-
-		$this->pdf->setParams($params);
-		$this->pdf->printing();
+		$this->library->setParams($params);
+		$this->library->printing();
 	}
 }

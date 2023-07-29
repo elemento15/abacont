@@ -17,7 +17,7 @@ class RptIncomesExpensesPdf extends BasePdf {
         $this->months = intval($params['months']) ?: 1000;
         $this->current_month = intval($params['current']);
     	
-        $this->subtitle = 'Ultimos '.$this->months.' meses';
+        $this->subtitle = ($this->months < 1000) ? 'Ultimos '.$this->months.' meses' : 'Todos los meses';
     }
 
     public function printing() {
