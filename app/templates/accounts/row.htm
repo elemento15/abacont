@@ -15,16 +15,34 @@
 	<div class="cls-sub-text"><%= clabe %></div>
 </td>
 <td align="right" class="<%= (saldo < 0) ? 'cls-negative' : '' %>">$<%= saldo.formatMoney() %></td>
-<td align="center" class="hidden-xs hidden-sm">
+<td align="center" class="hidden-xs hidden-sm" style="vertical-align: middle;">
 	<% if (parseInt(usa_ingresos)) { %>
-	<span class="label label-success">SI</span>
+	<span class="label label-success glyphicon glyphicon-ok" 
+	      style="width: 22px; display: inline-block;"></span>
 	<% } else { %>
 	&nbsp;
 	<% } %>
 </td>
-<td align="center" class="hidden-xs hidden-sm">
+<td align="center" class="hidden-xs hidden-sm" style="vertical-align: middle;">
 	<% if (parseInt(usa_gastos)) { %>
-	<span class="label label-success">SI</span>
+	<span class="label label-danger glyphicon glyphicon-ok" 
+	      style="width: 22px; display: inline-block;"></span>
+	<% } else { %>
+	&nbsp;
+	<% } %>
+</td>
+<td align="center" class="hidden-xs hidden-sm" style="vertical-align: middle;">
+	<% if (parseInt(es_ahorro)) { %>
+	<span class="label label-info glyphicon glyphicon-ok" 
+	      style="width: 22px; display: inline-block;"></span>
+	<% } else { %>
+	&nbsp;
+	<% } %>
+</td>
+<td align="center" class="hidden-xs hidden-sm" style="vertical-align: middle;">
+	<% if (parseInt(es_inversion)) { %>
+	<span class="label label-info glyphicon glyphicon-ok" 
+	      style="width: 22px; display: inline-block;"></span>
 	<% } else { %>
 	&nbsp;
 	<% } %>
