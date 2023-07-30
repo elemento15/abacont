@@ -6,6 +6,8 @@ class Main extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('User_model','user',true);
+
+		date_default_timezone_set('America/Mazatlan');
 	}
 
 	public function index() {
@@ -190,6 +192,103 @@ class Main extends CI_Controller {
 		echo json_encode($data[0]);
 	}
 
+	public function account_balances() {
+		$data = [
+			[
+				'label' => 'Crédito (-)',
+				'saldo' => $this->getBalanceByType('C', false),
+				'color' => '#e45d5d',
+			],[
+				'label' => 'Ahorro',
+				'saldo' => $this->getBalanceByType('D', 'A'),
+				'color' => '#6694bb',
+			],[
+				'label' => 'Inversión',
+				'saldo' => $this->getBalanceByType('D', 'I'),
+				'color' => '#6694bb',
+			],[
+				'label' => 'Débito',
+				'saldo' => $this->getBalanceByType('D', false),
+				'color' => '#37658e',
+			],[
+				'label' => 'Efectivo',
+				'saldo' => $this->getBalanceByType('E', false),
+				'color' => '#5cb85c',
+			]
+		];
+
+		$data2 = [];
+		foreach ($data as $item) {
+			if ($item['saldo'] != 0) {
+				$data2[] = $item;
+			}
+		}
+
+		echo json_encode($data2);
+	}
+
+	public function income_expense_month() {
+		$query = "SELECT tipo, SUM(importe) AS total, 
+		                 IF(tipo = 'I', 'Ingresos', 'Gastos') AS label
+			FROM movimientos
+			WHERE fecha >= DATE_FORMAT(NOW(), '%Y-%m-01') 
+			  AND NOT cancelado
+			GROUP BY tipo
+			ORDER BY tipo DESC; ";
+		$data = $this->db->query($query)->result_array();
+		echo json_encode($data);
+	}
+
+	public function income_expense_year() {
+		$query = "SELECT tipo, SUM(importe) AS total, 
+		                 IF(tipo = 'I', 'Ingresos', 'Gastos') AS label
+			FROM movimientos
+			WHERE fecha >= DATE_FORMAT(NOW(), '%Y-01-01') 
+			  AND NOT cancelado
+			GROUP BY tipo
+			ORDER BY tipo DESC; ";
+		$data = $this->db->query($query)->result_array();
+		echo json_encode($data);
+	}
+
+	public function daily_balance_month() {
+		$dates = $this->getListDaysInMonth(date('Y'), date('m'));
+		$balance = $this->getBalanceAtStartMonth();
+
+		// get current's month movements 
+		$query = "SELECT fecha,
+				SUM(IF(tipo = 'A', importe, 0)) AS abonos,
+				SUM(IF(tipo = 'C', importe, 0)) AS cargos
+			FROM movimientos_cuentas 
+			WHERE fecha >= DATE_FORMAT(NOW(), '%Y-%m-01') 
+			  AND NOT cancelado
+			GROUP BY fecha; ";
+		$data = $this->db->query($query)->result_array();
+
+		// parse data using 'date' as key
+		$movs = [];
+		foreach ($data as $key => $item) {
+			$movs[$item['fecha']] = [
+				'abonos' => $item['abonos'],
+				'cargos' => $item['cargos'],
+			];
+		}
+
+		foreach ($dates as $key => $date) {
+			if ($date['fecha'] <= date('Y-m-d')) {
+				// search for movements by date
+				if (array_key_exists($date['fecha'], $movs)) {
+					$balance = $balance + $movs[$date['fecha']]['abonos'] - $movs[$date['fecha']]['cargos'];
+				}
+				$dates[$key]['saldo'] = $balance;
+			} else {
+				$dates[$key]['saldo'] = 0;
+			}
+		}
+
+		echo json_encode($dates);
+	}
+
 	public function get_user() {
 		$user = $this->getCurrentUser();
 		echo json_encode(array('success' => true, 'user' => $user));
@@ -275,5 +374,54 @@ class Main extends CI_Controller {
 			'email' => $usr->email,
 			'display' => $display
 		);
+	}
+
+	private function getBalanceByType($type, $class) {
+		$query = "SELECT SUM(ABS(saldo)) AS saldo FROM cuentas ";
+		
+		if ($type == 'D') {
+			if ($class == 'A') {
+				$query .= " WHERE es_ahorro ";
+			} else if ($class == 'I') {
+				$query .= " WHERE es_inversion AND NOT es_ahorro ";
+			} else {
+				$query .= " WHERE tipo = 'D' AND (NOT es_ahorro AND NOT es_inversion) ";
+			}
+		} else {
+			$query .= " WHERE tipo = '$type' ";
+		}
+		$result = $this->db->query($query)->result_array();
+		return $result[0]['saldo'];
+	}
+
+	private function getListDaysInMonth($year, $month) {
+		$list = array();
+
+		if ($month) {
+			$days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+			
+			for ($i=1; $i <= $days ; $i++) {
+				$txt_month = str_pad($month, 2, '0', STR_PAD_LEFT);
+				$txt_day = str_pad($i, 2, '0', STR_PAD_LEFT);
+				$list[] = array('fecha' => $year.'-'.$txt_month.'-'.$txt_day);
+			}
+
+		} else {
+			for ($i=1; $i <= 12 ; $i++) { 
+				$arr_days = $this->getListDaysInMonth($year, $i);
+				$list = array_merge($list, $arr_days);
+			}
+		}
+
+		return $list;
+	}
+
+	private function getBalanceAtStartMonth() {
+		$query = "SELECT SUM(IF(tipo = 'A', importe, importe * -1)) AS saldo_inicial 
+			FROM movimientos_cuentas 
+			WHERE fecha < DATE_FORMAT(NOW(), '%Y-%m-01') 
+			AND NOT cancelado; ";
+		$result = $this->db->query($query)->result_array();
+		return $result[0]['saldo_inicial'];
 	}
 }

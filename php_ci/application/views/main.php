@@ -10,10 +10,10 @@
     <!-- styles -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/styles.css?v=4.4" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css?v=4.5" />
     
     <!-- main require module -->
-    <script data-main="app/main.js?v=3.25" src="libs/require.js"></script>
+    <script data-main="app/main.js?v=3.26" src="libs/require.js"></script>
   </head>
   <body></body>
 </html>
