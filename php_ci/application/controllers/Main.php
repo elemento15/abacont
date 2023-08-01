@@ -232,7 +232,7 @@ class Main extends CI_Controller {
 		$query = "SELECT tipo, SUM(importe) AS total, 
 		                 IF(tipo = 'I', 'Ingresos', 'Gastos') AS label
 			FROM movimientos
-			WHERE fecha >= $start_of_month 
+			WHERE fecha >= '$start_of_month' 
 			  AND NOT cancelado
 			GROUP BY tipo
 			ORDER BY tipo DESC; ";
@@ -262,7 +262,7 @@ class Main extends CI_Controller {
 				SUM(IF(tipo = 'A', importe, 0)) AS abonos,
 				SUM(IF(tipo = 'C', importe, 0)) AS cargos
 			FROM movimientos_cuentas 
-			WHERE fecha >= $start_of_month 
+			WHERE fecha >= '$start_of_month' 
 			  AND NOT cancelado
 			GROUP BY fecha; ";
 		$data = $this->db->query($query)->result_array();
