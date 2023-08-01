@@ -228,10 +228,11 @@ class Main extends CI_Controller {
 	}
 
 	public function income_expense_month() {
+		$date = date('Y-m-01');
 		$query = "SELECT tipo, SUM(importe) AS total, 
 		                 IF(tipo = 'I', 'Ingresos', 'Gastos') AS label
 			FROM movimientos
-			WHERE fecha >= DATE_FORMAT(NOW(), '%Y-%m-01') 
+			WHERE fecha >= $date 
 			  AND NOT cancelado
 			GROUP BY tipo
 			ORDER BY tipo DESC; ";
