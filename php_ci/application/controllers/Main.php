@@ -228,11 +228,11 @@ class Main extends CI_Controller {
 	}
 
 	public function income_expense_month() {
-		$date = date('Y-m-01');
+		$start_of_month = date('Y-m-01');
 		$query = "SELECT tipo, SUM(importe) AS total, 
 		                 IF(tipo = 'I', 'Ingresos', 'Gastos') AS label
 			FROM movimientos
-			WHERE fecha >= $date 
+			WHERE fecha >= $start_of_month 
 			  AND NOT cancelado
 			GROUP BY tipo
 			ORDER BY tipo DESC; ";
@@ -253,6 +253,7 @@ class Main extends CI_Controller {
 	}
 
 	public function daily_balance_month() {
+		$start_of_month = date('Y-m-01');
 		$dates = $this->getListDaysInMonth(date('Y'), date('m'));
 		$balance = $this->getBalanceAtStartMonth();
 
@@ -261,7 +262,7 @@ class Main extends CI_Controller {
 				SUM(IF(tipo = 'A', importe, 0)) AS abonos,
 				SUM(IF(tipo = 'C', importe, 0)) AS cargos
 			FROM movimientos_cuentas 
-			WHERE fecha >= DATE_FORMAT(NOW(), '%Y-%m-01') 
+			WHERE fecha >= $start_of_month 
 			  AND NOT cancelado
 			GROUP BY fecha; ";
 		$data = $this->db->query($query)->result_array();
