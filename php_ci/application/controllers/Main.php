@@ -419,9 +419,11 @@ class Main extends CI_Controller {
 	}
 
 	private function getBalanceAtStartMonth() {
+		$month = date('m');
+
 		$query = "SELECT SUM(IF(tipo = 'A', importe, importe * -1)) AS saldo_inicial 
 			FROM movimientos_cuentas 
-			WHERE fecha < DATE_FORMAT(NOW(), '%Y-%m-01') 
+			WHERE fecha < DATE_FORMAT(NOW(), '%Y-$month-01') 
 			AND NOT cancelado; ";
 		$result = $this->db->query($query)->result_array();
 		return $result[0]['saldo_inicial'];
