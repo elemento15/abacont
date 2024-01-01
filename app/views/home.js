@@ -117,6 +117,53 @@ define(function (require) {
         ]
       });
 
+      this.summary_annual_history = new CanvasJS.Chart("summary-annual-history", {
+        theme: "theme3",
+        dataPointMaxWidth: 10,
+        axisY: {
+          //title: '$',
+          //titleFontSize: 16,
+          labelFontSize: 10,
+          gridColor: "#CCCCCC",
+        },
+        axisX: {
+          title: '.',
+          titleFontSize: 6,
+          labelFontSize: 10,
+          labelAutoFit: true,
+        },
+        data: [
+          {
+            type: "column",
+            name: "Ingresos",
+            color: "#6694bb",
+            legendText: "Ingresos",
+            showInLegend: true,
+            fillOpacity: .8,
+            bevelEnabled: false,
+            dataPoints: []
+          },{
+            type: "column",
+            name: "Gastos",
+            color: "#e45d5d",
+            legendText: "Gastos",
+            showInLegend: true,
+            fillOpacity: .8,
+            bevelEnabled: false,
+            dataPoints: []
+          },{
+            type: "column",
+            name: "Diferencia",
+            color: "#999999",
+            legendText: "Diferencia",
+            showInLegend: false,
+            fillOpacity: .8,
+            bevelEnabled: false,
+            dataPoints: []
+          }
+        ]
+      });
+
       // income-expense-year
       /*this.income_expense_year = new CanvasJS.Chart("income-expense-year", {
         theme: "theme3",
@@ -147,6 +194,7 @@ define(function (require) {
       this.updateChartBalances();
       this.updateChartIncomeExpenseMonth();
       this.updateChartDailyBalance();
+      this.updateChartSummaryAnnualHistory();
       //this.updateChartIncomeExpenseYear();
     },
 
@@ -270,6 +318,45 @@ define(function (require) {
 
         me.daily_balance.options.data[0].dataPoints = dps;
         me.daily_balance.render();
+      });
+    },
+
+    updateChartSummaryAnnualHistory: function () {
+      var me = this;
+      var dp_income = [];
+      var dp_expense = [];
+      var dp_diff = [];
+
+      $.when(
+        $.ajax({
+          url: Defaults.ROUTE + 'main/annual_summary_history',
+          dataType: 'json',
+          type: 'POST'
+        })
+      ).then(function (data, textStatus, jqXHR) {
+
+        data.forEach(function (item, index) {
+          dp_income.push({
+            label: item.annio,
+            y: parseFloat(item.income),
+          });
+
+          dp_expense.push({
+            label: item.annio,
+            y: parseFloat(item.expense),
+          });
+
+          dp_diff.push({
+            label: item.annio,
+            y: parseFloat(item.diff),
+            color: item.color,
+          });
+        });
+
+        me.summary_annual_history.options.data[0].dataPoints = dp_income;
+        me.summary_annual_history.options.data[1].dataPoints = dp_expense;
+        me.summary_annual_history.options.data[2].dataPoints = dp_diff;
+        me.summary_annual_history.render();
       });
     }
   });

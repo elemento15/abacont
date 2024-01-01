@@ -291,6 +291,26 @@ class Main extends CI_Controller {
 		echo json_encode($dates);
 	}
 
+	public function annual_summary_history() {
+		$query = "SELECT 
+				DATE_FORMAT(fecha, '%Y') AS annio,
+				SUM(IF(tipo = 'I', importe, 0)) AS income, 
+				SUM(IF(tipo = 'G', importe, 0)) AS expense
+			FROM movimientos AS m
+			WHERE NOT cancelado
+			GROUP BY annio
+			ORDER BY annio; ";
+		$data = $this->db->query($query)->result_array();
+
+		foreach ($data as $key => $item) {
+			$diff = $item['income'] -$item['expense'];
+			$data[$key]['diff'] = $diff;
+			$data[$key]['color'] = ($diff >= 0) ? '#5cb85c' : '#F7DC6F';
+		}
+
+		echo json_encode($data);
+	}
+
 	public function get_user() {
 		$user = $this->getCurrentUser();
 		echo json_encode(array('success' => true, 'user' => $user));
