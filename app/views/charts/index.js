@@ -140,7 +140,13 @@ define(function (require) {
           title: '$',
           titleFontSize: 16,
           labelFontSize: 13,
-          gridColor: "#CCCCCC"
+          gridColor: "#CCCCCC",
+          crosshair: {
+            enabled: true,
+            lineDashType: "solid",
+            color: "#33558B",
+            labelBackgroundColor: "#33558B"
+          },
         },
         legend: {
           fontFamily: 'Verdana',
