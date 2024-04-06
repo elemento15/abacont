@@ -3,6 +3,7 @@ define(function (require) {
   "use strict";
 
   var Backbone = require('backbone'),
+    CanvasJS = require('canvasjs38'),
     tpl      = require('text!tpl/home.htm'),
     template = _.template(tpl),
     Defaults = require('app/defaults');
@@ -95,9 +96,10 @@ define(function (require) {
               thickness: 0,
               label: '',
               labelPlacement: 'inside',
-              labelFontFamily: 'Verdana',
-              labelFontSize: 9,
-              labelFontWeight: 'lighter'
+              labelFontFamily: 'tahoma',
+              labelFontSize: 10,
+              labelFontWeight: 'lighter',
+              labelFontColor: '#666666'
             }
           ]
         },

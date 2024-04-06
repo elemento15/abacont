@@ -1,6 +1,6 @@
 require.config({
   baseUrl: 'libs',
-  urlArgs: "v=3.31",
+  urlArgs: "v=3.32",
   
   // uncomment in development mode, avoid cached JS
   //urlArgs: "v=" + (new Date()).getTime(),
@@ -33,7 +33,7 @@ require.config({
       deps: ['datepicker'],
       exports: 'DatePickerEs'
     },
-    'canvasjs': {
+    'canvasjs38': {
       exports: 'CanvasJS'
     }
   }

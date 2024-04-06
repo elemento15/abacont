@@ -4,7 +4,7 @@ define(function (require) {
   "use strict";
 
   var Backbone = require('backbone'),
-      CanvasJS = require('canvasjs'),
+      CanvasJS = require('canvasjs38'),
       tpl = require('text!tpl/charts/index.htm'),
       Defaults = require('app/defaults');
 
@@ -60,18 +60,19 @@ define(function (require) {
         theme: "theme3",
         title: { 
           text: "Saldo en Cuentas",
-          fontSize: 18
+          fontSize: 16,
+          fontFamily: 'tahoma'
         },
         axisX: {
-          title: 'Cuentas', 
-          titleFontSize: 16,
-          labelFontSize: 12,
+          //title: 'Cuentas', 
+          titleFontSize: 14,
+          labelFontSize: 10,
           labelAutoFit: true
         },
         axisY: {
-          title: 'Saldo',
-          titleFontSize: 16,
-          labelFontSize: 12,
+          //title: 'Saldo',
+          titleFontSize: 14,
+          labelFontSize: 10,
           gridColor: "#CCCCCC"
         },
         data: [{
@@ -81,7 +82,7 @@ define(function (require) {
           indexLabel: "{y}",
           indexLabelPlacement: "outside",
           indexLabelBackgroundColor: "#fff",
-          indexLabelFontSize: 12,
+          indexLabelFontSize: 10,
           indexLabelFontColor: "#333333",
           fillOpacity: .7,
           bevelEnabled: false
@@ -90,17 +91,21 @@ define(function (require) {
 
       this.chart_02 = new CanvasJS.Chart("canvas-chart02", {
         theme: "theme3",
-        title: { text: "Movimientos por Día", fontSize: 18 },
+        title: {
+            text: "Movimientos por Día",
+            fontSize: 16,
+            fontFamily: 'tahoma'
+        },
         axisX: {
-          title: 'Dias',
-          titleFontSize: 16,
-          labelFontSize: 12,
+          //title: 'Dias',
+          //titleFontSize: 16,
+          labelFontSize: 11,
           labelAutoFit: true
         },
         axisY: {
-          title: '$',
-          titleFontSize: 16,
-          labelFontSize: 12,
+          //title: '$',
+          //titleFontSize: 16,
+          labelFontSize: 10,
           gridColor: "#CCCCCC"
         },
         zoomEnabled: true,
@@ -129,17 +134,21 @@ define(function (require) {
 
       this.chart_03 = new CanvasJS.Chart("canvas-chart03", {
         theme: "theme3",
-        title: { text: "Movimientos Mensuales", fontSize: 18 },
+        title: { 
+            text: "Movimientos Mensuales",
+            fontSize: 16,
+            fontFamily: 'tahoma'
+        },
         axisX: {
-          title: 'Meses',
-          titleFontSize: 16,
-          labelFontSize: 12,
+          //title: 'Meses',
+          //titleFontSize: 16,
+          labelFontSize: 11,
           labelAutoFit: true
         },
         axisY: {
-          title: '$',
-          titleFontSize: 16,
-          labelFontSize: 13,
+          //title: '$',
+          //titleFontSize: 16,
+          labelFontSize: 10,
           gridColor: "#CCCCCC",
           crosshair: {
             enabled: true,
@@ -149,8 +158,12 @@ define(function (require) {
           },
         },
         legend: {
-          fontFamily: 'Verdana',
+          fontFamily: 'tahoma',
+          fontWeight: 'lighter',
           fontSize: 12,
+          horizontalAlign: 'right',
+          verticalAlign: 'top',
+          itemWidth: 85,
           cursor: 'pointer',
           itemclick: function (e) {
             e.dataSeries.visible = !e.dataSeries.visible;
@@ -171,7 +184,8 @@ define(function (require) {
             indexLabelFontColor: "#333333",
             fillOpacity: .6,
             bevelEnabled: false
-          },{
+          }
+          ,{
             type: 'stackedColumn',
             color: '#ffaeae',
             visible: true,
@@ -198,22 +212,30 @@ define(function (require) {
 
       this.chart_04 = new CanvasJS.Chart("canvas-chart04", {
         theme: "theme3",
-        title: { text: "Promedios Diario por Mes", fontSize: 18 },
+        title: {
+            text: "Promedios Diario por Mes",
+            fontSize: 16,
+            fontFamily: 'tahoma'
+        },
         axisX: {
-          title: 'Meses',
-          titleFontSize: 16,
-          labelFontSize: 12,
+          //title: 'Meses',
+          //titleFontSize: 16,
+          labelFontSize: 11,
           labelAutoFit: true
         },
         axisY: {
-          title: '$',
-          titleFontSize: 16,
-          labelFontSize: 13,
+          //title: '$',
+          //titleFontSize: 16,
+          labelFontSize: 10,
           gridColor: "#CCCCCC"
         },
         legend: {
-          fontFamily: 'Verdana',
+          fontFamily: 'tahoma',
+          fontWeight: 'lighter',
           fontSize: 12,
+          horizontalAlign: 'right',
+          verticalAlign: 'top',
+          itemWidth: 85,
           cursor: 'pointer',
           itemclick: function (e) {
             e.dataSeries.visible = !e.dataSeries.visible;
@@ -261,23 +283,37 @@ define(function (require) {
 
       this.chart_05 = new CanvasJS.Chart("canvas-chart05", {
         theme: "theme3",
-        title: { text: "Saldo Mensual", fontSize: 18 },
+        title: {
+            text: "Saldo Mensual",
+            fontSize: 16,
+            fontFamily: 'tahoma'
+        },
         axisX: {
-          title: 'Meses',
-          titleFontSize: 16,
-          labelFontSize: 12,
+          //title: 'Meses',
+          //titleFontSize: 16,
+          labelFontSize: 10,
           labelAutoFit: true
         },
         axisY: {
-          title: '$',
-          titleFontSize: 16,
-          labelFontSize: 13,
-          gridColor: "#CCCCCC"
+          //title: '$',
+          //titleFontSize: 16,
+          labelFontSize: 10,
+          gridColor: "#CCCCCC",
+          crosshair: {
+            enabled: true,
+            lineDashType: "solid",
+            color: "#33558B",
+            labelBackgroundColor: "#33558B"
+          },
         },
         legend: {
-          fontFamily: 'Verdana',
+          //fontFamily: 'Verdana',
           fontSize: 12,
+          fontWeight: 'lighter',
           cursor: 'pointer',
+          horizontalAlign: 'right',
+          verticalAlign: 'top',
+          itemWidth: 70,
           itemclick: function (e) {
             e.dataSeries.visible = !e.dataSeries.visible;
             e.chart.render();
@@ -316,12 +352,18 @@ define(function (require) {
       });
 
       this.chart_06 = new CanvasJS.Chart("canvas-chart06", {
-        theme: "light2",
-        title: { text: "Movimientos Porcentuales", fontSize: 18 },
+        theme: "theme3",
+        title: {
+            text: "Movimientos Porcentuales",
+            fontSize: 16,
+            fontFamily: 'tahoma'
+        },
         legend: {
-          fontFamily: 'Verdana',
+          //fontFamily: 'Verdana',
           fontSize: 10,
-          maxWidth: 600,
+          //maxWidth: 100,
+          horizontalAlign: 'right',
+          verticalAlign: 'center',
           itemWidth: 150,
           /*itemclick: function (e) {
             //e.dataSeries.visible = !e.dataSeries.visible;
@@ -335,7 +377,7 @@ define(function (require) {
             showInLegend: true,
             toolTipContent: "{y} - #percent %",
             legendText: "{label}",
-            indexLabelFontSize: 12,
+            indexLabelFontSize: 11,
             indexLabelFontColor: "#333333",
             fillOpacity: .7,
             bevelEnabled: false,
@@ -509,7 +551,7 @@ define(function (require) {
       var dps = [];
       var year = $('[name="year_02"]').val();
       var month = $('[name="month_02"]').val();
-
+      var type = me.getTypeMov();
       var today = new Date;
 
       // if year not setted, set with current year
@@ -525,6 +567,11 @@ define(function (require) {
         $('[name="month_02"]').val(month);
       }
 
+      // clear datapoints
+      me.chart_02.options.data[0].dataPoints = [];
+      me.chart_02.options.data[1].dataPoints = [];
+
+      
       $.when(
         $.ajax({
           url: Defaults.ROUTE + 'charts/movements_day',
@@ -539,24 +586,28 @@ define(function (require) {
         })
       ).then(function (data, textStatus, jqXHR) {
         // incomes
-        data.incomes.forEach(function (item) {
-          dps.push({
-            label: item.fecha,
-            y: parseFloat(item.total)
-          });
-        });
-        me.chart_02.options.data[0].dataPoints = dps;
+        if (!type || type == 'I') {
+            data.incomes.forEach(function (item) {
+              dps.push({
+                label: item.fecha,
+                y: parseFloat(item.total)
+              });
+            });
+            me.chart_02.options.data[0].dataPoints = dps;
+        }
 
         dps = []; // clear data
 
         // expenses
-        data.expenses.forEach(function (item) {
-          dps.push({
-            label: item.fecha,
-            y: parseFloat(item.total)
-          });
-        });
-        me.chart_02.options.data[1].dataPoints = dps;
+        if (!type || type == 'G') {
+            data.expenses.forEach(function (item) {
+            dps.push({
+                label: item.fecha,
+                y: parseFloat(item.total)
+            });
+            });
+            me.chart_02.options.data[1].dataPoints = dps;
+        }
         
         me.chart_02.render(); // render chart
       });
