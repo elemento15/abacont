@@ -255,7 +255,8 @@ class Main extends CI_Controller {
 	public function daily_balance_month() {
 		$start_of_month = date('Y-m-01');
 		$dates = $this->getListDaysInMonth(date('Y'), date('m'));
-		$balance = $this->getBalanceAtStartMonth();
+		$start_amount = $this->getBalanceAtStartMonth();
+		$balance = $start_amount;
 
 		// get current's month movements 
 		$query = "SELECT fecha,
@@ -288,7 +289,10 @@ class Main extends CI_Controller {
 			}
 		}
 
-		echo json_encode($dates);
+		echo json_encode([
+			'dates' => $dates,
+			'initial_amount' => $start_amount
+		]);
 	}
 
 	public function annual_summary_history() {

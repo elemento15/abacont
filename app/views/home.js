@@ -87,7 +87,15 @@ define(function (require) {
           //title: '$',
           //titleFontSize: 16,
           labelFontSize: 10,
-          gridColor: "#CCCCCC"
+          gridColor: "#CCCCCC",
+          stripLines: [
+            {
+              value: 0,
+              color: '#C0392B',
+              thickness: 0,
+              label: '',
+            }
+          ]
         },
         legend: {
           fontFamily: 'Verdana',
@@ -309,7 +317,7 @@ define(function (require) {
         })
       ).then(function (data, textStatus, jqXHR) {
 
-        data.forEach(function (item, index) {
+        data.dates.forEach(function (item, index) {
           dps.push({
             label: item.fecha,
             y: parseFloat(item.saldo),
@@ -317,6 +325,9 @@ define(function (require) {
         });
 
         me.daily_balance.options.data[0].dataPoints = dps;
+        me.daily_balance.options.axisY.stripLines[0].value = data.initial_amount;
+        me.daily_balance.options.axisY.stripLines[0].thickness = 2;
+        me.daily_balance.options.axisY.stripLines[0].label = 'Saldo Inicial: ' + data.initial_amount;
         me.daily_balance.render();
       });
     },
