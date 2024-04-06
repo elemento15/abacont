@@ -94,6 +94,10 @@ define(function (require) {
               color: '#C0392B',
               thickness: 0,
               label: '',
+              labelPlacement: 'inside',
+              labelFontFamily: 'Verdana',
+              labelFontSize: 9,
+              labelFontWeight: 'lighter'
             }
           ]
         },
@@ -327,7 +331,7 @@ define(function (require) {
         me.daily_balance.options.data[0].dataPoints = dps;
         me.daily_balance.options.axisY.stripLines[0].value = data.initial_amount;
         me.daily_balance.options.axisY.stripLines[0].thickness = 2;
-        me.daily_balance.options.axisY.stripLines[0].label = 'Saldo Inicial: ' + data.initial_amount;
+        me.daily_balance.options.axisY.stripLines[0].label = data.initial_amount.formatMoney();
         me.daily_balance.render();
       });
     },
