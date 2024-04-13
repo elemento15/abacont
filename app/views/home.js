@@ -58,7 +58,8 @@ define(function (require) {
           title: '.',
           titleFontSize: 6,
           labelFontSize: 10,
-          gridColor: "#EEEEEE"
+          gridColor: "#EEEEEE",
+          minimum: 0
         },
         data: [{
           type: 'bar',
