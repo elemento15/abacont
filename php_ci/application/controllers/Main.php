@@ -235,8 +235,28 @@ class Main extends CI_Controller {
 			WHERE fecha >= '$start_of_month' 
 			  AND NOT cancelado
 			GROUP BY tipo
-			ORDER BY tipo DESC; ";
+			ORDER BY tipo ASC; ";
 		$data = $this->db->query($query)->result_array();
+
+		$net = 0;
+		foreach ($data as $key => $item) {
+			if ($item['tipo'] == 'I') {
+				$net += $item['total'];
+				$data[$key]['color'] = '#37658e';
+			}
+			if ($item['tipo'] == 'G') {
+				$net -= $item['total'];
+				$data[$key]['color'] = '#e45d5d';
+			}
+		}
+
+		$data[] = [
+			'tipo' => 'U',
+			'total' => abs($net),
+			'label' => ($net >= 0) ? 'Utilidad' : 'Utilidad (-)',
+			'color' => ($net >= 0) ? '#5cb85c' : '#FFBF00',
+		];
+
 		echo json_encode($data);
 	}
 

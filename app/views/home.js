@@ -24,15 +24,16 @@ define(function (require) {
           //title: 'Cuentas', 
           //titleFontSize: 16,
           labelFontSize: 12,
-          labelAutoFit: true
+          labelAutoFit: true,
         },
         axisY: {
           title: '.',
           titleFontSize: 6,
           labelFontSize: 10,
-          gridColor: "#EEEEEE"
+          gridColor: "#EEEEEE",
+          minimum: 0
         },
-        dataPointMaxWidth: 20,
+        dataPointMaxWidth: 15,
         data: [{
           type: 'bar',
           color: "gray",
@@ -52,14 +53,15 @@ define(function (require) {
         theme: "theme3",
         axisX: {
           labelFontSize: 12,
-          labelAutoFit: true
+          labelAutoFit: true,
+          reversed: true,
         },
         axisY: {
           title: '.',
           titleFontSize: 6,
           labelFontSize: 10,
           gridColor: "#EEEEEE",
-          minimum: 0
+          minimum: 0,
         },
         data: [{
           type: 'bar',
@@ -83,13 +85,14 @@ define(function (require) {
           title: '.',
           titleFontSize: 8,
           labelFontSize: 10,
-          labelAutoFit: true
+          labelAutoFit: true,
         },
         axisY: {
           //title: '$',
           //titleFontSize: 16,
           labelFontSize: 10,
           gridColor: "#CCCCCC",
+          minimum: 0,
           stripLines: [
             {
               value: 0,
@@ -278,7 +281,7 @@ define(function (require) {
           dps.push({
             label: item.label,
             y: parseFloat(item.total),
-            color: (item.tipo == 'I') ? '#37658e' : '#e45d5d', 
+            color: item.color, 
           });
         });
 

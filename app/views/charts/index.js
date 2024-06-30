@@ -73,7 +73,7 @@ define(function (require) {
           //title: 'Saldo',
           titleFontSize: 14,
           labelFontSize: 10,
-          gridColor: "#CCCCCC"
+          gridColor: "#CCCCCC",
         },
         data: [{
           type: 'column',
@@ -150,6 +150,7 @@ define(function (require) {
           //titleFontSize: 16,
           labelFontSize: 10,
           gridColor: "#CCCCCC",
+          minimum: 0,
           crosshair: {
             enabled: true,
             lineDashType: "solid",
@@ -227,7 +228,8 @@ define(function (require) {
           //title: '$',
           //titleFontSize: 16,
           labelFontSize: 10,
-          gridColor: "#CCCCCC"
+          gridColor: "#CCCCCC",
+          minimum: 0
         },
         legend: {
           fontFamily: 'tahoma',
