@@ -219,3 +219,8 @@ span.cls-mov-auto {
   height: 400px;
   margin-bottom: 20px;
 }
+
+/* hide canvas label within charts */
+a.canvasjs-chart-credit {
+  display: none;
+}
