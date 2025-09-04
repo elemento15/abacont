@@ -66,6 +66,7 @@ class AccountPdf extends BasePdf {
         $CI->db->from('cuentas');
         $CI->db->where('activo', 1);
         $CI->db->order_by('tipo', 'DESC');
+        $CI->db->order_by('orden', 'ASC');
         $data = $CI->db->get();
         return $data->result_array();
     }
